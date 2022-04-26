@@ -1,4 +1,6 @@
-html,
+html {
+  scroll-behavior: smooth;
+}
 body {
   font-family: NanumSquareRoundBold, NanumSquareRoundExtraBold, NanumSquareRound,
     NanumSquareRoundLight, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
