@@ -12,9 +12,11 @@
     "@emotion/react": "^11.9.0",
     "@mui/icons-material": "^5.6.2",
     "@mui/material": "^5.6.2",
+    "axios": "^0.26.1",
     "next": "12.1.5",
     "react": "18.0.0",
-    "react-dom": "18.0.0"
+    "react-dom": "18.0.0",
+    "sweetalert2": "^11.4.9"
   },
   "devDependencies": {
     "@emotion/babel-plugin": "^11.9.2",
