@@ -1,8 +1,14 @@
-import type { NextPage } from 'next';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
+import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 
 import styled from '@emotion/styled';
+
+import { latlngActions } from '../store/latlng';
+import { useSelector } from '../store';
+
 import { PALETTE } from '../data/palette';
 
 interface ButtonProps {
@@ -12,6 +18,45 @@ interface ButtonProps {
 
 const Home: NextPage = () => {
   const router = useRouter();
+
+  const dispatch = useDispatch();
+  const location = useSelector((state) => state.latlng);
+
+  useEffect(() => {
+    if (!location.setLocated) {
+      getLocation();
+    }
+  }, []);
+
+  const getLocation = async () => {
+    navigator.geolocation.getCurrentPosition(
+      ({ coords }) => {
+        dispatch(
+          latlngActions.setLatLng({
+            lat: coords.latitude,
+            lng: coords.longitude,
+            setLocated: true,
+          }),
+        );
+      },
+      (error) => {
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            console.log('User denied the request for Geolocation.');
+            break;
+          // case error.POSITION_UNAVAILABLE:
+          //   x.innerHTML = 'Location information is unavailable.';
+          //   break;
+          // case error.TIMEOUT:
+          //   x.innerHTML = 'The request to get user location timed out.';
+          //   break;
+          // case error.UNKNOWN_ERROR:
+          //   x.innerHTML = 'An unknown error occurred.';
+          //   break;
+        }
+      },
+    );
+  };
 
   return (
     <Container>

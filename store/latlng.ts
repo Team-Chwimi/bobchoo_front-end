@@ -1,26 +1,22 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-// import { LatLngType } from '../types/Map';
+
 import { LatLngState } from '../types/reduxState';
 
 const initialState: LatLngState = {
-  lat: '',
-  lng: '',
+  lat: 37.5662952,
+  lng: 126.9779451,
+  setLocated: false,
 };
 
 const latlng = createSlice({
   name: 'latlng',
   initialState,
   reducers: {
-    setLat(state, action: PayloadAction<string>) {
-      state.lat = action.payload;
+    setLatLng(state, action: PayloadAction<LatLngState>) {
+      state.lat = action.payload.lat;
+      state.lng = action.payload.lng;
+      state.setLocated = true;
     },
-    setLng(state, action: PayloadAction<string>) {
-      state.lng = action.payload;
-    },
-    // setLatLng(state, action: PayloadAction<LatLngType>) {
-    //   const { lat, lng } = action.payload;
-    //   return state;
-    // },
   },
 });
 
