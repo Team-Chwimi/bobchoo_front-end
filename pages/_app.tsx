@@ -3,9 +3,11 @@ import '../styles/globals.css';
 
 import type { AppProps } from 'next/app';
 
+import { wrapper } from '../store';
+
 import Head from 'next/head';
 
-function MyApp({ Component, pageProps }: AppProps) {
+const app = ({ Component, pageProps }: AppProps) => {
   return (
     <>
       <Head>
@@ -17,6 +19,6 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Component {...pageProps} />
     </>
   );
-}
+};
 
-export default MyApp;
+export default wrapper.withRedux(app);
