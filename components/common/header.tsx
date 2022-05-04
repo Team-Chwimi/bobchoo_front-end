@@ -1,10 +1,8 @@
-import type { NextPage } from 'next';
-
 import Link from 'next/link';
 
 import styled from '@emotion/styled';
 
-const Header: NextPage = () => {
+const Header: React.FC = () => {
   return (
     <HomeLink>
       <Link href="/">&#60; Home</Link>
