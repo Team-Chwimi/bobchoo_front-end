@@ -1,24 +1,15 @@
 import type { NextPage } from 'next';
 import { useEffect, useState } from 'react';
 
-import { useDispatch } from 'react-redux';
-
 import styled from '@emotion/styled';
-import { LatLngType } from '../types/Map';
-import { latlngActions } from '../store/latlng';
+import Header from '../components/common/header';
 
 const Map: NextPage = () => {
-  const [latlng, setLatLng] = useState<LatLngType>();
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(latlngActions.setLat('11'));
-  }, []);
-
   return (
     <Container>
-      <Wrapper></Wrapper>
+      <Wrapper>
+        <Header />
+      </Wrapper>
     </Container>
   );
 };
