@@ -17,6 +17,13 @@ class MyDocument extends Document {
           <meta property="og:description" content={meta.description} />
           <meta property="og:title" content={meta.title} />
           <meta property="og:image" content={meta.image} />
+          {/* <script
+            // type="text/javascript"
+            src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_KEY}`}
+            // src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_KEY}&callback=initMap`}
+            async
+            defer
+          ></script> */}
         </Head>
         <body>
           <Main />

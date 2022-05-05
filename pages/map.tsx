@@ -1,14 +1,16 @@
 import type { NextPage } from 'next';
-import { useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
+
 import Header from '../components/common/header';
+import MapSection from '../components/map/mapSection';
 
 const Map: NextPage = () => {
   return (
     <Container>
       <Wrapper>
         <Header />
+        <MapSection />
       </Wrapper>
     </Container>
   );
@@ -31,7 +33,5 @@ const Wrapper = styled.div`
   @media (max-width: 575px) {
   }
 `;
-
-const Title = styled.h1``;
 
 export default Map;
