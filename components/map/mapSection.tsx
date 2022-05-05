@@ -4,11 +4,12 @@ import { useDispatch } from 'react-redux';
 import styled from '@emotion/styled';
 
 import { useSelector } from '../../store';
-// import { latlngActions } from '../../store/latlng';
+import { latlngActions } from '../../store/latlng';
 
 import { throttle } from 'lodash';
 
 import { Loader } from '@googlemaps/js-api-loader';
+import { DEAFULT_LOCATION } from '../../data/location';
 
 const MapSection: React.FC = () => {
   const mapRef = useRef<any>(null);
@@ -16,9 +17,23 @@ const MapSection: React.FC = () => {
 
   const latlng = useSelector((state) => state.latlng);
 
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const googleKey: string = process.env.NEXT_PUBLIC_GOOGLE_KEY ?? '';
+
+  useEffect(() => {
+    if (!latlng.hasCurrentLoaction) {
+      // latlng.lat = DEAFULT_LOCATION.lat;
+      // latlng.lng = DEAFULT_LOCATION.lng;
+      dispatch(
+        latlngActions.setLatLng({
+          lat: DEAFULT_LOCATION.lat,
+          lng: DEAFULT_LOCATION.lng,
+          hasCurrentLoaction: true,
+        }),
+      );
+    }
+  }, []);
 
   useEffect(() => {
     const loader = new Loader({
@@ -34,8 +49,8 @@ const MapSection: React.FC = () => {
       });
       marker = new window.google.maps.Marker({
         position: {
-          lat: Number(latlng.lat) || 37.5666784,
-          lng: Number(latlng.lng) || 126.9778436,
+          lat: Number(latlng.lat),
+          lng: Number(latlng.lng),
         },
         map,
       });
