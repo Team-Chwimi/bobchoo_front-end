@@ -6,9 +6,11 @@ import {
 } from 'react-redux';
 
 import latlng from './latlng';
+import selectedFood from './selectedFood';
 
 const rootReducer = combineReducers({
   latlng: latlng.reducer,
+  selectedFood: selectedFood.reducer
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
