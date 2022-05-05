@@ -1,4 +1,4 @@
-import { LatLngType } from '../types/Map';
+import { LatLngType } from '../types/MapType';
 
 export const DEAFULT_LOCATION: LatLngType = {
   lat: '37.5662952',
