@@ -80,9 +80,11 @@ const Home: NextPage = () => {
   };
 
   const handleLocationCheckedClick = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    event: React.MouseEvent<HTMLButtonElement>,
   ) => {
-    event.preventDefault();
+    if (event.type === 'touchstart' && event.cancelable) event.preventDefault();
+    // if (event.cancelable) event.preventDefault();
+    // event.preventDefault();
     // const target = event.target as HTMLTextAreaElement;
 
     if (!location.hasCurrentLoaction) {
@@ -111,6 +113,12 @@ const Home: NextPage = () => {
       ) : (
         <></>
       )}
+      <button
+        style={{ position: 'absolute', left: 0 }}
+        onClick={() => router.push('/map')}
+      >
+        맵으로 이동하는 임시버튼
+      </button>
       <CopyrightButton onClick={() => router.push('/copyright')}>
         저작권
       </CopyrightButton>
