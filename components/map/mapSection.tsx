@@ -11,15 +11,20 @@ import { throttle } from 'lodash';
 import { Loader } from '@googlemaps/js-api-loader';
 import { DEAFULT_LOCATION } from '../../data/location';
 
+import { axiosInstance } from '../../lib/api';
+
 const MapSection: React.FC = () => {
   const mapRef = useRef<any>(null);
   // const mapRef = useRef<HTMLDivElement>(null);
 
   const latlng = useSelector((state) => state.latlng);
+  const selectedFood = useSelector((state) => state.selectedFood);
 
   const dispatch = useDispatch();
 
   const googleKey: string = process.env.NEXT_PUBLIC_GOOGLE_KEY ?? '';
+  const googlePlacesKey: string =
+    process.env.NEXT_PUBLIC_GOOGLE_PLACE_KEY ?? '';
 
   useEffect(() => {
     if (!latlng.hasCurrentLoaction) {
@@ -42,6 +47,8 @@ const MapSection: React.FC = () => {
     });
     let map: any;
     let marker: any;
+    let places: any;
+    let service;
     loader.load().then(() => {
       map = new google.maps.Map(mapRef.current, {
         center: { lat: Number(latlng.lat), lng: Number(latlng.lng) },
@@ -69,6 +76,57 @@ const MapSection: React.FC = () => {
           // );
         }, 150),
       );
+      const request: any = {
+        location:
+          // pyrmont,
+          new google.maps.LatLng(Number(latlng.lat), Number(latlng.lng)),
+        radius: '500',
+        type: ['restaurant'],
+        keyword: '라면',
+        // fields: ['name', 'geometry', 'vicinity'],
+      };
+      service = new google.maps.places.PlacesService(map);
+      service.nearbySearch(request, (results, status) => {
+        if (status == google.maps.places.PlacesServiceStatus.OK) {
+          if (results) {
+            for (var i = 0; i < results.length; i++) {
+              // createMarker(results[i]);
+              console.log(results[i]);
+            }
+          }
+        }
+      });
+      // service.findPlaceFromQuery(request, (results, status) => {
+      //   if (status === google.maps.places.PlacesServiceStatus.OK && results) {
+      //     console.log(results);
+      //     for (let i = 0; i < results.length; i++) {
+      //       // createMarker(results[i]);
+      //     }
+      //     // map.setCenter(results[0].geometry.location);
+      //   }
+      // });
+
+      // places = {
+      //   method: 'get',
+      //   // url: `/nearbysearch/json?location=-33.8670522%2C151.1957362&radius=1500&type=restaurant&keyword=cruise&key=${googleKey}`,
+      //   url: `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522%2C151.1957362&radius=1500&type=restaurant&keyword=cruise&key=${googleKey}`,
+      //   secure: false, //important
+      //   headers: {
+      //     'Accept': 'application/json',
+      //     'Access-Control-Allow-Origin': 'http://localhost:3000',
+      //     'Access-Control-Allow-Methods': 'GET, OPTIONS',
+      //     'Access-Control-Allow-Headers': 'Origin, Content-Type',
+      //     'Content-Type': `application/json;charset=UTF-8`,
+      //     // 'Access-Control-Request-Method': 'GET',
+      //   },
+      // };
+      // axiosInstance(places)
+      //   .then(function (response) {
+      //     console.log(JSON.stringify(response.data));
+      //   })
+      //   .catch(function (error) {
+      //     console.log(error);
+      //   });
     });
   });
 
