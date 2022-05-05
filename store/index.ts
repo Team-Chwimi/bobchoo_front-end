@@ -1,14 +1,14 @@
-import { HYDRATE, createWrapper, MakeStore } from "next-redux-wrapper";
-import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import { HYDRATE, createWrapper, MakeStore } from 'next-redux-wrapper';
+import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import {
   TypedUseSelectorHook,
   useSelector as useReduxSelector,
-} from "react-redux";
+} from 'react-redux';
 
-import latlng from "./latlng";
+import latlng from './latlng';
 
 const rootReducer = combineReducers({
-  latlng: latlng.reducer
+  latlng: latlng.reducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
@@ -30,7 +30,7 @@ const reducer = (state: any, action: any) => {
 
 export const useSelector: TypedUseSelectorHook<RootState> = useReduxSelector;
 
-const initStore = () => {
+const initStore: any = () => {
   const store = configureStore({
     reducer,
     devTools: true,
