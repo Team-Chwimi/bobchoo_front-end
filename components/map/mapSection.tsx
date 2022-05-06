@@ -26,7 +26,7 @@ interface StoreDetailType {
   name: string;
   formatted_address: string;
   formatted_phone_number: string;
-  // isOpen: boolean;
+  isOpen: boolean;
   openTime: string;
   closeTime: string;
   geometry: any;
@@ -118,8 +118,7 @@ const MapSection: React.FC = () => {
         radius: '1000', // 1KM 이내만 우선 검색
         type: ['restaurant'], // restaurant 타입만 검색
         keyword: selectedFood.name,
-        openNow: true, // 현재 문 연 가게만 검색
-        // fields: ['name', 'geometry', 'vicinity'],
+        // openNow: true, // 현재 문 연 가게만 검색
       };
 
       service = new google.maps.places.PlacesService(map);
@@ -205,13 +204,21 @@ const MapSection: React.FC = () => {
         let closeTime = '';
         const periodsList = place.opening_hours?.periods;
         if (periodsList) {
-          openTime = periodsList[todayDay]?.open.hours + ':';
+          if (periodsList[todayDay]?.open.hours < 10) {
+            openTime = '0' + periodsList[todayDay]?.open.hours + ':';
+          } else {
+            openTime = periodsList[todayDay]?.open.hours + ':';
+          }
           if (periodsList[todayDay]?.open.minutes < 10) {
             openTime += '0' + periodsList[todayDay]?.open.minutes;
           } else {
             openTime += periodsList[todayDay]?.open.minutes;
           }
-          closeTime = periodsList[todayDay]?.close?.hours + ':';
+          if (periodsList[todayDay]?.close?.hours! < 10) {
+            closeTime = '0' + periodsList[todayDay]?.close?.hours + ':';
+          } else {
+            closeTime = periodsList[todayDay]?.close?.hours + ':';
+          }
           if (periodsList[todayDay]?.close?.minutes! < 10) {
             closeTime += '0' + periodsList[todayDay]?.close?.minutes!;
           } else {
@@ -223,7 +230,7 @@ const MapSection: React.FC = () => {
           name: place.name!,
           formatted_address: place.formatted_address!,
           formatted_phone_number: place.formatted_phone_number!,
-          // isOpen:place.opening_hours?.isOpen()!,
+          isOpen: place.opening_hours?.isOpen()!,
           openTime: openTime,
           closeTime: closeTime,
           geometry: place.geometry!,
