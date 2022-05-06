@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import styled from '@emotion/styled';
@@ -9,20 +9,31 @@ import { latlngActions } from '../../store/latlng';
 import { throttle } from 'lodash';
 
 import { Loader } from '@googlemaps/js-api-loader';
+
 import { DEAFULT_LOCATION } from '../../data/location';
 
-import { axiosInstance } from '../../lib/api';
+interface StoreDataType {
+  id: number;
+  place_id: string;
+  name: string;
+  geometry: any;
+  vicinity: string;
+  // openNow: boolean;
+}
 
 const MapSection: React.FC = () => {
   const mapRef = useRef<any>(null);
   // const mapRef = useRef<HTMLDivElement>(null);
+
+  const [storeData, setStoreData] = useState<StoreDataType[]>();
+  const storeList: StoreDataType[] = [];
 
   const latlng = useSelector((state) => state.latlng);
   const selectedFood = useSelector((state) => state.selectedFood);
 
   const dispatch = useDispatch();
 
-  const googleKey: string = process.env.NEXT_PUBLIC_GOOGLE_KEY ?? '';
+  const googleKey: string = process.env.NEXT_PUBLIC_GOOGLE_KEY as string;
   const googlePlacesKey: string =
     process.env.NEXT_PUBLIC_GOOGLE_PLACE_KEY ?? '';
 
@@ -49,15 +60,22 @@ const MapSection: React.FC = () => {
     let marker: any;
     let places: any;
     let service;
+
     loader.load().then(() => {
       map = new google.maps.Map(mapRef.current, {
-        center: { lat: Number(latlng.lat), lng: Number(latlng.lng) },
+        // center: { lat: Number(latlng.lat), lng: Number(latlng.lng) },
+        center: {
+          lat: Number(DEAFULT_LOCATION.lat),
+          lng: Number(DEAFULT_LOCATION.lng),
+        },
         zoom: 16,
       });
       marker = new window.google.maps.Marker({
         position: {
-          lat: Number(latlng.lat),
-          lng: Number(latlng.lng),
+          // lat: Number(latlng.lat),
+          // lng: Number(latlng.lng),
+          lat: Number(DEAFULT_LOCATION.lat),
+          lng: Number(DEAFULT_LOCATION.lng),
         },
         map,
       });
@@ -77,34 +95,44 @@ const MapSection: React.FC = () => {
         }, 150),
       );
       const request: any = {
-        location:
-          // pyrmont,
-          new google.maps.LatLng(Number(latlng.lat), Number(latlng.lng)),
-        radius: '500',
-        type: ['restaurant'],
-        keyword: '라면',
+        location: new google.maps.LatLng(
+          // Number(latlng.lat), Number(latlng.lng)
+          Number(DEAFULT_LOCATION.lat),
+          Number(DEAFULT_LOCATION.lng),
+        ),
+        radius: '1000', // 1KM 이내만 우선 검색
+        type: ['restaurant'], // restaurant 타입만 검색
+        keyword: selectedFood.name,
+        openNow: true, // 현재 문 연 가게만 검색
         // fields: ['name', 'geometry', 'vicinity'],
       };
+
       service = new google.maps.places.PlacesService(map);
+      // if (storeData?.length === 0) {
       service.nearbySearch(request, (results, status) => {
         if (status == google.maps.places.PlacesServiceStatus.OK) {
           if (results) {
-            for (var i = 0; i < results.length; i++) {
+            for (let i = 0; i < results.length; i++) {
               // createMarker(results[i]);
-              console.log(results[i]);
+              if (results[i].business_status === 'OPERATIONAL') {
+                // 현재 운영 중인 가게만 검색
+                console.log(results[i]);
+                storeList.push({
+                  id: i,
+                  place_id: results[i].place_id!,
+                  name: results[i].name!,
+                  geometry: results[i].geometry!,
+                  vicinity: results[i].vicinity!, // 주소
+                });
+              }
             }
           }
         }
+        if (storeList.length > 0) {
+          setStoreData(storeList);
+        }
       });
-      // service.findPlaceFromQuery(request, (results, status) => {
-      //   if (status === google.maps.places.PlacesServiceStatus.OK && results) {
-      //     console.log(results);
-      //     for (let i = 0; i < results.length; i++) {
-      //       // createMarker(results[i]);
-      //     }
-      //     // map.setCenter(results[0].geometry.location);
-      //   }
-      // });
+      // }
 
       // places = {
       //   method: 'get',
@@ -128,14 +156,31 @@ const MapSection: React.FC = () => {
       //     console.log(error);
       //   });
     });
-  });
+    // if (storeList.length > 0) {
+    //   setStoreData(storeList);
+    // }
+  }, []);
 
   return (
-    <Container>
-      <div className="map-style">
-        <div ref={mapRef} id="map" />
-      </div>
-    </Container>
+    <>
+      <Container>
+        <div className="map-style">
+          <div ref={mapRef} id="map" />
+        </div>
+      </Container>
+      {!storeData ? (
+        <></>
+      ) : (
+        <StoreList>
+          {storeData.map((data) => (
+            <StoreItem key={data.id}>
+              <StoreItemName>{data.name}</StoreItemName>
+              <StoreItemAddress>{data.vicinity}</StoreItemAddress>
+            </StoreItem>
+          ))}
+        </StoreList>
+      )}
+    </>
   );
 };
 
@@ -164,5 +209,16 @@ const Container = styled.div`
   @media (max-width: 575px) {
   }
 `;
+
+const StoreList = styled.ul``;
+
+const StoreItem = styled.li``;
+
+const StoreItemName = styled.span`
+  margin-right: 4px;
+  font-weight: 800;
+`;
+
+const StoreItemAddress = styled.span``;
 
 export default MapSection;
