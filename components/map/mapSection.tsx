@@ -21,9 +21,24 @@ interface StoreDataType {
   // openNow: boolean;
 }
 
+interface StoreDetailType {
+  place_id: string;
+  name: string;
+  formatted_address: string;
+  formatted_phone_number: string;
+  // isOpen: boolean;
+  openTime: string;
+  closeTime: string;
+  geometry: any;
+  rating: number;
+}
+
 const MapSection: React.FC = () => {
   const mapRef = useRef<any>(null);
   // const mapRef = useRef<HTMLDivElement>(null);
+
+  const [isStoreDetail, setIsStoreDetail] = useState<boolean>(false);
+  const [storeDetailData, setStoreDetailData] = useState<StoreDetailType>();
 
   const [storeData, setStoreData] = useState<StoreDataType[]>();
   const storeList: StoreDataType[] = [];
@@ -161,6 +176,68 @@ const MapSection: React.FC = () => {
     // }
   }, []);
 
+  const getStoreDetail = (place_id: string) => {
+    const detailRequest: any = {
+      placeId: place_id,
+      // fields: ['name', 'formatted_address', 'geometry'],
+    };
+    let map = new google.maps.Map(mapRef.current, {
+      // center: { lat: Number(latlng.lat), lng: Number(latlng.lng) },
+      center: {
+        lat: Number(DEAFULT_LOCATION.lat),
+        lng: Number(DEAFULT_LOCATION.lng),
+      },
+      zoom: 16,
+    });
+    let service = new google.maps.places.PlacesService(map);
+    service = new google.maps.places.PlacesService(map);
+    // if (storeData?.length === 0) {
+    service.getDetails(detailRequest, (place, status) => {
+      if (
+        status === google.maps.places.PlacesServiceStatus.OK &&
+        place &&
+        place.geometry &&
+        place.geometry.location
+      ) {
+        console.log(place.opening_hours);
+        const todayDay = new Date().getDay();
+        let openTime = '';
+        let closeTime = '';
+        const periodsList = place.opening_hours?.periods;
+        if (periodsList) {
+          openTime = periodsList[todayDay]?.open.hours + ':';
+          if (periodsList[todayDay]?.open.minutes < 10) {
+            openTime += '0' + periodsList[todayDay]?.open.minutes;
+          } else {
+            openTime += periodsList[todayDay]?.open.minutes;
+          }
+          closeTime = periodsList[todayDay]?.close?.hours + ':';
+          if (periodsList[todayDay]?.close?.minutes! < 10) {
+            closeTime += '0' + periodsList[todayDay]?.close?.minutes!;
+          } else {
+            closeTime += periodsList[todayDay]?.close?.minutes;
+          }
+        }
+        setStoreDetailData({
+          place_id: place.place_id!,
+          name: place.name!,
+          formatted_address: place.formatted_address!,
+          formatted_phone_number: place.formatted_phone_number!,
+          // isOpen:place.opening_hours?.isOpen()!,
+          openTime: openTime,
+          closeTime: closeTime,
+          geometry: place.geometry!,
+          rating: place.rating!,
+        });
+      }
+    });
+  };
+
+  const handleStoreDetailClick = (place_id: string) => {
+    setIsStoreDetail(true);
+    getStoreDetail(place_id);
+  };
+
   return (
     <>
       <Container>
@@ -170,15 +247,48 @@ const MapSection: React.FC = () => {
       </Container>
       {!storeData ? (
         <></>
-      ) : (
+      ) : !isStoreDetail ? (
         <StoreList>
           {storeData.map((data) => (
-            <StoreItem key={data.id}>
+            <StoreItem
+              key={data.id}
+              onClick={() => handleStoreDetailClick(data.place_id)}
+            >
               <StoreItemName>{data.name}</StoreItemName>
               <StoreItemAddress>{data.vicinity}</StoreItemAddress>
             </StoreItem>
           ))}
         </StoreList>
+      ) : (
+        <>
+          <ReturnListButton onClick={() => setIsStoreDetail(false)}>
+            돌아가기
+          </ReturnListButton>
+          {!storeDetailData ? (
+            <></>
+          ) : (
+            <StoreDetail>
+              <StoreDetailName>{storeDetailData?.name}</StoreDetailName>
+              <br />
+              <StoreDetailAddress>
+                {storeDetailData?.formatted_address}
+              </StoreDetailAddress>
+              <br />
+              <StoreDetailPhoneNumber>
+                {storeDetailData?.formatted_phone_number}
+              </StoreDetailPhoneNumber>
+              <br />
+              <StoreDetailTime>
+                {storeDetailData?.openTime} ~ {storeDetailData?.closeTime}
+              </StoreDetailTime>
+              <br />
+              <StoreDetailRating>
+                {storeDetailData?.rating} / 5.0
+              </StoreDetailRating>
+              <br />
+            </StoreDetail>
+          )}
+        </>
       )}
     </>
   );
@@ -212,7 +322,9 @@ const Container = styled.div`
 
 const StoreList = styled.ul``;
 
-const StoreItem = styled.li``;
+const StoreItem = styled.li`
+  cursor: pointer;
+`;
 
 const StoreItemName = styled.span`
   margin-right: 4px;
@@ -220,5 +332,19 @@ const StoreItemName = styled.span`
 `;
 
 const StoreItemAddress = styled.span``;
+
+const ReturnListButton = styled.button``;
+
+const StoreDetail = styled.div``;
+
+const StoreDetailName = styled.span``;
+
+const StoreDetailAddress = styled.span``;
+
+const StoreDetailPhoneNumber = styled.span``;
+
+const StoreDetailTime = styled.span``;
+
+const StoreDetailRating = styled.span``;
 
 export default MapSection;
