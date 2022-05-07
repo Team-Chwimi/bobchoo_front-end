@@ -1,14 +1,14 @@
 ---
-name: Feature request
-about: Feature
-title: "[FEAT]"
-labels: "\U0001F331 FEAT"
+name: Modify request
+about: 'Modify '
+title: "[MODIFY]"
+labels: "\U0001F6F0️ MODIFY"
 assignees: ''
 
 ---
 
 **💡 아이디어**
-- 기능 아이디어 (개요)
+- 수정이 필요한 부분 설명
 <br>
 
 **📌 진행상황**
