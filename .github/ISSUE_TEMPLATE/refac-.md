@@ -2,7 +2,7 @@
 name: 'Refac '
 about: Describe this issue template's purpose here.
 title: "[REFAC]"
-labels: Refactor
+labels: "✨ REFAC"
 assignees: ''
 
 ---
