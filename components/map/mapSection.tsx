@@ -293,6 +293,14 @@ const MapSection: React.FC = () => {
                 {storeDetailData?.rating} / 5.0
               </StoreDetailRating>
               <br />
+              <StoreDetailIsOpen>
+                {storeDetailData?.isOpen ? (
+                  <>현재 운영중</>
+                ) : (
+                  <>현재 운영종료</>
+                )}
+              </StoreDetailIsOpen>
+              <br />
             </StoreDetail>
           )}
         </>
@@ -353,5 +361,7 @@ const StoreDetailPhoneNumber = styled.span``;
 const StoreDetailTime = styled.span``;
 
 const StoreDetailRating = styled.span``;
+
+const StoreDetailIsOpen = styled.span``;
 
 export default MapSection;
