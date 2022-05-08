@@ -139,13 +139,13 @@ const MapSection: React.FC = () => {
             if (results[i].business_status === 'OPERATIONAL') {
               // 현재 운영 중인 가게만 검색
               // console.log(results[i]);
-              storeList.push({
+              storeList[i] = {
                 id: i,
                 place_id: results[i].place_id!,
                 name: results[i].name!,
                 geometry: results[i].geometry!,
                 vicinity: results[i].vicinity!, // 주소
-              });
+              };
             }
           }
         }
