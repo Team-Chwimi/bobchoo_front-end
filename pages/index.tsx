@@ -115,7 +115,10 @@ const Home: NextPage = () => {
       )}
       <button
         style={{ position: 'absolute', left: 0 }}
-        onClick={() => router.push('/map')}
+        onClick={(event) => {
+          handleLocationCheckedClick(event);
+          router.push('/map');
+        }}
       >
         맵으로 이동하는 임시버튼
       </button>
