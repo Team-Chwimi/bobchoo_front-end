@@ -7,6 +7,9 @@ import { InfoType } from '../types/InfoType';
 
 import { copyrightsAPI } from '../lib/api/copyrights';
 
+import Header from '../components/common/header';
+import LodaingCircular from '../components/common/loadingCircular';
+
 const Copyright: NextPage = () => {
   const [infoData, setInfoData] = useState<InfoType[]>();
 
@@ -26,9 +29,10 @@ const Copyright: NextPage = () => {
   return (
     <Container>
       <Wrapper>
+        <Header />
         <Title>저작권</Title>
         {!infoData ? (
-          <></>
+          <LodaingCircular />
         ) : (
           <FoodInfoList>
             {infoData.map(function (data) {

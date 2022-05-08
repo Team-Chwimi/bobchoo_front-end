@@ -1,26 +1,30 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-// import { LatLngType } from '../types/Map';
+
 import { LatLngState } from '../types/reduxState';
 
-const initialState: LatLngState = {
+interface CheckLocationType {
+  hasCheckedLocation: boolean;
+}
+
+const initialState: LatLngState & CheckLocationType = {
   lat: '',
   lng: '',
+  hasCurrentLoaction: false,
+  hasCheckedLocation: false,
 };
 
 const latlng = createSlice({
   name: 'latlng',
   initialState,
   reducers: {
-    setLat(state, action: PayloadAction<string>) {
-      state.lat = action.payload;
+    setLatLng(state, action: PayloadAction<LatLngState>) {
+      state.lat = action.payload.lat;
+      state.lng = action.payload.lng;
+      state.hasCurrentLoaction = true;
     },
-    setLng(state, action: PayloadAction<string>) {
-      state.lng = action.payload;
+    setHasCheckedLocation(state, action: PayloadAction<CheckLocationType>) {
+      state.hasCheckedLocation = true;
     },
-    // setLatLng(state, action: PayloadAction<LatLngType>) {
-    //   const { lat, lng } = action.payload;
-    //   return state;
-    // },
   },
 });
 
