@@ -29,7 +29,9 @@ interface StoreDetailType {
   isOpen: boolean;
   openTime: string;
   closeTime: string;
-  geometry: any;
+  // geometry: any;
+  lat: number;
+  lng: number;
   rating: number;
 }
 
@@ -67,6 +69,12 @@ const MapSection: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    if (!storeData) {
+      makeMap();
+    }
+  }, []);
+
+  const makeMap = () => {
     const loader = new Loader({
       apiKey: googleKey,
       version: 'weekly',
@@ -76,104 +84,161 @@ const MapSection: React.FC = () => {
     let places: any;
     let service;
 
-    loader.load().then(() => {
-      map = new google.maps.Map(mapRef.current, {
-        // center: { lat: Number(latlng.lat), lng: Number(latlng.lng) },
-        center: {
-          lat: Number(DEAFULT_LOCATION.lat),
-          lng: Number(DEAFULT_LOCATION.lng),
-        },
-        zoom: 16,
-      });
-      marker = new window.google.maps.Marker({
-        position: {
-          // lat: Number(latlng.lat),
-          // lng: Number(latlng.lng),
-          lat: Number(DEAFULT_LOCATION.lat),
-          lng: Number(DEAFULT_LOCATION.lng),
-        },
-        map,
-      });
-      map.addListener(
-        'center_changed',
-        throttle(() => {
-          const centerLat = map.getCenter().lat();
-          const centerLng = map.getCenter().lng();
-          marker.setPosition({ lat: centerLat, lng: centerLng });
-          // dispatch(
-          //   latlngActions.setLatLng({
-          //     lat: centerLat.toString(),
-          //     lng: centerLng.toString(),
-          //     hasCurrentLoaction: true,
-          //   }),
-          // );
-        }, 150),
-      );
-      const request: any = {
-        location: new google.maps.LatLng(
-          // Number(latlng.lat), Number(latlng.lng)
-          Number(DEAFULT_LOCATION.lat),
-          Number(DEAFULT_LOCATION.lng),
-        ),
-        radius: '1000', // 1KM 이내만 우선 검색
-        type: ['restaurant'], // restaurant 타입만 검색
-        keyword: selectedFood.name,
-        // openNow: true, // 현재 문 연 가게만 검색
-      };
+    // loader.load().then(() => {
+    map = new google.maps.Map(mapRef.current, {
+      // center: { lat: Number(latlng.lat), lng: Number(latlng.lng) },
+      center: {
+        lat: Number(DEAFULT_LOCATION.lat),
+        lng: Number(DEAFULT_LOCATION.lng),
+      },
+      zoom: 16,
+    });
+    marker = new window.google.maps.Marker({
+      position: {
+        // lat: Number(latlng.lat),
+        // lng: Number(latlng.lng),
+        lat: Number(DEAFULT_LOCATION.lat),
+        lng: Number(DEAFULT_LOCATION.lng),
+      },
+      map,
+    });
+    map.addListener(
+      'center_changed',
+      throttle(() => {
+        const centerLat = map.getCenter().lat();
+        const centerLng = map.getCenter().lng();
+        marker.setPosition({ lat: centerLat, lng: centerLng });
+        // dispatch(
+        //   latlngActions.setLatLng({
+        //     lat: centerLat.toString(),
+        //     lng: centerLng.toString(),
+        //     hasCurrentLoaction: true,
+        //   }),
+        // );
+      }, 150),
+    );
+    const request: any = {
+      location: new google.maps.LatLng(
+        // Number(latlng.lat), Number(latlng.lng)
+        Number(DEAFULT_LOCATION.lat),
+        Number(DEAFULT_LOCATION.lng),
+      ),
+      radius: '1000', // 1KM 이내만 우선 검색
+      type: ['restaurant'], // restaurant 타입만 검색
+      keyword: selectedFood.name,
+      // openNow: true, // 현재 문 연 가게만 검색
+    };
 
-      service = new google.maps.places.PlacesService(map);
-      // if (storeData?.length === 0) {
-      service.nearbySearch(request, (results, status) => {
-        if (status == google.maps.places.PlacesServiceStatus.OK) {
-          if (results) {
-            for (let i = 0; i < results.length; i++) {
-              // createMarker(results[i]);
-              if (results[i].business_status === 'OPERATIONAL') {
-                // 현재 운영 중인 가게만 검색
-                console.log(results[i]);
-                storeList.push({
-                  id: i,
-                  place_id: results[i].place_id!,
-                  name: results[i].name!,
-                  geometry: results[i].geometry!,
-                  vicinity: results[i].vicinity!, // 주소
-                });
-              }
+    service = new google.maps.places.PlacesService(map);
+    // if (storeData?.length === 0) {
+    service.nearbySearch(request, (results, status) => {
+      if (status == google.maps.places.PlacesServiceStatus.OK) {
+        if (results) {
+          for (let i = 0; i < results.length; i++) {
+            // createMarker(results[i]);
+            if (results[i].business_status === 'OPERATIONAL') {
+              // 현재 운영 중인 가게만 검색
+              // console.log(results[i]);
+              storeList.push({
+                id: i,
+                place_id: results[i].place_id!,
+                name: results[i].name!,
+                geometry: results[i].geometry!,
+                vicinity: results[i].vicinity!, // 주소
+              });
             }
           }
         }
-        if (storeList.length > 0) {
-          setStoreData(storeList);
-        }
-      });
-      // }
-
-      // places = {
-      //   method: 'get',
-      //   // url: `/nearbysearch/json?location=-33.8670522%2C151.1957362&radius=1500&type=restaurant&keyword=cruise&key=${googleKey}`,
-      //   url: `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522%2C151.1957362&radius=1500&type=restaurant&keyword=cruise&key=${googleKey}`,
-      //   secure: false, //important
-      //   headers: {
-      //     'Accept': 'application/json',
-      //     'Access-Control-Allow-Origin': 'http://localhost:3000',
-      //     'Access-Control-Allow-Methods': 'GET, OPTIONS',
-      //     'Access-Control-Allow-Headers': 'Origin, Content-Type',
-      //     'Content-Type': `application/json;charset=UTF-8`,
-      //     // 'Access-Control-Request-Method': 'GET',
-      //   },
-      // };
-      // axiosInstance(places)
-      //   .then(function (response) {
-      //     console.log(JSON.stringify(response.data));
-      //   })
-      //   .catch(function (error) {
-      //     console.log(error);
-      //   });
+      }
+      if (storeList.length > 0) {
+        setStoreData(storeList);
+        drawMarker(marker, map);
+      }
     });
+
+    // let infowindow = new google.maps.InfoWindow();
     // if (storeList.length > 0) {
-    //   setStoreData(storeList);
+    //   console.log(storeData);
+    //   storeData?.map((data) => {
+    //     console.log(data);
+    //     marker = new window.google.maps.Marker({
+    //       position: {
+    //         lat: data.geometry.viewport?.Ab?.h,
+    //         lng: data.geometry.viewport?.Va?.h,
+    //       },
+    //       map,
+    //     });
+    //     // google.maps.event.addListener(
+    //     //   marker,
+    //     //   'click',
+    //     //   (function (marker) {
+    //     //     return function () {
+    //     //       infowindow.setContent(data.name);
+    //     //       infowindow.open(map, marker);
+    //     //     };
+    //     //   })(marker),
+    //     // );
+
+    //     // map.addListener(
+    //     //   'store_location',
+    //     //   throttle(() => {
+    //     //     const centerLat = map.getCenter().lat();
+    //     //     const centerLng = map.getCenter().lng();
+    //     //     marker.setPosition({ lat: centerLat, lng: centerLng });
+    //     //     // dispatch(
+    //     //     //   latlngActions.setLatLng({
+    //     //     //     lat: centerLat.toString(),
+    //     //     //     lng: centerLng.toString(),
+    //     //     //     hasCurrentLoaction: true,
+    //     //     //   }),
+    //     //     // );
+    //     //   }, 150),
+    //     // );
+    //   });
     // }
-  }, []);
+  };
+
+  const drawMarker = (marker: any, map: any) => {
+    let infowindow = new google.maps.InfoWindow();
+    if (storeList.length > 0) {
+      console.log(storeData);
+      storeList?.map((data) => {
+        marker = new window.google.maps.Marker({
+          position: {
+            lat: data.geometry.viewport?.Ab?.h,
+            lng: data.geometry.viewport?.Va?.h,
+          },
+          map,
+        });
+        google.maps.event.addListener(
+          marker,
+          'click',
+          (function (marker) {
+            return function () {
+              infowindow.setContent(data.name);
+              infowindow.open(map, marker);
+            };
+          })(marker),
+        );
+
+        // map.addListener(
+        //   'store_location',
+        //   throttle(() => {
+        //     const centerLat = map.getCenter().lat();
+        //     const centerLng = map.getCenter().lng();
+        //     marker.setPosition({ lat: centerLat, lng: centerLng });
+        //     // dispatch(
+        //     //   latlngActions.setLatLng({
+        //     //     lat: centerLat.toString(),
+        //     //     lng: centerLng.toString(),
+        //     //     hasCurrentLoaction: true,
+        //     //   }),
+        //     // );
+        //   }, 150),
+        // );
+      });
+    }
+  };
 
   const getStoreDetail = (place_id: string) => {
     const detailRequest: any = {
@@ -225,6 +290,7 @@ const MapSection: React.FC = () => {
             closeTime += periodsList[todayDay]?.close?.minutes;
           }
         }
+        // console.log(place.geometry?.location.lng());
         setStoreDetailData({
           place_id: place.place_id!,
           name: place.name!,
@@ -233,7 +299,9 @@ const MapSection: React.FC = () => {
           isOpen: place.opening_hours?.isOpen()!,
           openTime: openTime,
           closeTime: closeTime,
-          geometry: place.geometry!,
+          lat: place.geometry?.location.lat(),
+          lng: place.geometry?.location.lng(),
+          // geometry: place.geometry!,
           rating: place.rating!,
         });
       }
