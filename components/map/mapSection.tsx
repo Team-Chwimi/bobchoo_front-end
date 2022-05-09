@@ -3,12 +3,12 @@ import { useDispatch } from 'react-redux';
 
 import styled from '@emotion/styled';
 
-import { useSelector } from '../../store';
-import { latlngActions } from '../../store/latlng';
-
 import { throttle } from 'lodash';
 
 import { Loader } from '@googlemaps/js-api-loader';
+
+import { useSelector } from '../../store';
+import { latlngActions } from '../../store/latlng';
 
 import { DEAFULT_LOCATION } from '../../data/location';
 
@@ -51,8 +51,11 @@ const MapSection: React.FC = () => {
   const dispatch = useDispatch();
 
   const googleKey: string = process.env.NEXT_PUBLIC_GOOGLE_KEY as string;
-  const googlePlacesKey: string =
-    process.env.NEXT_PUBLIC_GOOGLE_PLACE_KEY ?? '';
+
+  let map: any;
+  let marker: any;
+  let places: any;
+  let service;
 
   useEffect(() => {
     if (!latlng.hasCurrentLoaction) {
@@ -71,6 +74,7 @@ const MapSection: React.FC = () => {
   useEffect(() => {
     if (!storeData) {
       makeMap();
+      getStoreList();
     }
   }, []);
 
@@ -79,10 +83,6 @@ const MapSection: React.FC = () => {
       apiKey: googleKey,
       version: 'weekly',
     });
-    let map: any;
-    let marker: any;
-    let places: any;
-    let service;
 
     // loader.load().then(() => {
     map = new google.maps.Map(mapRef.current, {
@@ -108,15 +108,11 @@ const MapSection: React.FC = () => {
         const centerLat = map.getCenter().lat();
         const centerLng = map.getCenter().lng();
         marker.setPosition({ lat: centerLat, lng: centerLng });
-        // dispatch(
-        //   latlngActions.setLatLng({
-        //     lat: centerLat.toString(),
-        //     lng: centerLng.toString(),
-        //     hasCurrentLoaction: true,
-        //   }),
-        // );
       }, 150),
     );
+  };
+
+  const getStoreList = () => {
     const request: any = {
       location: new google.maps.LatLng(
         // Number(latlng.lat), Number(latlng.lng)
@@ -155,53 +151,11 @@ const MapSection: React.FC = () => {
         drawMarker(marker, map);
       }
     });
-
-    // let infowindow = new google.maps.InfoWindow();
-    // if (storeList.length > 0) {
-    //   console.log(storeData);
-    //   storeData?.map((data) => {
-    //     console.log(data);
-    //     marker = new window.google.maps.Marker({
-    //       position: {
-    //         lat: data.geometry.viewport?.Ab?.h,
-    //         lng: data.geometry.viewport?.Va?.h,
-    //       },
-    //       map,
-    //     });
-    //     // google.maps.event.addListener(
-    //     //   marker,
-    //     //   'click',
-    //     //   (function (marker) {
-    //     //     return function () {
-    //     //       infowindow.setContent(data.name);
-    //     //       infowindow.open(map, marker);
-    //     //     };
-    //     //   })(marker),
-    //     // );
-
-    //     // map.addListener(
-    //     //   'store_location',
-    //     //   throttle(() => {
-    //     //     const centerLat = map.getCenter().lat();
-    //     //     const centerLng = map.getCenter().lng();
-    //     //     marker.setPosition({ lat: centerLat, lng: centerLng });
-    //     //     // dispatch(
-    //     //     //   latlngActions.setLatLng({
-    //     //     //     lat: centerLat.toString(),
-    //     //     //     lng: centerLng.toString(),
-    //     //     //     hasCurrentLoaction: true,
-    //     //     //   }),
-    //     //     // );
-    //     //   }, 150),
-    //     // );
-    //   });
-    // }
   };
 
   const drawMarker = (marker: any, map: any) => {
     let infowindow = new google.maps.InfoWindow();
     if (storeList.length > 0) {
-      console.log(storeData);
       storeList?.map((data) => {
         marker = new window.google.maps.Marker({
           position: {
@@ -210,32 +164,22 @@ const MapSection: React.FC = () => {
           },
           map,
         });
+        const infowindowContentString = `<div>${data.name}</div><button>상세보기</button>`;
         google.maps.event.addListener(
           marker,
           'click',
           (function (marker) {
             return function () {
-              infowindow.setContent(data.name);
+              setIsStoreDetail(true);
+              getStoreDetail(data.place_id);
+              infowindow.setContent(infowindowContentString);
               infowindow.open(map, marker);
+              marker.setIcon(
+                'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+              );
             };
           })(marker),
         );
-
-        // map.addListener(
-        //   'store_location',
-        //   throttle(() => {
-        //     const centerLat = map.getCenter().lat();
-        //     const centerLng = map.getCenter().lng();
-        //     marker.setPosition({ lat: centerLat, lng: centerLng });
-        //     // dispatch(
-        //     //   latlngActions.setLatLng({
-        //     //     lat: centerLat.toString(),
-        //     //     lng: centerLng.toString(),
-        //     //     hasCurrentLoaction: true,
-        //     //   }),
-        //     // );
-        //   }, 150),
-        // );
       });
     }
   };
@@ -245,14 +189,14 @@ const MapSection: React.FC = () => {
       placeId: place_id,
       // fields: ['name', 'formatted_address', 'geometry'],
     };
-    let map = new google.maps.Map(mapRef.current, {
-      // center: { lat: Number(latlng.lat), lng: Number(latlng.lng) },
-      center: {
-        lat: Number(DEAFULT_LOCATION.lat),
-        lng: Number(DEAFULT_LOCATION.lng),
-      },
-      zoom: 16,
-    });
+    // map = new google.maps.Map(mapRef.current, {
+    //   // center: { lat: Number(latlng.lat), lng: Number(latlng.lng) },
+    //   center: {
+    //     lat: Number(DEAFULT_LOCATION.lat),
+    //     lng: Number(DEAFULT_LOCATION.lng),
+    //   },
+    //   zoom: 16,
+    // });
     let service = new google.maps.places.PlacesService(map);
     service = new google.maps.places.PlacesService(map);
     // if (storeData?.length === 0) {
@@ -263,7 +207,6 @@ const MapSection: React.FC = () => {
         place.geometry &&
         place.geometry.location
       ) {
-        console.log(place.opening_hours);
         const todayDay = new Date().getDay();
         let openTime = '';
         let closeTime = '';
@@ -301,7 +244,6 @@ const MapSection: React.FC = () => {
           closeTime: closeTime,
           lat: place.geometry?.location.lat(),
           lng: place.geometry?.location.lng(),
-          // geometry: place.geometry!,
           rating: place.rating!,
         });
       }
@@ -323,17 +265,20 @@ const MapSection: React.FC = () => {
       {!storeData ? (
         <></>
       ) : !isStoreDetail ? (
-        <StoreList>
-          {storeData.map((data) => (
-            <StoreItem
-              key={data.id}
-              onClick={() => handleStoreDetailClick(data.place_id)}
-            >
-              <StoreItemName>{data.name}</StoreItemName>
-              <StoreItemAddress>{data.vicinity}</StoreItemAddress>
-            </StoreItem>
-          ))}
-        </StoreList>
+        <>
+          <button onClick={getStoreList}>다시 주변 검색하기</button>
+          <StoreList>
+            {storeData.map((data) => (
+              <StoreItem
+                key={data.id}
+                onClick={() => handleStoreDetailClick(data.place_id)}
+              >
+                <StoreItemName>{data.name}</StoreItemName>
+                <StoreItemAddress>{data.vicinity}</StoreItemAddress>
+              </StoreItem>
+            ))}
+          </StoreList>
+        </>
       ) : (
         <>
           <ReturnListButton onClick={() => setIsStoreDetail(false)}>
