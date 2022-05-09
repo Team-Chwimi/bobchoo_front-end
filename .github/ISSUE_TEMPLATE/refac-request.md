@@ -1,14 +1,14 @@
 ---
-name: 'Refac '
-about: Describe this issue template's purpose here.
+name: Refac request
+about: Refac
 title: "[REFAC]"
-labels: Refactor
+labels: "✨ REFAC"
 assignees: ''
 
 ---
 
 **💡 아이디어**
-- 리팩이 필요한 부분 설명
+- 리팩토링이 필요한 부분 설명
 <br>
 
 **📌 진행상황**

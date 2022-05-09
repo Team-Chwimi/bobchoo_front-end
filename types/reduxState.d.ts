@@ -1,6 +1,5 @@
-import { LatLngType } from './Map';
+import { LatLngType } from './MapType';
 
 export type LatLngState = LatLngType & {
-  lat: string;
-  lng: string;
+  hasCurrentLoaction: boolean;
 };

@@ -1,24 +1,17 @@
 import type { NextPage } from 'next';
-import { useEffect, useState } from 'react';
-
-import { useDispatch } from 'react-redux';
 
 import styled from '@emotion/styled';
-import { LatLngType } from '../types/Map';
-import { latlngActions } from '../store/latlng';
+
+import Header from '../components/common/header';
+import MapSection from '../components/map/mapSection';
 
 const Map: NextPage = () => {
-  const [latlng, setLatLng] = useState<LatLngType>();
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(latlngActions.setLat('11'));
-  }, []);
-
   return (
     <Container>
-      <Wrapper></Wrapper>
+      <Wrapper>
+        <Header />
+        <MapSection />
+      </Wrapper>
     </Container>
   );
 };
@@ -40,7 +33,5 @@ const Wrapper = styled.div`
   @media (max-width: 575px) {
   }
 `;
-
-const Title = styled.h1``;
 
 export default Map;
