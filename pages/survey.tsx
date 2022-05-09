@@ -7,10 +7,48 @@ import styled from '@emotion/styled';
 import { LatLngType } from '../types/Map';
 import { latlngActions } from '../store/latlng';
 
+import Header from '../components/common/header';
+import Question from '../components/common/survey/question';
+import axios from 'axios';
+interface QuestionDataType {
+  answerList: Array<string>;
+  description: string;
+  overlap: boolean;
+  question: string;
+  questionId: number;
+  // openNow: boolean;
+}
+
 const Survey: NextPage = () => {
+  // /survey/1
+  const [questionData, setQuestionData] = useState<QuestionDataType[]>();
+  const questionList: QuestionDataType[] = [];
+  useEffect(() => {
+    axios
+    .get(process.env.NEXT_PUBLIC_SERVER_URL+"/surveys")
+    .then((res) => {
+      // console.log(res);
+      setQuestionData(res.data.questionList);
+      res.data.questionList.map((qes: any)=>{
+        questionList.push({
+          questionId: qes.questionId,
+          question:qes.question,
+          overlap: qes.overlap,      
+          description: qes.description,  
+          answerList: qes.answerList,
+        });
+      })
+    })
+  if(questionList.length>0){
+    setQuestionData(questionList);
+  }
+  }, []);
   return (
     <Container>
-      <Wrapper></Wrapper>
+      <Wrapper>
+        <Header/>      
+        <Question />
+      </Wrapper>
     </Container>
   );
 };

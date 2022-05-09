@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 
 import styled from '@emotion/styled';
 import { PALETTE } from '../data/palette';
+import Link from 'next/link';
 
 interface ButtonProps {
   backgroundColor: string;
@@ -30,12 +31,14 @@ const Home: NextPage = () => {
           >
             랜덤으로 선택
           </StartButton>
+          <Link href="/survey">
           <StartButton
             backgroundColor={PALETTE.orange_point}
             fontColor={PALETTE.white}
           >
             설문조사 시작
           </StartButton>
+           </Link>
         </ButtonWrapper>
       </Wrapper>
     </Container>
