@@ -31,9 +31,8 @@ interface StoreDetailType {
   formatted_address: string;
   formatted_phone_number: string;
   isOpen: boolean;
-  openTime: string;
-  closeTime: string;
   // geometry: any;
+  time: any;
   lat: number;
   lng: number;
   rating: number;
@@ -266,42 +265,16 @@ const MapSection: React.FC = () => {
         place.geometry &&
         place.geometry.location
       ) {
-        console.log(place.opening_hours);
         const todayDay = new Date().getDay();
-        let openTime = '';
-        let closeTime = '';
-        const periodsList = place.opening_hours?.periods;
-        if (periodsList) {
-          if (periodsList[todayDay]?.open.hours < 10) {
-            openTime = '0' + periodsList[todayDay]?.open.hours + ':';
-          } else {
-            openTime = periodsList[todayDay]?.open.hours + ':';
-          }
-          if (periodsList[todayDay]?.open.minutes < 10) {
-            openTime += '0' + periodsList[todayDay]?.open.minutes;
-          } else {
-            openTime += periodsList[todayDay]?.open.minutes;
-          }
-          if (periodsList[todayDay]?.close?.hours! < 10) {
-            closeTime = '0' + periodsList[todayDay]?.close?.hours + ':';
-          } else {
-            closeTime = periodsList[todayDay]?.close?.hours + ':';
-          }
-          if (periodsList[todayDay]?.close?.minutes! < 10) {
-            closeTime += '0' + periodsList[todayDay]?.close?.minutes!;
-          } else {
-            closeTime += periodsList[todayDay]?.close?.minutes;
-          }
-        }
         // console.log(place.geometry?.location.lng());
+        // console.log(place.opening_hours);
         setStoreDetailData({
           place_id: place.place_id!,
           name: place.name!,
           formatted_address: makeAddress(place.formatted_address!),
           formatted_phone_number: place.formatted_phone_number!,
           isOpen: place.opening_hours?.isOpen()!,
-          openTime: openTime,
-          closeTime: closeTime,
+          time: place.opening_hours?.weekday_text?.[todayDay]!,
           lat: place.geometry?.location.lat(),
           lng: place.geometry?.location.lng(),
           // geometry: place.geometry!,
@@ -350,8 +323,7 @@ const MapSection: React.FC = () => {
                 name={storeDetailData.name}
                 formatted_address={storeDetailData.formatted_address}
                 formatted_phone_number={storeDetailData.formatted_phone_number}
-                openTime={storeDetailData.openTime}
-                closeTime={storeDetailData.closeTime}
+                time={storeDetailData.time}
                 rating={storeDetailData.rating}
                 isOpen={false}
               />

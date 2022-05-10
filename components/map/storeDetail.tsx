@@ -4,20 +4,18 @@ interface StoreDetailProps {
   name: string;
   formatted_address: string;
   formatted_phone_number: string;
-  openTime: string;
-  closeTime: string;
   rating: number;
   isOpen: boolean;
+  time: string;
 }
 
 const StoreDetail: React.FC<StoreDetailProps> = ({
   name,
   formatted_address,
   formatted_phone_number,
-  openTime,
-  closeTime,
   rating,
   isOpen,
+  time,
 }) => {
   return (
     <Container>
@@ -29,13 +27,7 @@ const StoreDetail: React.FC<StoreDetailProps> = ({
         ) : (
           <PhoneNumber>{formatted_phone_number}</PhoneNumber>
         )}
-        {!openTime ? (
-          <></>
-        ) : (
-          <Time>
-            {openTime} ~ {closeTime}
-          </Time>
-        )}
+        {!time ? <></> : <Time>{time}</Time>}
         {!rating ? <></> : <Rating>{rating.toFixed(1)} / 5.0</Rating>}
         <IsOpen>{isOpen ? <>현재 운영중</> : <>현재 운영종료</>}</IsOpen>
       </Wrapper>
@@ -53,6 +45,9 @@ const Wrapper = styled.div`
 `;
 
 const Name = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin-bottom: 4px;
   font-size: 24px;
   font-weight: 800;
