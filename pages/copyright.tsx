@@ -39,7 +39,7 @@ const Copyright: NextPage = () => {
               return (
                 <FoodInfoItem key={data.foodId}>
                   <FoodItemName>{data.foodName}</FoodItemName>
-                  <FoodItemURL>{data.foodImg}</FoodItemURL>
+                  <FoodItemURL>{data.foodURL}</FoodItemURL>
                 </FoodInfoItem>
               );
             })}
