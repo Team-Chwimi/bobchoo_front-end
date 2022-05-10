@@ -24,11 +24,19 @@ const StoreDetail: React.FC<StoreDetailProps> = ({
       <Wrapper>
         <Name>{name}</Name>
         <Address>{formatted_address}</Address>
-        <PhoneNumber>{formatted_phone_number}</PhoneNumber>
-        <Time>
-          {openTime} ~ {closeTime}
-        </Time>
-        <Rating>{rating.toFixed(1)} / 5.0</Rating>
+        {!PhoneNumber ? (
+          <></>
+        ) : (
+          <PhoneNumber>{formatted_phone_number}</PhoneNumber>
+        )}
+        {!openTime ? (
+          <></>
+        ) : (
+          <Time>
+            {openTime} ~ {closeTime}
+          </Time>
+        )}
+        {!rating ? <></> : <Rating>{rating.toFixed(1)} / 5.0</Rating>}
         <IsOpen>{isOpen ? <>현재 운영중</> : <>현재 운영종료</>}</IsOpen>
       </Wrapper>
     </Container>
@@ -37,17 +45,34 @@ const StoreDetail: React.FC<StoreDetailProps> = ({
 
 const Container = styled.div``;
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 4px 12px;
+  font-size: 17px;
+`;
 
-const Name = styled.div``;
+const Name = styled.div`
+  margin-bottom: 4px;
+  font-size: 24px;
+  font-weight: 800;
+`;
 
-const Address = styled.div``;
+const Address = styled.div`
+  margin-bottom: 4px;
+`;
 
-const PhoneNumber = styled.div``;
+const PhoneNumber = styled.div`
+  margin-bottom: 4px;
+`;
 
-const Time = styled.div``;
+const Time = styled.div`
+  margin-bottom: 4px;
+`;
 
-const Rating = styled.div``;
+const Rating = styled.div`
+  margin-bottom: 4px;
+`;
 
 const IsOpen = styled.div``;
 
