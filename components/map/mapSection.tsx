@@ -14,6 +14,8 @@ import { DEAFULT_LOCATION } from '../../data/location';
 
 import StoreDetail from './storeDetail';
 
+import { makeAddress } from '../../lib/utils';
+
 interface StoreDataType {
   id: number;
   place_id: string;
@@ -145,7 +147,7 @@ const MapSection: React.FC = () => {
                 place_id: results[i].place_id!,
                 name: results[i].name!,
                 geometry: results[i].geometry!,
-                vicinity: results[i].vicinity!, // 주소
+                vicinity: makeAddress(results[i].vicinity!), // 주소
               };
             }
           }
@@ -295,7 +297,7 @@ const MapSection: React.FC = () => {
         setStoreDetailData({
           place_id: place.place_id!,
           name: place.name!,
-          formatted_address: place.formatted_address!,
+          formatted_address: makeAddress(place.formatted_address!),
           formatted_phone_number: place.formatted_phone_number!,
           isOpen: place.opening_hours?.isOpen()!,
           openTime: openTime,
@@ -315,51 +317,57 @@ const MapSection: React.FC = () => {
   };
 
   return (
-    <>
-      <Container>
-        <div className="map-style">
-          <div ref={mapRef} id="map" />
-        </div>
-      </Container>
-      {!storeData ? (
-        <></>
-      ) : !isStoreDetail ? (
-        <StoreList>
-          {storeData.map((data) => (
-            <StoreItem
-              key={data.id}
-              onClick={() => handleStoreDetailClick(data.place_id)}
-            >
-              <StoreItemName>{data.name}</StoreItemName>
-              <StoreItemAddress>{data.vicinity}</StoreItemAddress>
-            </StoreItem>
-          ))}
-        </StoreList>
-      ) : (
-        <>
-          <ReturnListButton onClick={() => setIsStoreDetail(false)}>
-            돌아가기
-          </ReturnListButton>
-          {!storeDetailData ? (
-            <></>
-          ) : (
-            <StoreDetail
-              name={storeDetailData.name}
-              formatted_address={storeDetailData.formatted_address}
-              formatted_phone_number={storeDetailData.formatted_phone_number}
-              openTime={storeDetailData.openTime}
-              closeTime={storeDetailData.closeTime}
-              rating={storeDetailData.rating}
-              isOpen={false}
-            />
-          )}
-        </>
-      )}
-    </>
+    <Container>
+      <Wrapper>
+        <MapWrapper>
+          <div className="map-style">
+            <div ref={mapRef} id="map" />
+          </div>
+        </MapWrapper>
+        {!storeData ? (
+          <></>
+        ) : !isStoreDetail ? (
+          <StoreList>
+            {storeData.map((data) => (
+              <StoreItem
+                key={data.id}
+                onClick={() => handleStoreDetailClick(data.place_id)}
+              >
+                <StoreItemName>{data.name}</StoreItemName>
+                <StoreItemAddress>{data.vicinity}</StoreItemAddress>
+              </StoreItem>
+            ))}
+          </StoreList>
+        ) : (
+          <>
+            <ReturnListButton onClick={() => setIsStoreDetail(false)}>
+              돌아가기
+            </ReturnListButton>
+            {!storeDetailData ? (
+              <></>
+            ) : (
+              <StoreDetail
+                name={storeDetailData.name}
+                formatted_address={storeDetailData.formatted_address}
+                formatted_phone_number={storeDetailData.formatted_phone_number}
+                openTime={storeDetailData.openTime}
+                closeTime={storeDetailData.closeTime}
+                rating={storeDetailData.rating}
+                isOpen={false}
+              />
+            )}
+          </>
+        )}
+      </Wrapper>
+    </Container>
   );
 };
 
-const Container = styled.div`
+const Container = styled.div``;
+
+const Wrapper = styled.div``;
+
+const MapWrapper = styled.section`
   .map-style {
     width: 487px;
     height: 280px;
