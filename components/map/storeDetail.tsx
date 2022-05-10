@@ -28,7 +28,7 @@ const StoreDetail: React.FC<StoreDetailProps> = ({
         <Time>
           {openTime} ~ {closeTime}
         </Time>
-        <Rating>{rating} / 5.0</Rating>
+        <Rating>{rating.toFixed(1)} / 5.0</Rating>
         <IsOpen>{isOpen ? <>현재 운영중</> : <>현재 운영종료</>}</IsOpen>
       </Wrapper>
     </Container>
