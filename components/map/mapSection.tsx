@@ -42,6 +42,11 @@ interface StoreDetailType {
   rating: number;
 }
 
+interface CurrentLocationType {
+  lat: number;
+  lng: number;
+}
+
 const MapSection: React.FC = () => {
   const mapRef = useRef<any>(null);
   // const mapRef = useRef<HTMLDivElement>(null);
@@ -53,6 +58,12 @@ const MapSection: React.FC = () => {
 
   const [storeData, setStoreData] = useState<StoreDataType[]>();
   const storeList: StoreDataType[] = [];
+
+  const [currentLocation, setCurrentLocation] = useState<CurrentLocationType>();
+  //   {
+  //   lat: Number(DEAFULT_LOCATION.lat),
+  //   lng: Number(DEAFULT_LOCATION.lng),
+  // }
 
   const latlng = useSelector((state) => state.latlng);
   const selectedFood = useSelector((state) => state.selectedFood);
@@ -77,7 +88,15 @@ const MapSection: React.FC = () => {
           hasCurrentLoaction: true,
         }),
       );
+    } else {
+      setCurrentLocation({
+        lat: Number(latlng.lat),
+        lng: Number(latlng.lng),
+      });
     }
+    // if (!storeData) {
+    //   makeMap();
+    // }
   }, []);
 
   useEffect(() => {
@@ -97,15 +116,19 @@ const MapSection: React.FC = () => {
       apiKey: googleKey,
       version: 'weekly',
     });
+    // setCurrentLocation({
+    //   lat: Number(latlng.lat),
+    //   lng: Number(latlng.lng),
+    // });
 
     // loader.load().then(() => {
     map = new google.maps.Map(mapRef.current, {
-      // center: { lat: Number(latlng.lat), lng: Number(latlng.lng) },
-      center: {
-        lat: Number(DEAFULT_LOCATION.lat),
-        lng: Number(DEAFULT_LOCATION.lng),
-      },
-      zoom: 16,
+      center: { lat: Number(latlng.lat), lng: Number(latlng.lng) },
+      // center: {
+      //   lat: currentLocation.lat,
+      //   lng: currentLocation.lng,
+      // },
+      zoom: 14,
     });
     // marker = new window.google.maps.Marker({
     //   position: {
@@ -136,11 +159,12 @@ const MapSection: React.FC = () => {
     // );
     const request: any = {
       location: new google.maps.LatLng(
-        // Number(latlng.lat), Number(latlng.lng)
-        Number(DEAFULT_LOCATION.lat),
-        Number(DEAFULT_LOCATION.lng),
+        Number(latlng.lat),
+        Number(latlng.lng),
+        // currentLocation.lat,
+        // currentLocation.lng,
       ),
-      radius: '1000', // 1KM 이내만 우선 검색
+      radius: '500', // 500m 이내만 우선 검색
       type: ['restaurant'], // restaurant 타입만 검색
       keyword: selectedFood.name,
       // openNow: true, // 현재 문 연 가게만 검색
@@ -274,7 +298,7 @@ const MapSection: React.FC = () => {
         lat: geometry?.viewport?.Ab.h,
         lng: geometry?.viewport?.Va.h,
       },
-      zoom: 16,
+      zoom: 14,
     });
     // map.setCenter({
     //   lat: geometry?.viewport?.Ab?.h,
