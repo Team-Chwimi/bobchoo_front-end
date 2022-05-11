@@ -8,7 +8,6 @@ import { HeaderType } from '../../data/link';
 interface HeaderProps extends HeaderType {}
 
 const Header: React.FC<HeaderProps> = ({ linkName, linkPath }) => {
-  console.log(linkPath);
   return (
     <HomeLink>
       {/* <Link href={linkPath}>&#60; {linkName}</Link> */}
@@ -19,6 +18,7 @@ const Header: React.FC<HeaderProps> = ({ linkName, linkPath }) => {
 
 const HomeLink = styled.span`
   font-size: 16px;
+  font-weight: 800;
   color: ${PALETTE.orange_point};
 `;
 
