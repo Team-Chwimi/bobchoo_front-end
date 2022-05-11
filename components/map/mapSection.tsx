@@ -80,6 +80,12 @@ const MapSection: React.FC = () => {
     }
   }, []);
 
+  // useEffect(() => {
+  //   if (!isStoreDetail) {
+  //     makeMap();
+  //   }
+  // }, []);
+
   const makeMap = () => {
     const loader = new Loader({
       apiKey: googleKey,
@@ -203,7 +209,7 @@ const MapSection: React.FC = () => {
   const drawMarker = (marker: any, map: any) => {
     let infowindow = new google.maps.InfoWindow();
     if (storeList.length > 0) {
-      console.log(storeData);
+      // console.log(storeData);
       storeList?.map((data) => {
         marker = new window.google.maps.Marker({
           position: {
@@ -242,21 +248,26 @@ const MapSection: React.FC = () => {
     }
   };
 
-  const getStoreDetail = (place_id: string) => {
+  const getStoreDetail = (place_id: string, geometry: any) => {
     const detailRequest: any = {
       placeId: place_id,
       // fields: ['name', 'formatted_address', 'geometry'],
     };
+    // console.log(geometry?.viewport);
     let map = new google.maps.Map(mapRef.current, {
       // center: { lat: Number(latlng.lat), lng: Number(latlng.lng) },
       center: {
-        lat: Number(DEAFULT_LOCATION.lat),
-        lng: Number(DEAFULT_LOCATION.lng),
+        lat: geometry?.viewport?.Ab.h,
+        lng: geometry?.viewport?.Va.h,
       },
       zoom: 16,
     });
+    // map.setCenter({
+    //   lat: geometry?.viewport?.Ab?.h,
+    //   lng: geometry?.viewport?.Va?.h,
+    // });
     let service = new google.maps.places.PlacesService(map);
-    service = new google.maps.places.PlacesService(map);
+    // service = new google.maps.places.PlacesService(map);
     // if (storeData?.length === 0) {
     service.getDetails(detailRequest, (place, status) => {
       if (
@@ -265,16 +276,16 @@ const MapSection: React.FC = () => {
         place.geometry &&
         place.geometry.location
       ) {
-        const todayDay = new Date().getDay();
+        const today = new Date();
         // console.log(place.geometry?.location.lng());
-        // console.log(place.opening_hours);
+        console.log(place.opening_hours);
         setStoreDetailData({
           place_id: place.place_id!,
           name: place.name!,
           formatted_address: makeAddress(place.formatted_address!),
           formatted_phone_number: place.formatted_phone_number!,
-          isOpen: place.opening_hours?.isOpen()!,
-          time: place.opening_hours?.weekday_text?.[todayDay]!,
+          isOpen: place.opening_hours?.isOpen(new Date(today))!,
+          time: place.opening_hours?.weekday_text?.[(today.getDay() + 6) % 7]!,
           lat: place.geometry?.location.lat(),
           lng: place.geometry?.location.lng(),
           // geometry: place.geometry!,
@@ -284,9 +295,9 @@ const MapSection: React.FC = () => {
     });
   };
 
-  const handleStoreDetailClick = (place_id: string) => {
+  const handleStoreDetailClick = (place_id: string, geometry: any) => {
     setIsStoreDetail(true);
-    getStoreDetail(place_id);
+    getStoreDetail(place_id, geometry);
   };
 
   return (
@@ -304,7 +315,9 @@ const MapSection: React.FC = () => {
             {storeData.map((data) => (
               <StoreItem
                 key={data.id}
-                onClick={() => handleStoreDetailClick(data.place_id)}
+                onClick={() =>
+                  handleStoreDetailClick(data.place_id, data.geometry)
+                }
               >
                 <StoreItemName>{data.name}</StoreItemName>
                 <StoreItemAddress>{data.vicinity}</StoreItemAddress>
@@ -313,7 +326,12 @@ const MapSection: React.FC = () => {
           </StoreList>
         ) : (
           <>
-            <ReturnListButton onClick={() => setIsStoreDetail(false)}>
+            <ReturnListButton
+              onClick={() => {
+                setIsStoreDetail(false);
+                makeMap();
+              }}
+            >
               돌아가기
             </ReturnListButton>
             {!storeDetailData ? (
@@ -335,7 +353,19 @@ const MapSection: React.FC = () => {
   );
 };
 
-const Container = styled.div``;
+const Container = styled.div`
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  @media (max-width: 991px) {
+  }
+  @media (max-width: 767px) {
+  }
+  @media (max-width: 575px) {
+  }
+`;
 
 const Wrapper = styled.div``;
 
@@ -355,13 +385,6 @@ const MapWrapper = styled.section`
   }
   .gm-fullscreen-control {
     display: none;
-  }
-
-  @media (max-width: 991px) {
-  }
-  @media (max-width: 767px) {
-  }
-  @media (max-width: 575px) {
   }
 `;
 
