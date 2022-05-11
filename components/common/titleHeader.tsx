@@ -2,6 +2,8 @@ import styled from '@emotion/styled';
 
 import Header from './header';
 
+import { PALETTE } from '../../data/palette';
+
 interface TitleHeaderProps {
   title: string;
 }
@@ -40,6 +42,7 @@ const HeaderWrapper = styled.div`
 `;
 
 const Title = styled.div`
+  color: ${PALETTE.gray_38};
   font-size: 24px;
   font-weight: 800;
 `;

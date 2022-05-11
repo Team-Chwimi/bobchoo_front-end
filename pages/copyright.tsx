@@ -11,6 +11,7 @@ import Header from '../components/common/header';
 import LodaingCircular from '../components/common/loadingCircular';
 
 import { LINK_HOME } from '../data/link';
+import { PALETTE } from '../data/palette';
 
 const Copyright: NextPage = () => {
   const [infoData, setInfoData] = useState<InfoType[]>();
@@ -53,14 +54,16 @@ const Copyright: NextPage = () => {
 };
 
 const Container = styled.section`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  max-width: 900px;
 `;
 
 const Wrapper = styled.div`
   width: 100%;
-  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 8px;
+  color: ${PALETTE.gray_38};
 
   @media (max-width: 991px) {
   }
@@ -70,7 +73,11 @@ const Wrapper = styled.div`
   }
 `;
 
-const Title = styled.h1``;
+const Title = styled.h1`
+  margin: 12px 0 0;
+  font-size: 24px;
+  font-weight: 800;
+`;
 
 const FoodInfoList = styled.ul`
   padding: 4px 0;
@@ -82,6 +89,7 @@ const FoodInfoItem = styled.li`
 
 const FoodItemName = styled.span`
   padding-right: 4px;
+  font-weight: 800;
 `;
 
 const FoodItemURL = styled.span``;

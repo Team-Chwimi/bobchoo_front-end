@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
 
+import { PALETTE } from '../../data/palette';
+
 interface StoreDetailProps {
   name: string;
   formatted_address: string;
@@ -40,15 +42,17 @@ const Container = styled.div``;
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 4px 12px;
+  padding: 0 12px;
   font-size: 17px;
+  color: ${PALETTE.gray_38};
 `;
 
 const Name = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 4px;
+  margin-bottom: 12px;
+
   font-size: 24px;
   font-weight: 800;
 `;
@@ -69,6 +73,8 @@ const Rating = styled.div`
   margin-bottom: 4px;
 `;
 
-const IsOpen = styled.div``;
+const IsOpen = styled.div`
+  margin-bottom: 4px;
+`;
 
 export default StoreDetail;

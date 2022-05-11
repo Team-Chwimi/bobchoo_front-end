@@ -12,10 +12,11 @@ import { latlngActions } from '../../store/latlng';
 
 import { makeAddress } from '../../lib/utils';
 
-import { DEAFULT_LOCATION } from '../../data/location';
-
 import StoreDetail from './storeDetail';
 import TitleHeader from '../common/titleHeader';
+
+import { DEAFULT_LOCATION } from '../../data/location';
+import { PALETTE } from '../../data/palette';
 
 interface StoreDataType {
   id: number;
@@ -23,6 +24,7 @@ interface StoreDataType {
   name: string;
   geometry: any;
   vicinity: string;
+  rating: number;
   // openNow: boolean;
 }
 
@@ -147,13 +149,14 @@ const MapSection: React.FC = () => {
             // createMarker(results[i]);
             if (results[i].business_status === 'OPERATIONAL') {
               // 현재 운영 중인 가게만 검색
-              // console.log(results[i]);
+              console.log(results[i]);
               storeList[i] = {
                 id: i,
                 place_id: results[i].place_id!,
                 name: results[i].name!,
                 geometry: results[i].geometry!,
                 vicinity: makeAddress(results[i].vicinity!), // 주소
+                rating: results[i].rating!,
               };
             }
           }
@@ -315,15 +318,25 @@ const MapSection: React.FC = () => {
         ) : !isStoreDetail ? (
           <StoreList>
             {storeData.map((data) => (
-              <StoreItem
-                key={data.id}
-                onClick={() =>
-                  handleStoreDetailClick(data.place_id, data.geometry)
-                }
-              >
-                <StoreItemName>{data.name}</StoreItemName>
-                <StoreItemAddress>{data.vicinity}</StoreItemAddress>
-              </StoreItem>
+              <>
+                <StoreItem
+                  key={data.id}
+                  onClick={() =>
+                    handleStoreDetailClick(data.place_id, data.geometry)
+                  }
+                >
+                  <StoreItemName>{data.name}</StoreItemName>
+                  {/* <StoreItemAddress>{data.vicinity}</StoreItemAddress> */}
+                  {data.rating === 0 ? (
+                    <>평점이 없습니다</>
+                  ) : (
+                    <StoreItemRating>
+                      {data.rating.toFixed(1)}/5.0
+                    </StoreItemRating>
+                  )}
+                </StoreItem>
+                <StoreItemLine />
+              </>
             ))}
           </StoreList>
         ) : (
@@ -334,7 +347,7 @@ const MapSection: React.FC = () => {
                 makeMap();
               }}
             >
-              돌아가기
+              ←
             </ReturnListButton>
             {!storeDetailData ? (
               <></>
@@ -356,7 +369,6 @@ const MapSection: React.FC = () => {
 };
 
 const Container = styled.div`
-  max-width: 900px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -369,7 +381,10 @@ const Container = styled.div`
   }
 `;
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  max-width: 900px;
+  width: 100%;
+`;
 
 const MapWrapper = styled.section`
   .map-style {
@@ -382,27 +397,62 @@ const MapWrapper = styled.section`
     }
   }
 
+  // 지도 위성 제거
+  .gm-style-mtc {
+    display: none;
+  }
+  // 로드뷰 제거
   .gm-svpc {
     display: none;
   }
+  // 전체화면 제거
   .gm-fullscreen-control {
     display: none;
   }
 `;
 
-const StoreList = styled.ul``;
+const StoreList = styled.ul`
+  padding: 8px 16px;
+`;
 
 const StoreItem = styled.li`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 4px 0;
+
   cursor: pointer;
+
+  // &::after {}
+`;
+
+const StoreItemLine = styled.div`
+  content: '';
+  width: 100%;
+  border-bottom: 0.5px solid ${PALETTE.gray_79};
 `;
 
 const StoreItemName = styled.span`
   margin-right: 4px;
   font-weight: 800;
+  color: ${PALETTE.gray_38};
 `;
 
-const StoreItemAddress = styled.span``;
+const StoreItemAddress = styled.span`
+  color: ${PALETTE.gray_38};
+`;
 
-const ReturnListButton = styled.button``;
+const StoreItemRating = styled.span`
+  color: ${PALETTE.gray_38};
+`;
+
+const ReturnListButton = styled.button`
+  margin: 4px 0 0 12px;
+  border: none;
+  background: #fff;
+  color: ${PALETTE.orange_point};
+  font-size: 20px;
+  font-weight: 24100;
+`;
 
 export default MapSection;
