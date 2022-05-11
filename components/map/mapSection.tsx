@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 
 import styled from '@emotion/styled';
 
-import { throttle } from 'lodash';
+// import { throttle } from 'lodash';
 
 import { Loader } from '@googlemaps/js-api-loader';
 
@@ -14,10 +14,10 @@ import { makeAddress } from '../../lib/utils';
 
 import StoreDetail from './storeDetail';
 import TitleHeader from '../common/titleHeader';
+import LodaingCircular from '../common/loadingCircular';
 
 import { DEAFULT_LOCATION } from '../../data/location';
 import { PALETTE } from '../../data/palette';
-import LodaingCircular from '../common/loadingCircular';
 
 interface StoreDataType {
   id: number;
@@ -107,30 +107,33 @@ const MapSection: React.FC = () => {
       },
       zoom: 16,
     });
-    marker = new window.google.maps.Marker({
-      position: {
-        // lat: Number(latlng.lat),
-        // lng: Number(latlng.lng),
-        lat: Number(DEAFULT_LOCATION.lat),
-        lng: Number(DEAFULT_LOCATION.lng),
-      },
-      map,
-    });
-    map.addListener(
-      'center_changed',
-      throttle(() => {
-        const centerLat = map.getCenter().lat();
-        const centerLng = map.getCenter().lng();
-        marker.setPosition({ lat: centerLat, lng: centerLng });
-        // dispatch(
-        //   latlngActions.setLatLng({
-        //     lat: centerLat.toString(),
-        //     lng: centerLng.toString(),
-        //     hasCurrentLoaction: true,
-        //   }),
-        // );
-      }, 150),
-    );
+    // marker = new window.google.maps.Marker({
+    //   position: {
+    //     // lat: Number(latlng.lat),
+    //     // lng: Number(latlng.lng),
+    //     lat: Number(DEAFULT_LOCATION.lat),
+    //     lng: Number(DEAFULT_LOCATION.lng),
+    //   },
+    //   map,
+    //   icon: {
+    //     url: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+    //   },
+    // });
+    // map.addListener(
+    //   'center_changed',
+    //   throttle(() => {
+    //     const centerLat = map.getCenter().lat();
+    //     const centerLng = map.getCenter().lng();
+    //     marker.setPosition({ lat: centerLat, lng: centerLng });
+    //     // dispatch(
+    //     //   latlngActions.setLatLng({
+    //     //     lat: centerLat.toString(),
+    //     //     lng: centerLng.toString(),
+    //     //     hasCurrentLoaction: true,
+    //     //   }),
+    //     // );
+    //   }, 150),
+    // );
     const request: any = {
       location: new google.maps.LatLng(
         // Number(latlng.lat), Number(latlng.lng)
@@ -153,7 +156,7 @@ const MapSection: React.FC = () => {
             // createMarker(results[i]);
             if (results[i].business_status === 'OPERATIONAL') {
               // 현재 운영 중인 가게만 검색
-              console.log(results[i]);
+              // console.log(results[i]);
               storeList[i] = {
                 id: i,
                 place_id: results[i].place_id!,
@@ -233,6 +236,9 @@ const MapSection: React.FC = () => {
             return function () {
               infowindow.setContent(data.name);
               infowindow.open(map, marker);
+              setIsStoreDetail(true);
+              setTitleText(`${selectedFood.name} 가게 정보`);
+              getStoreDetail(data.place_id, data.geometry);
             };
           })(marker),
         );
@@ -274,6 +280,18 @@ const MapSection: React.FC = () => {
     //   lat: geometry?.viewport?.Ab?.h,
     //   lng: geometry?.viewport?.Va?.h,
     // });
+    marker = new window.google.maps.Marker({
+      position: {
+        // lat: Number(latlng.lat),
+        // lng: Number(latlng.lng),
+        lat: geometry?.viewport?.Ab.h,
+        lng: geometry?.viewport?.Va.h,
+      },
+      map,
+      // icon: {
+      //   url: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+      // },
+    });
     let service = new google.maps.places.PlacesService(map);
     // service = new google.maps.places.PlacesService(map);
     // if (storeData?.length === 0) {
@@ -286,7 +304,7 @@ const MapSection: React.FC = () => {
       ) {
         const today = new Date();
         // console.log(place.geometry?.location.lng());
-        console.log(place.opening_hours);
+        // console.log(place.opening_hours);
         setStoreDetailData({
           place_id: place.place_id!,
           name: place.name!,
@@ -322,6 +340,7 @@ const MapSection: React.FC = () => {
           <LodaingCircular />
         ) : !isStoreDetail ? (
           <StoreList>
+            <button>현재 위치 재설정</button>
             {storeData.map((data) => (
               <>
                 <StoreItem
@@ -425,7 +444,6 @@ const StoreItem = styled.li`
   flex-direction: row;
   justify-content: space-between;
   margin: 4px 0;
-
   cursor: pointer;
 
   // &::after {}
@@ -458,6 +476,7 @@ const ReturnListButton = styled.button`
   color: ${PALETTE.orange_point};
   font-size: 20px;
   font-weight: 24100;
+  cursor: pointer;
 `;
 
 export default MapSection;
