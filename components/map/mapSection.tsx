@@ -17,6 +17,7 @@ import TitleHeader from '../common/titleHeader';
 
 import { DEAFULT_LOCATION } from '../../data/location';
 import { PALETTE } from '../../data/palette';
+import LodaingCircular from '../common/loadingCircular';
 
 interface StoreDataType {
   id: number;
@@ -314,7 +315,7 @@ const MapSection: React.FC = () => {
           </div>
         </MapWrapper>
         {!storeData ? (
-          <></>
+          <LodaingCircular />
         ) : !isStoreDetail ? (
           <StoreList>
             {storeData.map((data) => (
@@ -350,7 +351,7 @@ const MapSection: React.FC = () => {
               ←
             </ReturnListButton>
             {!storeDetailData ? (
-              <></>
+              <LodaingCircular />
             ) : (
               <StoreDetail
                 name={storeDetailData.name}
