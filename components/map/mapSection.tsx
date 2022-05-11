@@ -49,6 +49,8 @@ const MapSection: React.FC = () => {
   const [isStoreDetail, setIsStoreDetail] = useState<boolean>(false);
   const [storeDetailData, setStoreDetailData] = useState<StoreDetailType>();
 
+  const [titleText, setTitleText] = useState<string>('');
+
   const [storeData, setStoreData] = useState<StoreDataType[]>();
   const storeList: StoreDataType[] = [];
 
@@ -144,6 +146,7 @@ const MapSection: React.FC = () => {
     service = new google.maps.places.PlacesService(map);
     // if (storeData?.length === 0) {
     service.nearbySearch(request, (results, status) => {
+      setTitleText(`${selectedFood.name} 가게 목록`);
       if (status == google.maps.places.PlacesServiceStatus.OK) {
         if (results) {
           for (let i = 0; i < results.length; i++) {
@@ -302,13 +305,14 @@ const MapSection: React.FC = () => {
 
   const handleStoreDetailClick = (place_id: string, geometry: any) => {
     setIsStoreDetail(true);
+    setTitleText(`${selectedFood.name} 가게 정보`);
     getStoreDetail(place_id, geometry);
   };
 
   return (
     <Container>
       <Wrapper>
-        <TitleHeader title={selectedFood.name} />
+        <TitleHeader title={titleText} />
         <MapWrapper>
           <div className="map-style">
             <div ref={mapRef} id="map" />

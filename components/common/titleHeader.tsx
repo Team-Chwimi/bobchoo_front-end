@@ -15,7 +15,7 @@ const TitleHeader: React.FC<TitleHeaderProps> = ({ title }) => {
         <Header linkName="뒤로가기" linkPath="/" />
       </LinkWrapper>
       <HeaderWrapper>
-        <Title>{title} 가게 목록</Title>
+        <Title>{title}</Title>
         <ImageWrapper src="/images/bobdol_carrot.gif" alt="밥돌이 이미지" />
       </HeaderWrapper>
     </Container>
