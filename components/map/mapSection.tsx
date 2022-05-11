@@ -3,14 +3,21 @@ import { useDispatch } from 'react-redux';
 
 import styled from '@emotion/styled';
 
-import { useSelector } from '../../store';
-import { latlngActions } from '../../store/latlng';
-
-import { throttle } from 'lodash';
+// import { throttle } from 'lodash';
 
 import { Loader } from '@googlemaps/js-api-loader';
 
+import { useSelector } from '../../store';
+import { latlngActions } from '../../store/latlng';
+
+import { makeAddress } from '../../lib/utils';
+
+import StoreDetail from './storeDetail';
+import TitleHeader from '../common/titleHeader';
+import LodaingCircular from '../common/loadingCircular';
+
 import { DEAFULT_LOCATION } from '../../data/location';
+import { PALETTE } from '../../data/palette';
 
 interface StoreDataType {
   id: number;
@@ -18,6 +25,7 @@ interface StoreDataType {
   name: string;
   geometry: any;
   vicinity: string;
+  rating: number;
   // openNow: boolean;
 }
 
@@ -27,12 +35,16 @@ interface StoreDetailType {
   formatted_address: string;
   formatted_phone_number: string;
   isOpen: boolean;
-  openTime: string;
-  closeTime: string;
   // geometry: any;
+  time: any;
   lat: number;
   lng: number;
   rating: number;
+}
+
+interface CurrentLocationType {
+  lat: number;
+  lng: number;
 }
 
 const MapSection: React.FC = () => {
@@ -42,8 +54,16 @@ const MapSection: React.FC = () => {
   const [isStoreDetail, setIsStoreDetail] = useState<boolean>(false);
   const [storeDetailData, setStoreDetailData] = useState<StoreDetailType>();
 
+  const [titleText, setTitleText] = useState<string>('');
+
   const [storeData, setStoreData] = useState<StoreDataType[]>();
   const storeList: StoreDataType[] = [];
+
+  const [currentLocation, setCurrentLocation] = useState<CurrentLocationType>();
+  //   {
+  //   lat: Number(DEAFULT_LOCATION.lat),
+  //   lng: Number(DEAFULT_LOCATION.lng),
+  // }
 
   const latlng = useSelector((state) => state.latlng);
   const selectedFood = useSelector((state) => state.selectedFood);
@@ -51,8 +71,11 @@ const MapSection: React.FC = () => {
   const dispatch = useDispatch();
 
   const googleKey: string = process.env.NEXT_PUBLIC_GOOGLE_KEY as string;
-  const googlePlacesKey: string =
-    process.env.NEXT_PUBLIC_GOOGLE_PLACE_KEY ?? '';
+
+  let map: any;
+  let marker: any;
+  let places: any;
+  let service;
 
   useEffect(() => {
     if (!latlng.hasCurrentLoaction) {
@@ -65,7 +88,15 @@ const MapSection: React.FC = () => {
           hasCurrentLoaction: true,
         }),
       );
+    } else {
+      setCurrentLocation({
+        lat: Number(latlng.lat),
+        lng: Number(latlng.lng),
+      });
     }
+    // if (!storeData) {
+    //   makeMap();
+    // }
   }, []);
 
   useEffect(() => {
@@ -74,56 +105,66 @@ const MapSection: React.FC = () => {
     }
   }, []);
 
+  // useEffect(() => {
+  //   if (!isStoreDetail) {
+  //     makeMap();
+  //   }
+  // }, []);
+
   const makeMap = () => {
     const loader = new Loader({
       apiKey: googleKey,
       version: 'weekly',
     });
-    let map: any;
-    let marker: any;
-    let places: any;
-    let service;
+    // setCurrentLocation({
+    //   lat: Number(latlng.lat),
+    //   lng: Number(latlng.lng),
+    // });
 
     // loader.load().then(() => {
     map = new google.maps.Map(mapRef.current, {
-      // center: { lat: Number(latlng.lat), lng: Number(latlng.lng) },
-      center: {
-        lat: Number(DEAFULT_LOCATION.lat),
-        lng: Number(DEAFULT_LOCATION.lng),
-      },
-      zoom: 16,
+      center: { lat: Number(latlng.lat), lng: Number(latlng.lng) },
+      // center: {
+      //   lat: currentLocation.lat,
+      //   lng: currentLocation.lng,
+      // },
+      zoom: 14,
     });
-    marker = new window.google.maps.Marker({
-      position: {
-        // lat: Number(latlng.lat),
-        // lng: Number(latlng.lng),
-        lat: Number(DEAFULT_LOCATION.lat),
-        lng: Number(DEAFULT_LOCATION.lng),
-      },
-      map,
-    });
-    map.addListener(
-      'center_changed',
-      throttle(() => {
-        const centerLat = map.getCenter().lat();
-        const centerLng = map.getCenter().lng();
-        marker.setPosition({ lat: centerLat, lng: centerLng });
-        // dispatch(
-        //   latlngActions.setLatLng({
-        //     lat: centerLat.toString(),
-        //     lng: centerLng.toString(),
-        //     hasCurrentLoaction: true,
-        //   }),
-        // );
-      }, 150),
-    );
+    // marker = new window.google.maps.Marker({
+    //   position: {
+    //     // lat: Number(latlng.lat),
+    //     // lng: Number(latlng.lng),
+    //     lat: Number(DEAFULT_LOCATION.lat),
+    //     lng: Number(DEAFULT_LOCATION.lng),
+    //   },
+    //   map,
+    //   icon: {
+    //     url: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+    //   },
+    // });
+    // map.addListener(
+    //   'center_changed',
+    //   throttle(() => {
+    //     const centerLat = map.getCenter().lat();
+    //     const centerLng = map.getCenter().lng();
+    //     marker.setPosition({ lat: centerLat, lng: centerLng });
+    //     // dispatch(
+    //     //   latlngActions.setLatLng({
+    //     //     lat: centerLat.toString(),
+    //     //     lng: centerLng.toString(),
+    //     //     hasCurrentLoaction: true,
+    //     //   }),
+    //     // );
+    //   }, 150),
+    // );
     const request: any = {
       location: new google.maps.LatLng(
-        // Number(latlng.lat), Number(latlng.lng)
-        Number(DEAFULT_LOCATION.lat),
-        Number(DEAFULT_LOCATION.lng),
+        Number(latlng.lat),
+        Number(latlng.lng),
+        // currentLocation.lat,
+        // currentLocation.lng,
       ),
-      radius: '1000', // 1KM 이내만 우선 검색
+      radius: '500', // 500m 이내만 우선 검색
       type: ['restaurant'], // restaurant 타입만 검색
       keyword: selectedFood.name,
       // openNow: true, // 현재 문 연 가게만 검색
@@ -132,6 +173,7 @@ const MapSection: React.FC = () => {
     service = new google.maps.places.PlacesService(map);
     // if (storeData?.length === 0) {
     service.nearbySearch(request, (results, status) => {
+      setTitleText(`${selectedFood.name} 가게 목록`);
       if (status == google.maps.places.PlacesServiceStatus.OK) {
         if (results) {
           for (let i = 0; i < results.length; i++) {
@@ -144,7 +186,8 @@ const MapSection: React.FC = () => {
                 place_id: results[i].place_id!,
                 name: results[i].name!,
                 geometry: results[i].geometry!,
-                vicinity: results[i].vicinity!, // 주소
+                vicinity: makeAddress(results[i].vicinity!), // 주소
+                rating: results[i].rating!,
               };
             }
           }
@@ -201,7 +244,7 @@ const MapSection: React.FC = () => {
   const drawMarker = (marker: any, map: any) => {
     let infowindow = new google.maps.InfoWindow();
     if (storeList.length > 0) {
-      console.log(storeData);
+      // console.log(storeData);
       storeList?.map((data) => {
         marker = new window.google.maps.Marker({
           position: {
@@ -217,6 +260,9 @@ const MapSection: React.FC = () => {
             return function () {
               infowindow.setContent(data.name);
               infowindow.open(map, marker);
+              setIsStoreDetail(true);
+              setTitleText(`${selectedFood.name} 가게 정보`);
+              getStoreDetail(data.place_id, data.geometry);
             };
           })(marker),
         );
@@ -240,21 +286,38 @@ const MapSection: React.FC = () => {
     }
   };
 
-  const getStoreDetail = (place_id: string) => {
+  const getStoreDetail = (place_id: string, geometry: any) => {
     const detailRequest: any = {
       placeId: place_id,
       // fields: ['name', 'formatted_address', 'geometry'],
     };
+    // console.log(geometry?.viewport);
     let map = new google.maps.Map(mapRef.current, {
       // center: { lat: Number(latlng.lat), lng: Number(latlng.lng) },
       center: {
-        lat: Number(DEAFULT_LOCATION.lat),
-        lng: Number(DEAFULT_LOCATION.lng),
+        lat: geometry?.viewport?.Ab.h,
+        lng: geometry?.viewport?.Va.h,
       },
-      zoom: 16,
+      zoom: 14,
+    });
+    // map.setCenter({
+    //   lat: geometry?.viewport?.Ab?.h,
+    //   lng: geometry?.viewport?.Va?.h,
+    // });
+    marker = new window.google.maps.Marker({
+      position: {
+        // lat: Number(latlng.lat),
+        // lng: Number(latlng.lng),
+        lat: geometry?.viewport?.Ab.h,
+        lng: geometry?.viewport?.Va.h,
+      },
+      map,
+      // icon: {
+      //   url: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+      // },
     });
     let service = new google.maps.places.PlacesService(map);
-    service = new google.maps.places.PlacesService(map);
+    // service = new google.maps.places.PlacesService(map);
     // if (storeData?.length === 0) {
     service.getDetails(detailRequest, (place, status) => {
       if (
@@ -263,42 +326,16 @@ const MapSection: React.FC = () => {
         place.geometry &&
         place.geometry.location
       ) {
-        console.log(place.opening_hours);
-        const todayDay = new Date().getDay();
-        let openTime = '';
-        let closeTime = '';
-        const periodsList = place.opening_hours?.periods;
-        if (periodsList) {
-          if (periodsList[todayDay]?.open.hours < 10) {
-            openTime = '0' + periodsList[todayDay]?.open.hours + ':';
-          } else {
-            openTime = periodsList[todayDay]?.open.hours + ':';
-          }
-          if (periodsList[todayDay]?.open.minutes < 10) {
-            openTime += '0' + periodsList[todayDay]?.open.minutes;
-          } else {
-            openTime += periodsList[todayDay]?.open.minutes;
-          }
-          if (periodsList[todayDay]?.close?.hours! < 10) {
-            closeTime = '0' + periodsList[todayDay]?.close?.hours + ':';
-          } else {
-            closeTime = periodsList[todayDay]?.close?.hours + ':';
-          }
-          if (periodsList[todayDay]?.close?.minutes! < 10) {
-            closeTime += '0' + periodsList[todayDay]?.close?.minutes!;
-          } else {
-            closeTime += periodsList[todayDay]?.close?.minutes;
-          }
-        }
+        const today = new Date();
         // console.log(place.geometry?.location.lng());
+        // console.log(place.opening_hours);
         setStoreDetailData({
           place_id: place.place_id!,
           name: place.name!,
-          formatted_address: place.formatted_address!,
+          formatted_address: makeAddress(place.formatted_address!),
           formatted_phone_number: place.formatted_phone_number!,
-          isOpen: place.opening_hours?.isOpen()!,
-          openTime: openTime,
-          closeTime: closeTime,
+          isOpen: place.opening_hours?.isOpen(new Date(today))!,
+          time: place.opening_hours?.weekday_text?.[(today.getDay() + 6) % 7]!,
           lat: place.geometry?.location.lat(),
           lng: place.geometry?.location.lng(),
           // geometry: place.geometry!,
@@ -308,92 +345,81 @@ const MapSection: React.FC = () => {
     });
   };
 
-  const handleStoreDetailClick = (place_id: string) => {
+  const handleStoreDetailClick = (place_id: string, geometry: any) => {
     setIsStoreDetail(true);
-    getStoreDetail(place_id);
+    setTitleText(`${selectedFood.name} 가게 정보`);
+    getStoreDetail(place_id, geometry);
   };
 
   return (
-    <>
-      <Container>
-        <div className="map-style">
-          <div ref={mapRef} id="map" />
-        </div>
-      </Container>
-      {!storeData ? (
-        <></>
-      ) : !isStoreDetail ? (
-        <StoreList>
-          {storeData.map((data) => (
-            <StoreItem
-              key={data.id}
-              onClick={() => handleStoreDetailClick(data.place_id)}
+    <Container>
+      <Wrapper>
+        <TitleHeader title={titleText} />
+        <MapWrapper>
+          <div className="map-style">
+            <div ref={mapRef} id="map" />
+          </div>
+        </MapWrapper>
+        {!storeData ? (
+          <LodaingCircular />
+        ) : !isStoreDetail ? (
+          <StoreList>
+            <button>현재 위치 재설정</button>
+            {storeData.map((data) => (
+              <>
+                <StoreItem
+                  key={data.id}
+                  onClick={() =>
+                    handleStoreDetailClick(data.place_id, data.geometry)
+                  }
+                >
+                  <StoreItemName>{data.name}</StoreItemName>
+                  {/* <StoreItemAddress>{data.vicinity}</StoreItemAddress> */}
+                  {data.rating === 0 ? (
+                    <>평점이 없습니다</>
+                  ) : (
+                    <StoreItemRating>
+                      {data.rating.toFixed(1)}/5.0
+                    </StoreItemRating>
+                  )}
+                </StoreItem>
+                <StoreItemLine />
+              </>
+            ))}
+          </StoreList>
+        ) : (
+          <>
+            <ReturnListButton
+              onClick={() => {
+                setIsStoreDetail(false);
+                makeMap();
+              }}
             >
-              <StoreItemName>{data.name}</StoreItemName>
-              <StoreItemAddress>{data.vicinity}</StoreItemAddress>
-            </StoreItem>
-          ))}
-        </StoreList>
-      ) : (
-        <>
-          <ReturnListButton onClick={() => setIsStoreDetail(false)}>
-            돌아가기
-          </ReturnListButton>
-          {!storeDetailData ? (
-            <></>
-          ) : (
-            <StoreDetail>
-              <StoreDetailName>{storeDetailData?.name}</StoreDetailName>
-              <br />
-              <StoreDetailAddress>
-                {storeDetailData?.formatted_address}
-              </StoreDetailAddress>
-              <br />
-              <StoreDetailPhoneNumber>
-                {storeDetailData?.formatted_phone_number}
-              </StoreDetailPhoneNumber>
-              <br />
-              <StoreDetailTime>
-                {storeDetailData?.openTime} ~ {storeDetailData?.closeTime}
-              </StoreDetailTime>
-              <br />
-              <StoreDetailRating>
-                {storeDetailData?.rating} / 5.0
-              </StoreDetailRating>
-              <br />
-              <StoreDetailIsOpen>
-                {storeDetailData?.isOpen ? (
-                  <>현재 운영중</>
-                ) : (
-                  <>현재 운영종료</>
-                )}
-              </StoreDetailIsOpen>
-              <br />
-            </StoreDetail>
-          )}
-        </>
-      )}
-    </>
+              ←
+            </ReturnListButton>
+            {!storeDetailData ? (
+              <LodaingCircular />
+            ) : (
+              <StoreDetail
+                name={storeDetailData.name}
+                formatted_address={storeDetailData.formatted_address}
+                formatted_phone_number={storeDetailData.formatted_phone_number}
+                time={storeDetailData.time}
+                rating={storeDetailData.rating}
+                isOpen={false}
+              />
+            )}
+          </>
+        )}
+      </Wrapper>
+    </Container>
   );
 };
 
 const Container = styled.div`
-  .map-style {
-    width: 487px;
-    height: 280px;
-    margin-top: 24px;
-    > div {
-      width: 100%;
-      height: 100%;
-    }
-  }
-
-  .gm-svpc {
-    display: none;
-  }
-  .gm-fullscreen-control {
-    display: none;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   @media (max-width: 991px) {
   }
@@ -403,33 +429,78 @@ const Container = styled.div`
   }
 `;
 
-const StoreList = styled.ul``;
+const Wrapper = styled.div`
+  max-width: 900px;
+  width: 100%;
+`;
+
+const MapWrapper = styled.section`
+  .map-style {
+    width: 487px;
+    height: 280px;
+    // margin-top: 24px;
+    > div {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  // 지도 위성 제거
+  .gm-style-mtc {
+    display: none;
+  }
+  // 로드뷰 제거
+  .gm-svpc {
+    display: none;
+  }
+  // 전체화면 제거
+  .gm-fullscreen-control {
+    display: none;
+  }
+`;
+
+const StoreList = styled.ul`
+  padding: 8px 16px;
+`;
 
 const StoreItem = styled.li`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 4px 0;
   cursor: pointer;
+
+  // &::after {}
+`;
+
+const StoreItemLine = styled.div`
+  content: '';
+  width: 100%;
+  border-bottom: 0.5px solid ${PALETTE.gray_79};
 `;
 
 const StoreItemName = styled.span`
   margin-right: 4px;
   font-weight: 800;
+  color: ${PALETTE.gray_38};
 `;
 
-const StoreItemAddress = styled.span``;
+const StoreItemAddress = styled.span`
+  color: ${PALETTE.gray_38};
+`;
 
-const ReturnListButton = styled.button``;
+const StoreItemRating = styled.span`
+  color: ${PALETTE.gray_38};
+`;
 
-const StoreDetail = styled.div``;
-
-const StoreDetailName = styled.span``;
-
-const StoreDetailAddress = styled.span``;
-
-const StoreDetailPhoneNumber = styled.span``;
-
-const StoreDetailTime = styled.span``;
-
-const StoreDetailRating = styled.span``;
-
-const StoreDetailIsOpen = styled.span``;
+const ReturnListButton = styled.button`
+  margin: 4px 0 0 12px;
+  border: none;
+  background: #fff;
+  color: ${PALETTE.orange_point};
+  font-size: 20px;
+  font-weight: 24100;
+  cursor: pointer;
+`;
 
 export default MapSection;

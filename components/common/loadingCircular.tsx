@@ -15,12 +15,16 @@ const LodaingCircular: React.FC = () => {
   return (
     <Container>
       <ThemeProvider theme={theme}>
-        <CircularProgress size={140} color="primary" thickness={2.6} />
+        <CircularProgress size={120} color="primary" thickness={2.6} />
       </ThemeProvider>
     </Container>
   );
 };
 
-const Container = styled.div``;
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
 export default LodaingCircular;
