@@ -10,6 +10,8 @@ import { copyrightsAPI } from '../lib/api/copyrights';
 import Header from '../components/common/header';
 import LodaingCircular from '../components/common/loadingCircular';
 
+import { LINK_HOME } from '../data/link';
+
 const Copyright: NextPage = () => {
   const [infoData, setInfoData] = useState<InfoType[]>();
 
@@ -29,7 +31,7 @@ const Copyright: NextPage = () => {
   return (
     <Container>
       <Wrapper>
-        <Header />
+        <Header linkName={LINK_HOME.linkName} linkPath={LINK_HOME.linkPath} />
         <Title>저작권</Title>
         {!infoData ? (
           <LodaingCircular />

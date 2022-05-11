@@ -10,11 +10,12 @@ import { Loader } from '@googlemaps/js-api-loader';
 import { useSelector } from '../../store';
 import { latlngActions } from '../../store/latlng';
 
+import { makeAddress } from '../../lib/utils';
+
 import { DEAFULT_LOCATION } from '../../data/location';
 
 import StoreDetail from './storeDetail';
-
-import { makeAddress } from '../../lib/utils';
+import TitleHeader from '../common/titleHeader';
 
 interface StoreDataType {
   id: number;
@@ -303,6 +304,7 @@ const MapSection: React.FC = () => {
   return (
     <Container>
       <Wrapper>
+        <TitleHeader title={selectedFood.name} />
         <MapWrapper>
           <div className="map-style">
             <div ref={mapRef} id="map" />
@@ -373,7 +375,7 @@ const MapWrapper = styled.section`
   .map-style {
     width: 487px;
     height: 280px;
-    margin-top: 24px;
+    // margin-top: 24px;
     > div {
       width: 100%;
       height: 100%;
