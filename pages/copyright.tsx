@@ -1,11 +1,8 @@
 import type { NextPage } from 'next';
-import { useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
 
-import { InfoType } from '../types/InfoType';
-
-import { copyrightsAPI } from '../lib/api/copyrights';
+import useCopyrights from '../hooks/useCopyrights';
 
 import Header from '../components/common/header';
 import LodaingCircular from '../components/common/loadingCircular';
@@ -14,35 +11,26 @@ import { LINK_HOME } from '../data/link';
 import { PALETTE } from '../data/palette';
 
 const Copyright: NextPage = () => {
-  const [infoData, setInfoData] = useState<InfoType[]>();
+  const { isLoading, data, isError, errorMessage } = useCopyrights();
 
-  useEffect(() => {
-    if (!infoData) {
-      getInfoData();
-    }
-  }, []);
-
-  const getInfoData = async () => {
-    try {
-      const { data } = await copyrightsAPI();
-      setInfoData(data);
-    } catch (e) {}
-  };
+  if (isError) {
+    return <div>{errorMessage}</div>;
+  }
 
   return (
     <Container>
       <Wrapper>
         <Header linkName={LINK_HOME.linkName} linkPath={LINK_HOME.linkPath} />
         <Title>저작권</Title>
-        {!infoData ? (
+        {isLoading || !data ? (
           <LodaingCircular />
         ) : (
           <FoodInfoList>
-            {infoData.map(function (data) {
+            {data.map(function (el) {
               return (
-                <FoodInfoItem key={data.foodId}>
-                  <FoodItemName>{data.foodName}</FoodItemName>
-                  <FoodItemURL>{data.foodURL}</FoodItemURL>
+                <FoodInfoItem key={el.foodId}>
+                  <FoodItemName>{el.foodName}</FoodItemName>
+                  <FoodItemURL>{el.foodURL}</FoodItemURL>
                 </FoodInfoItem>
               );
             })}
