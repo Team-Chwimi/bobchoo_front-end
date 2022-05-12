@@ -1,11 +1,8 @@
 import type { NextPage } from 'next';
-import { useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
 
-import { InfoType } from '../types/InfoType';
-
-import { copyrightsAPI } from '../lib/api/copyrights';
+import useCopyrights from '../hooks/useCopyrights';
 
 import Header from '../components/common/header';
 import LodaingCircular from '../components/common/loadingCircular';
@@ -13,36 +10,31 @@ import LodaingCircular from '../components/common/loadingCircular';
 import { LINK_HOME } from '../data/link';
 import { PALETTE } from '../data/palette';
 
+import { handleUrlClick } from '../lib/utils';
+
 const Copyright: NextPage = () => {
-  const [infoData, setInfoData] = useState<InfoType[]>();
+  const { isLoading, data, isError, errorMessage } = useCopyrights();
 
-  useEffect(() => {
-    if (!infoData) {
-      getInfoData();
-    }
-  }, []);
-
-  const getInfoData = async () => {
-    try {
-      const { data } = await copyrightsAPI();
-      setInfoData(data);
-    } catch (e) {}
-  };
+  if (isError) {
+    return <div>{errorMessage}</div>;
+  }
 
   return (
     <Container>
       <Wrapper>
         <Header linkName={LINK_HOME.linkName} linkPath={LINK_HOME.linkPath} />
         <Title>저작권</Title>
-        {!infoData ? (
+        {isLoading || !data ? (
           <LodaingCircular />
         ) : (
           <FoodInfoList>
-            {infoData.map(function (data) {
+            {data.map(function (el) {
               return (
-                <FoodInfoItem key={data.foodId}>
-                  <FoodItemName>{data.foodName}</FoodItemName>
-                  <FoodItemURL>{data.foodURL}</FoodItemURL>
+                <FoodInfoItem key={el.foodId}>
+                  <FoodItemName>{el.foodName}</FoodItemName>
+                  <FoodItemURL onClick={handleUrlClick(el.foodURL)}>
+                    {el.foodURL}
+                  </FoodItemURL>
                 </FoodInfoItem>
               );
             })}
@@ -54,16 +46,18 @@ const Copyright: NextPage = () => {
 };
 
 const Container = styled.section`
-  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const Wrapper = styled.div`
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  max-width: 900px;
+  box-sizing: border-box;
   margin-top: 8px;
   color: ${PALETTE.gray_38};
+  font-size: 12px;
 
   @media (max-width: 991px) {
   }
@@ -74,24 +68,55 @@ const Wrapper = styled.div`
 `;
 
 const Title = styled.h1`
-  margin: 12px 0 0;
+  width: fit-content;
+  position: relative;
+  margin: 16px 20px 20px;
   font-size: 24px;
   font-weight: 800;
+
+  &::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 16px;
+    left: 0;
+    bottom: 1px;
+    z-index: -1;
+    opacity: 0.5;
+    background-color: ${PALETTE.orange};
+  }
 `;
 
 const FoodInfoList = styled.ul`
-  padding: 4px 0;
+  margin: 0 28px;
 `;
 
 const FoodInfoItem = styled.li`
-  padding: 4px 0;
+  padding-bottom: 8px;
 `;
 
-const FoodItemName = styled.span`
-  padding-right: 4px;
-  font-weight: 800;
+const FoodItemName = styled.div`
+  width: 8%;
+  display: inline-block;
+  padding-bottom: 2px;
+  font-size: 12px;
+  font-weight: 700;
+
+  @media (max-width: 767px) {
+    width: fit-content;
+    display: flex;
+  }
 `;
 
-const FoodItemURL = styled.span``;
+const FoodItemURL = styled.div`
+  display: inline-block;
+  font-size: 10px;
+  cursor: pointer;
+
+  @media (max-width: 767px) {
+    padding-left: 8px;
+    display: flex;
+  }
+`;
 
 export default Copyright;
