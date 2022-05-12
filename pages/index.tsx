@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect,useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import type { NextPage } from 'next';
@@ -13,11 +13,23 @@ import { PALETTE } from '../data/palette';
 import Link from 'next/link';
 
 import Swal from 'sweetalert2';
+import axios from 'axios';
+import { questionActions } from '../store/question';
+import {QuestionType} from '../types/qestionType'
 
 interface ButtonProps {
   backgroundColor: string;
   fontColor: string;
 }
+
+// interface QuestionType {
+//   answerList: Array<string>;
+//   description: string;
+//   overlap: boolean;
+//   question: string;
+//   questionId: number;
+//   // openNow: boolean;
+// }
 
 const Home: NextPage = () => {
   const router = useRouter();
@@ -107,6 +119,34 @@ const Home: NextPage = () => {
     }
   };
 
+
+  //질문 받아오기
+  type resultType = {
+    result: QuestionType[];
+  };
+
+  const qestionApi = async() => {
+    try{
+      const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL+"/api/v1/surveys");
+      const result = response.data;
+      // const result = response.data.questionList;
+      // const count = response.data.questionTotalCount;
+      // return [result,count];
+      return result;
+    }catch(err){
+      console.log(err);
+    }
+
+  } 
+  const handleQestionData = async()=>{
+    const data = await qestionApi();
+    const qestions = data.questionList;
+    const count = data.questionTotalCount;
+    
+    dispatch(questionActions.setQuestions(qestions));
+    dispatch(questionActions.setQuestionTotal(count));
+  }
+
   return (
     <Container>
       {location.hasCheckedLocation && !location.hasCurrentLoaction ? (
@@ -140,16 +180,18 @@ const Home: NextPage = () => {
           >
             랜덤으로 선택
           </StartButton>
-          <Link href="/survey">
           <StartButton
             id="survey"
             backgroundColor={PALETTE.orange_point}
             fontColor={PALETTE.white}
-            onClick={handleLocationCheckedClick}
+            onClick={(event) => {
+              handleLocationCheckedClick(event);
+              handleQestionData();
+              router.push('/survey/1');
+            }}
           >
             설문조사 시작
           </StartButton>
-           </Link>
         </ButtonWrapper>
       </Wrapper>
     </Container>
