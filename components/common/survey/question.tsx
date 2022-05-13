@@ -30,7 +30,7 @@ const Question: React.FC<QuestionProps> = ({ id }) => {
   useEffect(() => {
     if (!dataDetail) {
       setDataDetail(data[id - 1]);
-      console.log(dataDetail);
+      // console.log(dataDetail);
     }
   }, []);
 
