@@ -22,7 +22,7 @@ const Question: React.FC<StoreDetailProps> = ({id})=>{
       <Wrapper>
         <QuestionDiv>
           <Title>{dataDetail.question}</Title>
-            {(dataDetail.answerList.length>2) && <OverlapDiv>(중복 선택 가능)</OverlapDiv>}
+            {dataDetail.overlap && <OverlapDiv>(중복 선택 가능)</OverlapDiv>}
         </QuestionDiv>
         <ImageWrapper src="/images/bobdol.gif" alt="밥돌이 이미지" />
         <GraphDiv>
