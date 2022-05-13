@@ -1,4 +1,4 @@
-import { useEffect,useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 import type { NextPage } from 'next';
@@ -8,14 +8,14 @@ import styled from '@emotion/styled';
 
 import { useSelector } from '../store';
 import { latlngActions } from '../store/latlng';
+import { questionActions } from '../store/question';
+
+import { QuestionType } from '../types/qestionType';
 
 import { PALETTE } from '../data/palette';
-import Link from 'next/link';
 
 import Swal from 'sweetalert2';
 import axios from 'axios';
-import { questionActions } from '../store/question';
-import {QuestionType} from '../types/qestionType'
 
 interface ButtonProps {
   backgroundColor: string;
@@ -119,33 +119,33 @@ const Home: NextPage = () => {
     }
   };
 
-
   //질문 받아오기
   type resultType = {
     result: QuestionType[];
   };
 
-  const qestionApi = async() => {
-    try{
-      const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL+"/api/v1/surveys");
+  const qestionApi = async () => {
+    try {
+      const response = await axios.get(
+        process.env.NEXT_PUBLIC_SERVER_URL + '/api/v1/surveys',
+      );
       const result = response.data;
       // const result = response.data.questionList;
       // const count = response.data.questionTotalCount;
       // return [result,count];
       return result;
-    }catch(err){
+    } catch (err) {
       console.log(err);
     }
-
-  } 
-  const handleQestionData = async()=>{
+  };
+  const handleQestionData = async () => {
     const data = await qestionApi();
     const qestions = data.questionList;
     const count = data.questionTotalCount;
-    
+
     dispatch(questionActions.setQuestions(qestions));
     dispatch(questionActions.setQuestionTotal(count));
-  }
+  };
 
   return (
     <Container>
