@@ -1,23 +1,23 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { QuestionState } from "../types/reduxState";
-import { QuestionType,QestionTotalType } from "../types/qestionType";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
+import { QuestionState } from '../types/reduxState';
+import { QuestionType } from '../types/qestionType';
 
 //* 초기 상태
 const initialState: QuestionState = {
   questions: [],
-  questionTotalCount: null,
-
+  questionTotalCount: 0,
 };
 
 const question = createSlice({
-  name: "question",
+  name: 'question',
   initialState,
   reducers: {
     setQuestions(state, action: PayloadAction<QuestionType[]>) {
       state.questions = action.payload;
       return state;
     },
-    setQuestionTotal(state, action: PayloadAction<QestionTotalType>) {
+    setQuestionTotal(state, action: PayloadAction<number>) {
       state.questionTotalCount = action.payload;
       return state;
     },

@@ -1,11 +1,10 @@
 import { LatLngType } from './MapType';
-import {QuestionType, QestionTotalType} from './qestionType'
+import { QuestionType, QuestionTotalType } from './qestionType';
 
 export type LatLngState = LatLngType & {
   hasCurrentLoaction: boolean;
 };
 
-export type QuestionState = {
+export type QuestionState = QuestionTotalType & {
   questions: QuestionType[];
-  questionTotalCount: QestionTotalType | null;
 };

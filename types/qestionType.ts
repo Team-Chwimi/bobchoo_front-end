@@ -4,8 +4,8 @@ export interface QuestionType {
   overlap: boolean;
   question: string;
   questionId: number;
-  }
+}
 
-  export interface QestionTotalType{
-    questionTotalCount:number;
-  }
+export interface QuestionTotalType {
+  questionTotalCount: number;
+}
