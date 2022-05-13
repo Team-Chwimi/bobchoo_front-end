@@ -1,17 +1,21 @@
 import type { NextPage } from 'next';
+
 import styled from '@emotion/styled';
+
 import Header from '../../components/common/header';
 import Question from '../../components/common/survey/question';
 
-type props={
+import { LINK_HOME } from '../../data/link';
+
+type props = {
   id: number;
-}
+};
 const SurveyDetail: NextPage<props> = ({ id }) => {
   return (
     <Container>
       <Wrapper>
-        <Header/>
-        <Question id={id}/>
+        <Header linkName={LINK_HOME.linkName} linkPath={LINK_HOME.linkPath} />
+        <Question id={id} />
       </Wrapper>
     </Container>
   );
@@ -19,9 +23,8 @@ const SurveyDetail: NextPage<props> = ({ id }) => {
 
 SurveyDetail.getInitialProps = async ({ query }: any) => {
   const { id } = query;
-  return {id};
+  return { id };
 };
-
 
 const Container = styled.section`
   display: flex;
