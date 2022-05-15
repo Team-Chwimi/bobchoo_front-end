@@ -2,13 +2,13 @@ import { AxiosResponse, AxiosError } from 'axios';
 
 import { useQuery } from 'react-query';
 
-import { copyrightsAPI } from '../lib/api/copyrights';
+import CopyrightService from '../lib/api/copyrights';
 
 import { InfoType } from '../types/InfoType';
 import { ErrorResponse } from '../types/commonTypes';
 
-const useChartList = () => {
-  const queryFn = () => copyrightsAPI();
+const useCopyrights = () => {
+  const queryFn = () => CopyrightService.getCopyrightsAPI();
   const { isLoading, data, isError, error } = useQuery<
     AxiosResponse<InfoType[]>,
     AxiosError<ErrorResponse>
@@ -26,4 +26,4 @@ const useChartList = () => {
   };
 };
 
-export default useChartList;
+export default useCopyrights;
