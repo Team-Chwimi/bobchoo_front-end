@@ -2,13 +2,15 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { LatLngState } from '../types/reduxState';
 
+import { DEAFULT_LOCATION } from '../data/location';
+
 interface CheckLocationType {
   hasCheckedLocation: boolean;
 }
 
 const initialState: LatLngState & CheckLocationType = {
-  lat: '',
-  lng: '',
+  lat: DEAFULT_LOCATION.lat,
+  lng: DEAFULT_LOCATION.lng,
   hasCurrentLoaction: false,
   hasCheckedLocation: false,
 };
