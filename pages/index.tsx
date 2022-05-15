@@ -163,6 +163,14 @@ const Home: NextPage = () => {
       >
         맵으로 이동하는 임시버튼
       </button>
+      <button
+        style={{ position: 'absolute', left: 0, top: 25 }}
+        onClick={(event) => {
+          router.push('/list');
+        }}
+      >
+        우선 결과 전체화면으로 이동하는 버튼
+      </button>
       <CopyrightButton onClick={() => router.push('/copyright')}>
         저작권
       </CopyrightButton>
