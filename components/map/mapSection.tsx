@@ -180,7 +180,7 @@ const MapSection: React.FC = () => {
           lat: data.geometry.viewport?.Ab?.h,
           lng: data.geometry.viewport?.Va?.h,
         },
-        icon: '/images/marker_orange.png',
+        icon: '/images/map_marker.png',
         map,
       });
       google.maps.event.addListener(
@@ -228,7 +228,7 @@ const MapSection: React.FC = () => {
     //       lat: befStoreDetail.lat,
     //       lng: befStoreDetail.lng,
     //     },
-    //     icon: '/images/marker_orange.png',
+    //     icon: '/images/map_marker.png',
     //     map,
     //   });
     // }
@@ -243,7 +243,7 @@ const MapSection: React.FC = () => {
         lat: geometry?.viewport?.Ab.h,
         lng: geometry?.viewport?.Va.h,
       },
-      icon: '/images/marker_point.png',
+      icon: '/images/map_logo_point.png',
       map,
     });
 
@@ -306,9 +306,8 @@ const MapSection: React.FC = () => {
           <StoreList>
             <button>현재 위치 재설정</button>
             {storeData.map((data) => (
-              <>
+              <StoreItemWrapper key={data.id}>
                 <StoreItem
-                  key={data.id}
                   onClick={() =>
                     handleStoreDetailClick(data.place_id, data.geometry)
                   }
@@ -324,7 +323,7 @@ const MapSection: React.FC = () => {
                   )}
                 </StoreItem>
                 <StoreItemLine />
-              </>
+              </StoreItemWrapper>
             ))}
           </StoreList>
         ) : (
@@ -361,6 +360,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 
   @media (max-width: 991px) {
   }
@@ -372,12 +372,12 @@ const Container = styled.div`
 
 const Wrapper = styled.div`
   max-width: 900px;
-  width: 100%;
+  // box-sizing: border-box;
 `;
 
 const MapWrapper = styled.section`
   .map-style {
-    width: 487px;
+    // width: 487px;
     height: 280px;
     // margin-top: 24px;
     > div {
@@ -404,7 +404,9 @@ const StoreList = styled.ul`
   padding: 8px 16px;
 `;
 
-const StoreItem = styled.li`
+const StoreItemWrapper = styled.li``;
+
+const StoreItem = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;

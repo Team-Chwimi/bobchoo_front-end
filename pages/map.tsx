@@ -14,13 +14,16 @@ const Map: NextPage = () => {
   );
 };
 
-const Container = styled.section``;
-
-const Wrapper = styled.div`
-  max-width: 900px;
+const Container = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
+`;
+
+const Wrapper = styled.div`
+  // display: flex;
+  // flex-direction: column;
+  // align-items: center;
   // width: 100%;
 
   @media (max-width: 991px) {
