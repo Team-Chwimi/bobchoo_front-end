@@ -41,7 +41,7 @@ interface StoreDetailType {
   rating: number;
 }
 
-interface CurrentLocationType {
+interface LocationType {
   lat: number;
   lng: number;
 }
@@ -61,7 +61,7 @@ const MapSection: React.FC = () => {
   const [storeData, setStoreData] = useState<StoreDataType[]>();
   const storeList: StoreDataType[] = [];
 
-  const [currentLocation, setCurrentLocation] = useState<CurrentLocationType>({
+  const [currentLocation, setCurrentLocation] = useState<LocationType>({
     // lat: Number(DEAFULT_LOCATION.lat),
     // lng: Number(DEAFULT_LOCATION.lng),
     lat: Number(latlng.lat),
@@ -74,6 +74,8 @@ const MapSection: React.FC = () => {
   //     lng: Number(DEAFULT_LOCATION.lng),
   //   });
 
+  const [befStoreDetail, setBefStoreDetail] = useState<LocationType>();
+
   const [mapData, setMapData] = useState<any>();
 
   const dispatch = useDispatch();
@@ -84,6 +86,7 @@ const MapSection: React.FC = () => {
   let marker: any;
   let places: any;
   let service;
+  let pointMarker: any;
 
   useEffect(() => {
     if (!storeData) {
@@ -111,18 +114,6 @@ const MapSection: React.FC = () => {
       zoom: 14,
     });
     setMapData(map);
-    // marker = new window.google.maps.Marker({
-    //   position: {
-    //     // lat: Number(latlng.lat),
-    //     // lng: Number(latlng.lng),
-    //     lat: Number(DEAFULT_LOCATION.lat),
-    //     lng: Number(DEAFULT_LOCATION.lng),
-    //   },
-    //   map,
-    //   icon: {
-    //     url: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
-    //   },
-    // });
     // map.addListener(
     //   'center_changed',
     //   throttle(() => {
@@ -152,7 +143,6 @@ const MapSection: React.FC = () => {
     };
 
     service = new google.maps.places.PlacesService(map);
-    // if (storeData?.length === 0) {
     service.nearbySearch(request, (results, status) => {
       setTitleText(`${selectedFood.name} 가게 목록`);
       if (status == google.maps.places.PlacesServiceStatus.OK) {
@@ -182,7 +172,7 @@ const MapSection: React.FC = () => {
   };
 
   const drawMarker = (marker: any, map: any) => {
-    let infowindow = new google.maps.InfoWindow();
+    // let infowindow = new google.maps.InfoWindow();
     // console.log(storeData);
     storeList?.map((data) => {
       marker = new window.google.maps.Marker({
@@ -190,6 +180,7 @@ const MapSection: React.FC = () => {
           lat: data.geometry.viewport?.Ab?.h,
           lng: data.geometry.viewport?.Va?.h,
         },
+        icon: '/images/marker_orange.png',
         map,
       });
       google.maps.event.addListener(
@@ -197,30 +188,14 @@ const MapSection: React.FC = () => {
         'click',
         (function (marker) {
           return function () {
-            infowindow.setContent(data.name);
-            infowindow.open(map, marker);
+            // infowindow.setContent(data.name);
+            // infowindow.open(map, marker);
             setIsStoreDetail(true);
             setTitleText(`${selectedFood.name} 가게 정보`);
             getStoreDetail(data.place_id, data.geometry, map);
           };
         })(marker),
       );
-
-      // map.addListener(
-      //   'store_location',
-      //   throttle(() => {
-      //     const centerLat = map.getCenter().lat();
-      //     const centerLng = map.getCenter().lng();
-      //     marker.setPosition({ lat: centerLat, lng: centerLng });
-      //     // dispatch(
-      //     //   latlngActions.setLatLng({
-      //     //     lat: centerLat.toString(),
-      //     //     lng: centerLng.toString(),
-      //     //     hasCurrentLoaction: true,
-      //     //   }),
-      //     // );
-      //   }, 150),
-      // );
     });
   };
 
@@ -242,28 +217,37 @@ const MapSection: React.FC = () => {
     if (map === null) {
       map = mapData;
     }
+    // console.log(pointMarker);
+    removePointMarker();
 
-    map.setCenter({
-      lat: geometry?.viewport?.Ab?.h,
-      lng: geometry?.viewport?.Va?.h,
-    });
+    // console.log('befStoreDetail', befStoreDetail);
+    // if (befStoreDetail) {
+    //   console.log('dd');
+    //   marker = new window.google.maps.Marker({
+    //     position: {
+    //       lat: befStoreDetail.lat,
+    //       lng: befStoreDetail.lng,
+    //     },
+    //     icon: '/images/marker_orange.png',
+    //     map,
+    //   });
+    // }
 
-    marker = new window.google.maps.Marker({
+    // map.setCenter({
+    //   lat: geometry?.viewport?.Ab?.h,
+    //   lng: geometry?.viewport?.Va?.h,
+    // });
+
+    pointMarker = new window.google.maps.Marker({
       position: {
-        // lat: Number(latlng.lat),
-        // lng: Number(latlng.lng),
         lat: geometry?.viewport?.Ab.h,
         lng: geometry?.viewport?.Va.h,
       },
+      icon: '/images/marker_point.png',
       map,
-      // icon: {
-      //   url: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
-      // },
     });
 
     let service = new google.maps.places.PlacesService(map);
-    // service = new google.maps.places.PlacesService(map);
-    // if (storeData?.length === 0) {
     service.getDetails(detailRequest, (place, status) => {
       if (
         status === google.maps.places.PlacesServiceStatus.OK &&
@@ -286,8 +270,19 @@ const MapSection: React.FC = () => {
           // geometry: place.geometry!,
           rating: place.rating!,
         });
+
+        setBefStoreDetail({
+          lat: place.geometry?.location.lat(),
+          lng: place.geometry?.location.lng(),
+        });
       }
     });
+  };
+
+  const removePointMarker = () => {
+    if (pointMarker) {
+      pointMarker.setMap(null);
+    }
   };
 
   const handleStoreDetailClick = (place_id: string, geometry: any) => {
@@ -337,7 +332,8 @@ const MapSection: React.FC = () => {
             <ReturnListButton
               onClick={() => {
                 setIsStoreDetail(false);
-                // makeMap();
+                makeMap();
+                removePointMarker();
               }}
             >
               ←
@@ -441,7 +437,7 @@ const StoreItemRating = styled.span`
 const ReturnListButton = styled.button`
   margin: 4px 0 0 12px;
   border: none;
-  background: #fff;
+  background: #ffffff;
   color: ${PALETTE.orange_point};
   font-size: 20px;
   font-weight: 24100;
