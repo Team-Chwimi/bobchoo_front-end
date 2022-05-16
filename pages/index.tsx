@@ -127,22 +127,7 @@ const Home: NextPage = () => {
   type resultType = {
     result: QuestionType[];
   };
-
-  // const qestionApi = async () => {
-  //   try {
-  //     const response = await axios.get(
-  //       process.env.NEXT_PUBLIC_SERVER_URL + '/api/v1/surveys',
-  //     );
-  //     const result = response.data;
-  //     // const result = response.data.questionList;
-  //     // const count = response.data.questionTotalCount;
-  //     // return [result,count];
-  //     return result;
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
-
+      
   const handleQestionData = async () => {
     // const data = await qestionApi();
     // const qestions: QuestionType[] = data?.questionList;
