@@ -245,10 +245,10 @@ const MapSection: React.FC = () => {
     //   });
     // }
 
-    // map.setCenter({
-    //   lat: geometry?.viewport?.Ab?.h,
-    //   lng: geometry?.viewport?.Va?.h,
-    // });
+    map.setCenter({
+      lat: geometry?.viewport?.Ab?.h,
+      lng: geometry?.viewport?.Va?.h,
+    });
 
     pointMarker = new window.google.maps.Marker({
       position: {
