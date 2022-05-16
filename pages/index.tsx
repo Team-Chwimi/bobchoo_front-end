@@ -43,7 +43,11 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     if (!location.hasCheckedLocation) {
-      getLocation();
+      getLocation().then(() => {
+        dispatch(
+          latlngActions.setHasCheckedLocation({ hasCheckedLocation: true }),
+        );
+      });
     }
   }, []);
 
@@ -57,14 +61,8 @@ const Home: NextPage = () => {
             hasCurrentLoaction: true,
           }),
         );
-        dispatch(
-          latlngActions.setHasCheckedLocation({ hasCheckedLocation: true }),
-        );
       },
       (error) => {
-        dispatch(
-          latlngActions.setHasCheckedLocation({ hasCheckedLocation: true }),
-        );
         switch (error.code) {
           case error.PERMISSION_DENIED:
             Swal.fire({
