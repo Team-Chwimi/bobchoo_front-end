@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import type { NextPage } from 'next';
@@ -39,6 +39,9 @@ const Home: NextPage = () => {
   const dispatch = useDispatch();
   const location = useSelector((state) => state.latlng);
 
+  const [canGetLocation, setCanGetLocation] = useState<boolean>(false);
+  const [isFirst, setIsFirst] = useState<boolean>(true);
+
   const { isLoading, data, isError, errorMessage } = useQuestion();
 
   useEffect(() => {
@@ -48,12 +51,15 @@ const Home: NextPage = () => {
           latlngActions.setHasCheckedLocation({ hasCheckedLocation: true }),
         );
       });
+    } else {
+      setIsFirst(false);
     }
   }, []);
 
   const getLocation = async () => {
     navigator.geolocation.getCurrentPosition(
       ({ coords }) => {
+        setCanGetLocation(true);
         dispatch(
           latlngActions.setLatLng({
             lat: coords.latitude.toString(),
@@ -125,7 +131,7 @@ const Home: NextPage = () => {
   type resultType = {
     result: QuestionType[];
   };
-      
+
   const handleQestionData = async () => {
     // const data = await qestionApi();
     // const qestions: QuestionType[] = data?.questionList;
@@ -137,11 +143,14 @@ const Home: NextPage = () => {
 
   return (
     <Container>
-      {location.hasCheckedLocation && !location.hasCurrentLoaction ? (
-        <CurrentLocationInfo>현재 위치 파악 불가</CurrentLocationInfo>
-      ) : (
-        <></>
-      )}
+      {
+        // location.hasCheckedLocation && !location.hasCurrentLoaction
+        !isFirst && !canGetLocation ? (
+          <CurrentLocationInfo>현재 위치 파악 불가</CurrentLocationInfo>
+        ) : (
+          <></>
+        )
+      }
       <button
         style={{ position: 'absolute', left: 0 }}
         onClick={(event) => {
