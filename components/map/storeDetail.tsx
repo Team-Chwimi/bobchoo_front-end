@@ -23,14 +23,34 @@ const StoreDetail: React.FC<StoreDetailProps> = ({
     <Container>
       <Wrapper>
         <Name>{name}</Name>
-        <Address>{formatted_address}</Address>
-        {!PhoneNumber ? (
+        <Address>
+          <IconImg src="/images/map_logo_point.png" alt="지도 아이콘" />
+          {formatted_address}
+        </Address>
+        {!formatted_phone_number ? (
           <></>
         ) : (
-          <PhoneNumber>{formatted_phone_number}</PhoneNumber>
+          <PhoneNumber>
+            <IconImg src="/images/phone_icon.png" alt="전화기 아이콘" />
+            {formatted_phone_number}
+          </PhoneNumber>
         )}
-        {!time ? <></> : <Time>{time}</Time>}
-        {!rating ? <></> : <Rating>{rating.toFixed(1)} / 5.0</Rating>}
+        {!time ? (
+          <></>
+        ) : (
+          <Time>
+            <IconImg src="/images/clock_icon.png" alt="시간 아이콘" />
+            {time}
+          </Time>
+        )}
+        {!rating ? (
+          <></>
+        ) : (
+          <Rating>
+            <StarIconImg src="/images/star_icon.png" alt="별 아이콘" />
+            {rating.toFixed(1)} / 5.0
+          </Rating>
+        )}
         <IsOpen>{isOpen ? <>현재 운영중</> : <>현재 운영종료</>}</IsOpen>
       </Wrapper>
     </Container>
@@ -58,19 +78,39 @@ const Name = styled.div`
 `;
 
 const Address = styled.div`
-  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  padding-bottom: 8px;
+`;
+
+const IconImg = styled.img`
+  width: 16px;
+  height: 16px;
+  padding-right: 4px;
 `;
 
 const PhoneNumber = styled.div`
-  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  padding-bottom: 8px;
 `;
 
 const Time = styled.div`
-  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  padding-bottom: 8px;
 `;
 
 const Rating = styled.div`
-  margin-bottom: 4px;
+  display: flex;
+  align-items: start;
+  padding-bottom: 8px;
+`;
+
+const StarIconImg = styled.img`
+  width: 16px;
+  height: 16px;
+  padding-right: 4px;
 `;
 
 const IsOpen = styled.div`

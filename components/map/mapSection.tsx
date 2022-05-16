@@ -16,7 +16,6 @@ import StoreDetail from './storeDetail';
 import TitleHeader from '../common/titleHeader';
 import LodaingCircular from '../common/loadingCircular';
 
-import { DEAFULT_LOCATION } from '../../data/location';
 import { PALETTE } from '../../data/palette';
 
 interface StoreDataType {
@@ -42,7 +41,7 @@ interface StoreDetailType {
   rating: number;
 }
 
-interface CurrentLocationType {
+interface LocationType {
   lat: number;
   lng: number;
 }
@@ -50,6 +49,9 @@ interface CurrentLocationType {
 const MapSection: React.FC = () => {
   const mapRef = useRef<any>(null);
   // const mapRef = useRef<HTMLDivElement>(null);
+
+  const latlng = useSelector((state) => state.latlng);
+  const selectedFood = useSelector((state) => state.selectedFood);
 
   const [isStoreDetail, setIsStoreDetail] = useState<boolean>(false);
   const [storeDetailData, setStoreDetailData] = useState<StoreDetailType>();
@@ -59,14 +61,22 @@ const MapSection: React.FC = () => {
   const [storeData, setStoreData] = useState<StoreDataType[]>();
   const storeList: StoreDataType[] = [];
 
-  const [currentLocation, setCurrentLocation] = useState<CurrentLocationType>();
-  //   {
-  //   lat: Number(DEAFULT_LOCATION.lat),
-  //   lng: Number(DEAFULT_LOCATION.lng),
-  // }
+  const [currentLocation, setCurrentLocation] = useState<LocationType>({
+    // lat: Number(DEAFULT_LOCATION.lat),
+    // lng: Number(DEAFULT_LOCATION.lng),
+    lat: Number(latlng.lat),
+    lng: Number(latlng.lng),
+  });
 
-  const latlng = useSelector((state) => state.latlng);
-  const selectedFood = useSelector((state) => state.selectedFood);
+  // const [mapCenterLocation, setMapCenterLocation] =
+  //   useState<CurrentLocationType>({
+  //     lat: Number(DEAFULT_LOCATION.lat),
+  //     lng: Number(DEAFULT_LOCATION.lng),
+  //   });
+
+  const [befStoreDetail, setBefStoreDetail] = useState<LocationType>();
+
+  const [mapData, setMapData] = useState<any>();
 
   const dispatch = useDispatch();
 
@@ -76,40 +86,13 @@ const MapSection: React.FC = () => {
   let marker: any;
   let places: any;
   let service;
-
-  useEffect(() => {
-    if (!latlng.hasCurrentLoaction) {
-      // latlng.lat = DEAFULT_LOCATION.lat;
-      // latlng.lng = DEAFULT_LOCATION.lng;
-      dispatch(
-        latlngActions.setLatLng({
-          lat: DEAFULT_LOCATION.lat,
-          lng: DEAFULT_LOCATION.lng,
-          hasCurrentLoaction: true,
-        }),
-      );
-    } else {
-      setCurrentLocation({
-        lat: Number(latlng.lat),
-        lng: Number(latlng.lng),
-      });
-    }
-    // if (!storeData) {
-    //   makeMap();
-    // }
-  }, []);
+  let pointMarker: any;
 
   useEffect(() => {
     if (!storeData) {
       makeMap();
     }
   }, []);
-
-  // useEffect(() => {
-  //   if (!isStoreDetail) {
-  //     makeMap();
-  //   }
-  // }, []);
 
   const makeMap = () => {
     const loader = new Loader({
@@ -123,25 +106,14 @@ const MapSection: React.FC = () => {
 
     // loader.load().then(() => {
     map = new google.maps.Map(mapRef.current, {
-      center: { lat: Number(latlng.lat), lng: Number(latlng.lng) },
-      // center: {
-      //   lat: currentLocation.lat,
-      //   lng: currentLocation.lng,
-      // },
+      // center: { lat: Number(latlng.lat), lng: Number(latlng.lng) },
+      center: {
+        lat: currentLocation.lat,
+        lng: currentLocation.lng,
+      },
       zoom: 14,
     });
-    // marker = new window.google.maps.Marker({
-    //   position: {
-    //     // lat: Number(latlng.lat),
-    //     // lng: Number(latlng.lng),
-    //     lat: Number(DEAFULT_LOCATION.lat),
-    //     lng: Number(DEAFULT_LOCATION.lng),
-    //   },
-    //   map,
-    //   icon: {
-    //     url: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
-    //   },
-    // });
+    setMapData(map);
     // map.addListener(
     //   'center_changed',
     //   throttle(() => {
@@ -159,10 +131,10 @@ const MapSection: React.FC = () => {
     // );
     const request: any = {
       location: new google.maps.LatLng(
-        Number(latlng.lat),
-        Number(latlng.lng),
-        // currentLocation.lat,
-        // currentLocation.lng,
+        // Number(latlng.lat),
+        // Number(latlng.lng),
+        currentLocation.lat,
+        currentLocation.lng,
       ),
       radius: '500', // 500m 이내만 우선 검색
       type: ['restaurant'], // restaurant 타입만 검색
@@ -171,7 +143,6 @@ const MapSection: React.FC = () => {
     };
 
     service = new google.maps.places.PlacesService(map);
-    // if (storeData?.length === 0) {
     service.nearbySearch(request, (results, status) => {
       setTitleText(`${selectedFood.name} 가게 목록`);
       if (status == google.maps.places.PlacesServiceStatus.OK) {
@@ -198,127 +169,85 @@ const MapSection: React.FC = () => {
         drawMarker(marker, map);
       }
     });
-
-    // let infowindow = new google.maps.InfoWindow();
-    // if (storeList.length > 0) {
-    //   console.log(storeData);
-    //   storeData?.map((data) => {
-    //     console.log(data);
-    //     marker = new window.google.maps.Marker({
-    //       position: {
-    //         lat: data.geometry.viewport?.Ab?.h,
-    //         lng: data.geometry.viewport?.Va?.h,
-    //       },
-    //       map,
-    //     });
-    //     // google.maps.event.addListener(
-    //     //   marker,
-    //     //   'click',
-    //     //   (function (marker) {
-    //     //     return function () {
-    //     //       infowindow.setContent(data.name);
-    //     //       infowindow.open(map, marker);
-    //     //     };
-    //     //   })(marker),
-    //     // );
-
-    //     // map.addListener(
-    //     //   'store_location',
-    //     //   throttle(() => {
-    //     //     const centerLat = map.getCenter().lat();
-    //     //     const centerLng = map.getCenter().lng();
-    //     //     marker.setPosition({ lat: centerLat, lng: centerLng });
-    //     //     // dispatch(
-    //     //     //   latlngActions.setLatLng({
-    //     //     //     lat: centerLat.toString(),
-    //     //     //     lng: centerLng.toString(),
-    //     //     //     hasCurrentLoaction: true,
-    //     //     //   }),
-    //     //     // );
-    //     //   }, 150),
-    //     // );
-    //   });
-    // }
   };
 
   const drawMarker = (marker: any, map: any) => {
-    let infowindow = new google.maps.InfoWindow();
-    if (storeList.length > 0) {
-      // console.log(storeData);
-      storeList?.map((data) => {
-        marker = new window.google.maps.Marker({
-          position: {
-            lat: data.geometry.viewport?.Ab?.h,
-            lng: data.geometry.viewport?.Va?.h,
-          },
-          map,
-        });
-        google.maps.event.addListener(
-          marker,
-          'click',
-          (function (marker) {
-            return function () {
-              infowindow.setContent(data.name);
-              infowindow.open(map, marker);
-              setIsStoreDetail(true);
-              setTitleText(`${selectedFood.name} 가게 정보`);
-              getStoreDetail(data.place_id, data.geometry);
-            };
-          })(marker),
-        );
-
-        // map.addListener(
-        //   'store_location',
-        //   throttle(() => {
-        //     const centerLat = map.getCenter().lat();
-        //     const centerLng = map.getCenter().lng();
-        //     marker.setPosition({ lat: centerLat, lng: centerLng });
-        //     // dispatch(
-        //     //   latlngActions.setLatLng({
-        //     //     lat: centerLat.toString(),
-        //     //     lng: centerLng.toString(),
-        //     //     hasCurrentLoaction: true,
-        //     //   }),
-        //     // );
-        //   }, 150),
-        // );
+    // let infowindow = new google.maps.InfoWindow();
+    // console.log(storeData);
+    storeList?.map((data) => {
+      marker = new window.google.maps.Marker({
+        position: {
+          lat: data.geometry.viewport?.Ab?.h,
+          lng: data.geometry.viewport?.Va?.h,
+        },
+        icon: '/images/map_marker.png',
+        map,
       });
-    }
+      google.maps.event.addListener(
+        marker,
+        'click',
+        (function (marker) {
+          return function () {
+            // infowindow.setContent(data.name);
+            // infowindow.open(map, marker);
+            setIsStoreDetail(true);
+            setTitleText(`${selectedFood.name} 가게 정보`);
+            getStoreDetail(data.place_id, data.geometry, map);
+          };
+        })(marker),
+      );
+    });
   };
 
-  const getStoreDetail = (place_id: string, geometry: any) => {
+  const getStoreDetail = (place_id: string, geometry: any, map: any) => {
     const detailRequest: any = {
       placeId: place_id,
       // fields: ['name', 'formatted_address', 'geometry'],
     };
     // console.log(geometry?.viewport);
-    let map = new google.maps.Map(mapRef.current, {
-      // center: { lat: Number(latlng.lat), lng: Number(latlng.lng) },
-      center: {
-        lat: geometry?.viewport?.Ab.h,
-        lng: geometry?.viewport?.Va.h,
-      },
-      zoom: 14,
-    });
+    // let map = new google.maps.Map(mapRef.current, {
+    //   // center: { lat: Number(latlng.lat), lng: Number(latlng.lng) },
+    //   center: {
+    //     lat: geometry?.viewport?.Ab.h,
+    //     lng: geometry?.viewport?.Va.h,
+    //   },
+    //   zoom: 14,
+    // });
+
+    if (map === null) {
+      map = mapData;
+    }
+    // console.log(pointMarker);
+    removePointMarker();
+
+    // console.log('befStoreDetail', befStoreDetail);
+    // if (befStoreDetail) {
+    //   console.log('dd');
+    //   marker = new window.google.maps.Marker({
+    //     position: {
+    //       lat: befStoreDetail.lat,
+    //       lng: befStoreDetail.lng,
+    //     },
+    //     icon: '/images/map_marker.png',
+    //     map,
+    //   });
+    // }
+
     // map.setCenter({
     //   lat: geometry?.viewport?.Ab?.h,
     //   lng: geometry?.viewport?.Va?.h,
     // });
-    marker = new window.google.maps.Marker({
+
+    pointMarker = new window.google.maps.Marker({
       position: {
-        // lat: Number(latlng.lat),
-        // lng: Number(latlng.lng),
         lat: geometry?.viewport?.Ab.h,
         lng: geometry?.viewport?.Va.h,
       },
+      icon: '/images/map_logo_point.png',
       map,
-      // icon: {
-      //   url: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
-      // },
     });
+
     let service = new google.maps.places.PlacesService(map);
-    // service = new google.maps.places.PlacesService(map);
-    // if (storeData?.length === 0) {
     service.getDetails(detailRequest, (place, status) => {
       if (
         status === google.maps.places.PlacesServiceStatus.OK &&
@@ -341,14 +270,25 @@ const MapSection: React.FC = () => {
           // geometry: place.geometry!,
           rating: place.rating!,
         });
+
+        setBefStoreDetail({
+          lat: place.geometry?.location.lat(),
+          lng: place.geometry?.location.lng(),
+        });
       }
     });
+  };
+
+  const removePointMarker = () => {
+    if (pointMarker) {
+      pointMarker.setMap(null);
+    }
   };
 
   const handleStoreDetailClick = (place_id: string, geometry: any) => {
     setIsStoreDetail(true);
     setTitleText(`${selectedFood.name} 가게 정보`);
-    getStoreDetail(place_id, geometry);
+    getStoreDetail(place_id, geometry, null);
   };
 
   return (
@@ -366,9 +306,8 @@ const MapSection: React.FC = () => {
           <StoreList>
             <button>현재 위치 재설정</button>
             {storeData.map((data) => (
-              <>
+              <StoreItemWrapper key={data.id}>
                 <StoreItem
-                  key={data.id}
                   onClick={() =>
                     handleStoreDetailClick(data.place_id, data.geometry)
                   }
@@ -384,7 +323,7 @@ const MapSection: React.FC = () => {
                   )}
                 </StoreItem>
                 <StoreItemLine />
-              </>
+              </StoreItemWrapper>
             ))}
           </StoreList>
         ) : (
@@ -393,6 +332,7 @@ const MapSection: React.FC = () => {
               onClick={() => {
                 setIsStoreDetail(false);
                 makeMap();
+                removePointMarker();
               }}
             >
               ←
@@ -420,6 +360,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 
   @media (max-width: 991px) {
   }
@@ -431,12 +372,12 @@ const Container = styled.div`
 
 const Wrapper = styled.div`
   max-width: 900px;
-  width: 100%;
+  // box-sizing: border-box;
 `;
 
 const MapWrapper = styled.section`
   .map-style {
-    width: 487px;
+    // width: 487px;
     height: 280px;
     // margin-top: 24px;
     > div {
@@ -463,7 +404,9 @@ const StoreList = styled.ul`
   padding: 8px 16px;
 `;
 
-const StoreItem = styled.li`
+const StoreItemWrapper = styled.li``;
+
+const StoreItem = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -496,7 +439,7 @@ const StoreItemRating = styled.span`
 const ReturnListButton = styled.button`
   margin: 4px 0 0 12px;
   border: none;
-  background: #fff;
+  background: #ffffff;
   color: ${PALETTE.orange_point};
   font-size: 20px;
   font-weight: 24100;

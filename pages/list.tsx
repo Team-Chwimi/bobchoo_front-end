@@ -2,13 +2,13 @@ import type { NextPage } from 'next';
 
 import styled from '@emotion/styled';
 
-import MapSection from '../components/map/mapSection';
+import FoodListSection from '../components/vote/foodListSection';
 
-const Map: NextPage = () => {
+const List: NextPage = () => {
   return (
     <Container>
       <Wrapper>
-        <MapSection />
+        <FoodListSection />
       </Wrapper>
     </Container>
   );
@@ -34,4 +34,4 @@ const Wrapper = styled.div`
   }
 `;
 
-export default Map;
+export default List;

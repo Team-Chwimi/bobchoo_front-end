@@ -9,3 +9,8 @@ export interface QuestionType {
 export interface QuestionTotalType {
   questionTotalCount: number;
 }
+
+export interface QuestionResultType extends QuestionTotalType {
+  // /api/v1/surveys response 양식
+  questionList: QuestionType[];
+}

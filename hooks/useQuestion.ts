@@ -2,17 +2,17 @@ import { AxiosResponse, AxiosError } from 'axios';
 
 import { useQuery } from 'react-query';
 
-import CopyrightService from '../lib/api/copyrights';
+import SurveyService from '../lib/api/surveys';
 
-import { InfoType } from '../types/InfoType';
 import { ErrorResponse } from '../types/commonTypes';
+import { QuestionResultType } from '../types/qestionType';
 
-const useCopyrights = () => {
-  const queryFn = () => CopyrightService.getCopyrightsAPI();
+const useQuestion = () => {
+  const queryFn = () => SurveyService.getQuestionAPI();
   const { isLoading, data, isError, error } = useQuery<
-    AxiosResponse<InfoType[]>,
+    AxiosResponse<QuestionResultType>,
     AxiosError<ErrorResponse>
-  >('copyrights', queryFn, {
+  >('question', queryFn, {
     refetchOnWindowFocus: false,
     refetchOnMount: false,
     retry: false,
@@ -26,4 +26,4 @@ const useCopyrights = () => {
   };
 };
 
-export default useCopyrights;
+export default useQuestion;

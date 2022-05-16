@@ -20,7 +20,7 @@ interface GraphProps {
 }
 
 const Question: React.FC<QuestionProps> = ({ id }) => {
-  const data = useSelector((state) => state.question.questions);
+  const data = useSelector((state) => state.question.questions[id - 1]);
 
   const questionTotal = useSelector(
     (state) => state.question.questionTotalCount,
@@ -31,7 +31,7 @@ const Question: React.FC<QuestionProps> = ({ id }) => {
 
   useEffect(() => {
     if (!dataDetail) {
-      setDataDetail(data[id - 1]);
+      setDataDetail(data);
       // console.log(dataDetail);
     }
   }, []);

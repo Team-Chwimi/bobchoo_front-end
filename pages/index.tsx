@@ -6,6 +6,8 @@ import { useRouter } from 'next/router';
 
 import styled from '@emotion/styled';
 
+import useQuestion from '../hooks/useQuestion';
+
 import { useSelector } from '../store';
 import { latlngActions } from '../store/latlng';
 import { questionActions } from '../store/question';
@@ -15,7 +17,7 @@ import { QuestionType } from '../types/qestionType';
 import { PALETTE } from '../data/palette';
 
 import Swal from 'sweetalert2';
-import axios from 'axios';
+// import axios from 'axios';
 
 interface ButtonProps {
   backgroundColor: string;
@@ -36,6 +38,8 @@ const Home: NextPage = () => {
 
   const dispatch = useDispatch();
   const location = useSelector((state) => state.latlng);
+
+  const { isLoading, data, isError, errorMessage } = useQuestion();
 
   useEffect(() => {
     if (!location.hasCheckedLocation) {
@@ -123,28 +127,14 @@ const Home: NextPage = () => {
   type resultType = {
     result: QuestionType[];
   };
-
-  const qestionApi = async () => {
-    try {
-      const response = await axios.get(
-        process.env.NEXT_PUBLIC_SERVER_URL + 'api/v1/surveys',
-      );
-      const result = response.data;
-      // const result = response.data.questionList;
-      // const count = response.data.questionTotalCount;
-      // return [result,count];
-      return result;
-    } catch (err) {
-      console.log(err);
-    }
-  };
+      
   const handleQestionData = async () => {
-    const data = await qestionApi();
-    const qestions = data.questionList;
-    const count = data.questionTotalCount;
+    // const data = await qestionApi();
+    // const qestions: QuestionType[] = data?.questionList;
+    // const count: number = data?.questionTotalCount;
 
-    dispatch(questionActions.setQuestions(qestions));
-    dispatch(questionActions.setQuestionTotal(count));
+    dispatch(questionActions.setQuestions(data?.questionList!));
+    dispatch(questionActions.setQuestionTotal(data?.questionTotalCount!));
   };
 
   return (
@@ -162,6 +152,14 @@ const Home: NextPage = () => {
         }}
       >
         맵으로 이동하는 임시버튼
+      </button>
+      <button
+        style={{ position: 'absolute', left: 0, top: 25 }}
+        onClick={(event) => {
+          router.push('/list');
+        }}
+      >
+        우선 결과 전체화면으로 이동하는 버튼
       </button>
       <CopyrightButton onClick={() => router.push('/copyright')}>
         저작권
@@ -185,9 +183,10 @@ const Home: NextPage = () => {
             backgroundColor={PALETTE.orange_point}
             fontColor={PALETTE.white}
             onClick={(event) => {
-              handleLocationCheckedClick(event);
-              handleQestionData();
-              router.push('/survey/1');
+              // handleLocationCheckedClick(event);
+              handleQestionData().then(() => {
+                router.push('/survey/1');
+              });
             }}
           >
             설문조사 시작
