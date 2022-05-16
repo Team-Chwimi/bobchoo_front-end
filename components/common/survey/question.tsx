@@ -8,6 +8,8 @@ import styled from '@emotion/styled';
 
 import { QuestionType } from '../../../types/qestionType';
 
+import SelectOverlap from './selectOverlap';
+
 interface QuestionProps {
   id: number;
 }
@@ -50,10 +52,15 @@ const Question: React.FC<QuestionProps> = ({ id }) => {
               <GraphBack>
                 <Graph total={questionTotal} index={id}></Graph>
               </GraphBack>
+
               <SubDiv>
                 {id}/{questionTotal}
               </SubDiv>
             </GraphDiv>
+            <SelectOverlap
+              qusetionId={dataDetail.questionId}
+              answerList={dataDetail.answerList}
+            />
           </>
         )}
       </Wrapper>
@@ -121,7 +128,7 @@ export const Graph = styled.div<GraphProps>`
 `;
 
 const SubDiv = styled.div`
-  float: right;
+  text-align: right;
   font-style: normal;
   font-weight: 800;
   font-size: 20px;

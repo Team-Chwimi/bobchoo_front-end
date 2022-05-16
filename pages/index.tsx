@@ -127,7 +127,7 @@ const Home: NextPage = () => {
   const qestionApi = async () => {
     try {
       const response = await axios.get(
-        process.env.NEXT_PUBLIC_SERVER_URL + '/api/v1/surveys',
+        process.env.NEXT_PUBLIC_SERVER_URL + 'api/v1/surveys',
       );
       const result = response.data;
       // const result = response.data.questionList;
