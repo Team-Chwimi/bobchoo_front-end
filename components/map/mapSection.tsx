@@ -12,6 +12,8 @@ import { latlngActions } from '../../store/latlng';
 
 import { makeAddress } from '../../lib/utils';
 
+import { LatLngNumberType } from '../../types/MapType';
+
 import StoreDetail from './storeDetail';
 import TitleHeader from '../common/titleHeader';
 import LodaingCircular from '../common/loadingCircular';
@@ -41,11 +43,6 @@ interface StoreDetailType {
   rating: number;
 }
 
-interface LocationType {
-  lat: number;
-  lng: number;
-}
-
 const MapSection: React.FC = () => {
   const mapRef = useRef<any>(null);
   // const mapRef = useRef<HTMLDivElement>(null);
@@ -61,7 +58,7 @@ const MapSection: React.FC = () => {
   const [storeData, setStoreData] = useState<StoreDataType[]>();
   const storeList: StoreDataType[] = [];
 
-  const [currentLocation, setCurrentLocation] = useState<LocationType>({
+  const [currentLocation, setCurrentLocation] = useState<LatLngNumberType>({
     // lat: Number(DEAFULT_LOCATION.lat),
     // lng: Number(DEAFULT_LOCATION.lng),
     lat: Number(latlng.lat),
@@ -74,7 +71,7 @@ const MapSection: React.FC = () => {
   //     lng: Number(DEAFULT_LOCATION.lng),
   //   });
 
-  const [befStoreDetail, setBefStoreDetail] = useState<LocationType>();
+  const [befStoreDetail, setBefStoreDetail] = useState<LatLngNumberType>();
 
   const [mapData, setMapData] = useState<any>();
 
@@ -199,6 +196,21 @@ const MapSection: React.FC = () => {
     });
   };
 
+  const handleCurrentLocation = () => {
+    navigator.geolocation.getCurrentPosition(
+      ({ coords }) => {
+        setCurrentLocation({
+          lat: coords.latitude,
+          lng: coords.longitude,
+        });
+      },
+      (error) => {},
+    );
+    makeMap();
+  };
+
+  const handleMapCurrentLocation = () => {};
+
   const getStoreDetail = (place_id: string, geometry: any, map: any) => {
     const detailRequest: any = {
       placeId: place_id,
@@ -304,7 +316,12 @@ const MapSection: React.FC = () => {
           <LodaingCircular />
         ) : !isStoreDetail ? (
           <StoreList>
-            <button>현재 위치 재설정</button>
+            <SetCurrentLocationButton onClick={() => handleCurrentLocation()}>
+              현재 위치 받아와서 재설정
+            </SetCurrentLocationButton>
+            <button onClick={() => handleMapCurrentLocation()}>
+              지도 중앙을 중심으로 다시 가게 리스트 받기
+            </button>
             {storeData.map((data) => (
               <StoreItemWrapper key={data.id}>
                 <StoreItem
@@ -399,6 +416,8 @@ const MapWrapper = styled.section`
     display: none;
   }
 `;
+
+const SetCurrentLocationButton = styled.button``;
 
 const StoreList = styled.ul`
   padding: 8px 16px;
