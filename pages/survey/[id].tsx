@@ -3,7 +3,7 @@ import type { NextPage } from 'next';
 import styled from '@emotion/styled';
 
 import Header from '../../components/common/header';
-import Question from '../../components/common/survey/question';
+import Question from '../../components/survey/question';
 
 import { LINK_HOME } from '../../data/link';
 
@@ -22,7 +22,7 @@ const SurveyDetail: NextPage<props> = ({ id }) => {
 };
 
 SurveyDetail.getInitialProps = async ({ query }: any) => {
-  const { id } = query;
+  const { id } = await query;
   return { id };
 };
 
