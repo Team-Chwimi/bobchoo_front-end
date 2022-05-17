@@ -143,15 +143,15 @@ const Home: NextPage = () => {
 
   return (
     <Container>
-      {
+      {/* {
         // location.hasCheckedLocation && !location.hasCurrentLoaction
         !isFirst && !canGetLocation ? (
           <CurrentLocationInfo>현재 위치 파악 불가</CurrentLocationInfo>
         ) : (
           <></>
         )
-      }
-      <button
+      } */}
+      {/* <button
         style={{ position: 'absolute', left: 0 }}
         onClick={(event) => {
           handleLocationCheckedClick(event);
@@ -167,7 +167,7 @@ const Home: NextPage = () => {
         }}
       >
         우선 결과 전체화면으로 이동하는 버튼
-      </button>
+      </button> */}
       <CopyrightImg
         src="/images/info_logo.png"
         alt="정보 로고"
@@ -311,12 +311,8 @@ const ButtonWrapper = styled.section`
   justify-content: center;
   box-sizing: border-box;
 
-  @media (max-width: 991px) {
-  }
   @media (max-width: 767px) {
     flex-direction: column;
-  }
-  @media (max-width: 575px) {
   }
 `;
 
