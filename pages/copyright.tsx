@@ -6,8 +6,13 @@ import Header from '../components/common/header';
 import CopyrightSection from '../components/copyrightSection';
 
 import { LINK_HOME } from '../data/link';
+import { useEffect } from 'react';
 
 const Copyright: NextPage = () => {
+  useEffect(() => {
+    document.title = '밥추 저작권';
+  }, []);
+
   return (
     <Container>
       <Wrapper>
