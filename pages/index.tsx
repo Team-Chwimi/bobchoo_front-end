@@ -143,15 +143,15 @@ const Home: NextPage = () => {
 
   return (
     <Container>
-      {
+      {/* {
         // location.hasCheckedLocation && !location.hasCurrentLoaction
         !isFirst && !canGetLocation ? (
           <CurrentLocationInfo>현재 위치 파악 불가</CurrentLocationInfo>
         ) : (
           <></>
         )
-      }
-      <button
+      } */}
+      {/* <button
         style={{ position: 'absolute', left: 0 }}
         onClick={(event) => {
           handleLocationCheckedClick(event);
@@ -167,10 +167,12 @@ const Home: NextPage = () => {
         }}
       >
         우선 결과 전체화면으로 이동하는 버튼
-      </button>
-      <CopyrightButton onClick={() => router.push('/copyright')}>
-        저작권
-      </CopyrightButton>
+      </button> */}
+      <CopyrightImg
+        src="/images/info_logo.png"
+        alt="정보 로고"
+        onClick={() => router.push('/copyright')}
+      />
       <Wrapper>
         <TitleWrapper>
           <TitleImg src="/images/title_logo.png" alt="밥추 로고" />
@@ -222,7 +224,7 @@ const Wrapper = styled.div`
     margin-top: 6%;
   }
   @media (max-width: 575px) {
-    margin-top: 8%;
+    margin-top: 9%;
   }
 `;
 
@@ -232,15 +234,21 @@ const CurrentLocationInfo = styled.span`
   right: 5%;
 `;
 
-const CopyrightButton = styled.button`
+const CopyrightImg = styled.img`
+  width: 32px;
+  height: 32px;
   position: absolute;
-  top: 3%;
-  right: 5%;
+  top: 5%;
+  right: 4%;
   cursor: pointer;
 
-  @media (max-width: 767px) {
-    top: 1%;
+  @media (max-width: 991px) {
+    top: 2%;
     right: 3%;
+  }
+  @media (max-width: 767px) {
+    width: 24px;
+    height: 24px;
   }
 `;
 
@@ -264,7 +272,7 @@ const TitleImg = styled.img`
   width: 95%;
 
   @media (max-width: 991px) {
-    width: 90%;
+    width: 85%;
   }
   @media (max-width: 767px) {
     width: 95%;
@@ -287,10 +295,12 @@ const TitleInfo = styled.h2`
     font-size: 24px;
   }
   @media (max-width: 767px) {
-    margin: 1% 0 3%;
-    font-size: 15px;
+    margin: 1% 0 9%;
+    font-size: 18px;
   }
   @media (max-width: 575px) {
+    margin: 1% 0 13%;
+    font-size: 15px;
   }
 `;
 
@@ -301,12 +311,8 @@ const ButtonWrapper = styled.section`
   justify-content: center;
   box-sizing: border-box;
 
-  @media (max-width: 991px) {
-  }
   @media (max-width: 767px) {
     flex-direction: column;
-  }
-  @media (max-width: 575px) {
   }
 `;
 

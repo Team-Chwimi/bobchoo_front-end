@@ -11,10 +11,7 @@ class MyDocument extends Document {
     return (
       <Html lang="ko">
         <Head>
-          {/* <meta
-            httpEquiv="refresh"
-            content="0;url=http://www.bobchoo.site/"
-          ></meta> */}
+          <meta httpEquiv="refresh" content="0;url=https://www.bobchoo.site/" />
           <meta name="robots" content="follow, index" />
           <meta name="description" content={meta.description} />
           <meta property="og:site_name" content={meta.title} />
