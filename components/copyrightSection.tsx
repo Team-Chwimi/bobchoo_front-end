@@ -18,22 +18,24 @@ const CopyrightSection: React.FC = () => {
   return (
     <Container>
       <Wrapper>
-        <Title>저작권</Title>
         {isLoading || !data ? (
           <LodaingCircular />
         ) : (
-          <FoodInfoList>
-            {data.map(function (el) {
-              return (
-                <FoodInfoItem key={el.foodId}>
-                  <FoodItemName>{el.foodName}</FoodItemName>
-                  <FoodItemURL onClick={handleUrlClick(el.foodURL)}>
-                    {el.foodURL}
-                  </FoodItemURL>
-                </FoodInfoItem>
-              );
-            })}
-          </FoodInfoList>
+          <>
+            <Title>저작권</Title>
+            <FoodInfoList>
+              {data.map(function (el) {
+                return (
+                  <FoodInfoItem key={el.foodId}>
+                    <FoodItemName>{el.foodName}</FoodItemName>
+                    <FoodItemURL onClick={handleUrlClick(el.foodURL)}>
+                      {el.foodURL}
+                    </FoodItemURL>
+                  </FoodInfoItem>
+                );
+              })}
+            </FoodInfoList>
+          </>
         )}
       </Wrapper>
     </Container>
