@@ -55,7 +55,7 @@ const KakaoMapSection: React.FC = () => {
 
   const [kakaoMap, setKakaoMap] = useState(null);
 
-  const [markerList, setMarkerList] = useState();
+  const [markerList, setMarkerList] = useState<any[]>();
 
   const [isStoreDetail, setIsStoreDetail] = useState<boolean>(false);
   const [storeDetailData, setStoreDetailData] = useState<StoreDetailType>();
@@ -74,13 +74,12 @@ const KakaoMapSection: React.FC = () => {
 
   var map: any;
   var marker: any;
-  // var markers: any = [];
 
   useEffect(() => {
     const container = document.getElementById('myMap');
     const options = {
       center: new kakao.maps.LatLng(currentLocation.lat, currentLocation.lng),
-      level: 4,
+      level: 5,
     };
     map = new kakao.maps.Map(container, options);
     setKakaoMap(map);
@@ -118,34 +117,22 @@ const KakaoMapSection: React.FC = () => {
   };
 
   const displayPlaces = () => {
-    console.log('map은', map);
-    if (!storeData) {
-      return;
-    }
+    if (storeData) {
+      removeMarker();
 
-    removeMarker();
-
-    const markers = [];
-    for (var i = 0; i < storeData.length; i++) {
-      var placePosition = new kakao.maps.LatLng(storeData[i].y, storeData[i].x);
-      marker = addMarker(placePosition, i, storeData[i].place_name, kakao);
-      // console.log(storeData[i].x);
-      // marker = new kakao.maps.Marker({
-      //   position: placePosition,
-      // });
-      markers.push(marker); // 배열에 생성된 마커를 추가합니다
-      // marker.setMap(kakaoMap);
-      // console.log('markers', markers);
+      let markers = [];
+      for (var i = 0; i < storeData.length; i++) {
+        var placePosition = new kakao.maps.LatLng(
+          storeData[i].y,
+          storeData[i].x,
+        );
+        marker = addMarker(placePosition, i, storeData[i].place_name, kakao);
+        markers.push(marker);
+      }
+      setMarkerList(markers);
     }
-    // setMarkerList(markers);
-    // for (var i = 0; i < markers.length; i++) {
-    //   markers[i].setMap(map);
-    //   // console.log('markers[]', markers[i]);
-    // }
-    // console.log('markers', markers);
   };
 
-  // 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
   function addMarker(position: any, idx: number, title: any, kakao: any) {
     var imageSrc = '/images/map_marker.png',
       // 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커 이미지 url, 스프라이트 이미지를 씁니다
@@ -186,13 +173,12 @@ const KakaoMapSection: React.FC = () => {
   }
 
   function removeMarker() {
-    // setMarkerList([]);
-    // console.log('remove', markers);
-    // for (var i = 0; i < markers.length; i++) {
-    //   markers[i].setMap(null);
-    // }
-    // markers = [];
-    // markers.length = 0;
+    if (markerList) {
+      for (var i = 0; i < markerList.length!; i++) {
+        markerList[i].setMap(null);
+      }
+      setMarkerList([]);
+    }
   }
 
   return (
@@ -207,7 +193,7 @@ const KakaoMapSection: React.FC = () => {
           }}
         ></div>
         {!storeData ? (
-          <></>
+          <LodaingCircular />
         ) : (
           <>
             <StoreList>
