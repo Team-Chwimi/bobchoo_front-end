@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useRouter } from 'next/router';
 
@@ -15,7 +15,6 @@ interface SelectProps {
 }
 interface style {
   float: string;
-  back: string;
 }
 const SelectOverlap: React.FC<SelectProps> = ({
   qusetionId,
@@ -31,15 +30,11 @@ const SelectOverlap: React.FC<SelectProps> = ({
 
   const [num, setNum] = useState<number>(0);
 
-  const change = useMemo(() => {
-    return handelClicked;
-  }, []);
   useEffect(() => {
     if (id) {
       setNum(id++);
     }
-    change;
-  }, [change, id]);
+  }, []);
 
   // css 항목 왼쪽 오른쪽 끝 배치
   const floatFunc = (i: number) => {
@@ -49,23 +44,11 @@ const SelectOverlap: React.FC<SelectProps> = ({
       return 'right';
     }
   };
-  const back = (i: number) => {
-    if (clicked[i]) {
-      return '#000000';
-    } else {
-      return '#FFFFFF';
-    }
-  };
   // 클릭 여부 판단
   const handelClicked = (i: number) => {
     console.log(clicked);
     let copy = [...colorList];
     copy[i] = !copy[i];
-    // if (clicked[i] === false) {
-    //   clicked[i] = true;
-    // } else {
-    //   clicked[i] = false;
-    // }
     setColorList(copy);
     console.log(clicked, colorList);
   };
@@ -91,7 +74,6 @@ const SelectOverlap: React.FC<SelectProps> = ({
                   <FoodButtonTrue
                     className="button"
                     float={floatFunc(index)}
-                    back={back(index)}
                   >
                     {answer}
                   </FoodButtonTrue>
@@ -99,45 +81,10 @@ const SelectOverlap: React.FC<SelectProps> = ({
                   <FoodButtonFalse
                     className="button"
                     float={floatFunc(index)}
-                    back={back(index)}
                   >
                     {answer}
                   </FoodButtonFalse>
                 )}
-
-                {/* <style jsx>
-                  {`
-                    .button{
-                      background: ${isClicked(index) ?  '#FF7B30': '#F2F2F2'};
-                      color: ${isClicked(index) ?  '#FFFFFF': '#FF7B30'};
-                    }
-                  `}
-                  </style> */}
-                {/* { isClicked(index) ?
-                  <FoodButtonTrue
-                    className='button'
-                    float={floatFunc(index)}
-                    onClick={(event) => {
-                      handelClicked(index);
-                      console.log(index,"index");
-                      console.log(isClicked(index));
-                    }}
-                  >
-                    {answer}
-                  </FoodButtonTrue>
-                  :
-                  <FoodButtonFalse
-                  className='button'
-                  float={floatFunc(index)}
-                  onClick={(event) => {
-                    handelClicked(index);
-                    console.log(index,"index");
-                    // console.log(isClicked(index));
-                  }}
-                >
-                  {answer}
-                </FoodButtonFalse> */}
-                {/* } */}
               </div>
             ))}
           <NextButton
@@ -164,8 +111,8 @@ const FoodDiv = styled.div`
 `;
 
 const FoodButtonTrue = styled.div<style>`
-  background: ${(props) => props.back};
-  // color: #ffffff;
+  background: #ff7b30;
+  color: #ffffff;
   border-radius: 15px;
   width: 45%;
   padding: 5% 0% 5% 0;
