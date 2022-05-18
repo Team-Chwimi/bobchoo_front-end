@@ -46,11 +46,11 @@ const SelectOverlap: React.FC<SelectProps> = ({
   };
   // 클릭 여부 판단
   const handelClicked = (i: number) => {
-    console.log(clicked);
+    // console.log(clicked);
     let copy = [...colorList];
     copy[i] = !copy[i];
     setColorList(copy);
-    console.log(clicked, colorList);
+    // console.log(clicked, colorList);
   };
 
   const isClicked = (i: number) => {
@@ -66,8 +66,8 @@ const SelectOverlap: React.FC<SelectProps> = ({
                 key={index}
                 onClick={(event) => {
                   handelClicked(index);
-                  console.log(index, 'index');
-                  console.log(isClicked(index));
+                  // console.log(index, 'index');
+                  // console.log(isClicked(index));
                 }}
               >
                 {colorList[index] ? (
