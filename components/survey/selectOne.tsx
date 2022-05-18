@@ -58,7 +58,7 @@ const SelectOne: React.FC<SelectProps> = ({qusetionId, answerList, id}) => {
   }
 
   const fontSize = ()=>{
-    console.log(num);
+    // console.log(num);
     if(num===questionTotal+1){
       return '50px';
     }else{

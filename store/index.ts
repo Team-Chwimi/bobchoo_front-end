@@ -8,11 +8,13 @@ import {
 import latlng from './latlng';
 import selectedFood from './selectedFood';
 import question from './question';
+import answer from './answer';
 
 const rootReducer = combineReducers({
   latlng: latlng.reducer,
   selectedFood: selectedFood.reducer,
-  question: question.reducer
+  question: question.reducer,
+  answer: answer.reducer
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
