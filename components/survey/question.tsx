@@ -1,14 +1,16 @@
 import Link from 'next/link';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 
-import { useSelector } from '../../../store';
+import { useSelector } from '../../store';
+
 
 import styled from '@emotion/styled';
 
-import { QuestionType } from '../../../types/qestionType';
+import { QuestionType } from '../../types/qestionType';
 
 import SelectOverlap from './selectOverlap';
+import SelectOne from './selectOne';
 
 interface QuestionProps {
   id: number;
@@ -20,47 +22,46 @@ interface GraphProps {
 }
 
 const Question: React.FC<QuestionProps> = ({ id }) => {
-  const data = useSelector((state) => state.question.questions[id - 1]);
+  const data = useSelector((state) => state.question.questions[id-1]);
 
   const questionTotal = useSelector(
     (state) => state.question.questionTotalCount,
   );
 
-  // const dataDetail = data[id - 1];
-  const [dataDetail, setDataDetail] = useState<QuestionType>();
-
-  useEffect(() => {
-    if (!dataDetail) {
-      setDataDetail(data);
-      // console.log(dataDetail);
-    }
-  }, []);
 
   return (
     <Container>
       <Wrapper>
-        {!dataDetail ? (
+        {!data ? (
           <></>
         ) : (
           <>
             <QuestionDiv>
-              <Title>{dataDetail.question}</Title>
-              {dataDetail.overlap && <OverlapDiv>(중복 선택 가능)</OverlapDiv>}
+              <Title>{data.question}</Title>
+              {data.overlap && <OverlapDiv>(중복 선택 가능)</OverlapDiv>}
             </QuestionDiv>
             <ImageWrapper src="/images/bobdol.gif" alt="밥돌이 이미지" />
             <GraphDiv>
               <GraphBack>
                 <Graph total={questionTotal} index={id}></Graph>
               </GraphBack>
-
               <SubDiv>
                 {id}/{questionTotal}
               </SubDiv>
             </GraphDiv>
-            <SelectOverlap
-              qusetionId={dataDetail.questionId}
-              answerList={dataDetail.answerList}
-            />
+            {data.overlap ? 
+              <SelectOverlap
+                qusetionId={data.questionId}
+                answerList={data.answerList}
+                id={id}
+              />
+              :
+              <SelectOne
+                qusetionId={data.questionId}
+                answerList={data.answerList}
+                id={id}
+              />
+            }
           </>
         )}
       </Wrapper>

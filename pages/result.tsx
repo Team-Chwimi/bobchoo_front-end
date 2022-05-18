@@ -2,29 +2,24 @@ import type { NextPage } from 'next';
 
 import styled from '@emotion/styled';
 
-import Header from '../../components/common/header';
-import Question from '../../components/survey/question';
+import Header from '../components/common/header';
 
-import { LINK_HOME } from '../../data/link';
+import { LINK_HOME } from '../data/link';
 
 type props = {
   id: number;
 };
-const SurveyDetail: NextPage<props> = ({ id }) => {
+const Result: NextPage<props> = () => {
   return (
     <Container>
       <Wrapper>
         <Header linkName={LINK_HOME.linkName} linkPath={LINK_HOME.linkPath} />
-        <Question id={id} />
+        <Title>결과페이지</Title>
       </Wrapper>
     </Container>
   );
 };
 
-SurveyDetail.getInitialProps = async ({ query }: any) => {
-  const { id } = await query;
-  return { id };
-};
 
 const Container = styled.section`
   display: flex;
@@ -47,4 +42,4 @@ const Wrapper = styled.div`
 
 const Title = styled.h1``;
 
-export default SurveyDetail;
+export default Result;
