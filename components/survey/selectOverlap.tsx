@@ -2,7 +2,6 @@ import Link from 'next/link';
 
 import { useEffect, useState, useMemo } from 'react';
 
-
 import { useRouter } from 'next/router';
 
 import { useSelector } from '../../store';
@@ -16,7 +15,7 @@ interface SelectProps {
 }
 interface style {
   float: string;
-  back:string;
+  back: string;
 }
 const SelectOverlap: React.FC<SelectProps> = ({
   qusetionId,
@@ -27,19 +26,20 @@ const SelectOverlap: React.FC<SelectProps> = ({
   const questionTotal = useSelector(
     (state) => state.question.questionTotalCount,
   );
-  const clicked :Array<boolean> = new Array(questionTotal).fill(false);
+  const clicked: Array<boolean> = new Array(questionTotal).fill(false);
+  const [colorList, setColorList] = useState<boolean[]>(clicked);
 
   const [num, setNum] = useState<number>(0);
 
- const change  = useMemo(()=>{
+  const change = useMemo(() => {
     return handelClicked;
- },[])
+  }, []);
   useEffect(() => {
     if (id) {
       setNum(id++);
     }
-    change
-  }, [change,id]);
+    change;
+  }, [change, id]);
 
   // css 항목 왼쪽 오른쪽 끝 배치
   const floatFunc = (i: number) => {
@@ -57,40 +57,55 @@ const SelectOverlap: React.FC<SelectProps> = ({
     }
   };
   // 클릭 여부 판단
-  const handelClicked = (i: number)=>{
+  const handelClicked = (i: number) => {
     console.log(clicked);
-    if(clicked[i]===false){
-      clicked[i] = true;
-    }else{
-      clicked[i] = false;
-    }
-  }
+    let copy = [...colorList];
+    copy[i] = !copy[i];
+    // if (clicked[i] === false) {
+    //   clicked[i] = true;
+    // } else {
+    //   clicked[i] = false;
+    // }
+    setColorList(copy);
+    console.log(clicked, colorList);
+  };
 
-  const isClicked = (i:number)=>{
+  const isClicked = (i: number) => {
     return clicked[i];
-  }
+  };
   return (
     <Container>
       <Wrapper>
         <FoodDiv>
           {answerList &&
             answerList.map((answer: string, index: number) => (
-              <div key={index}>
-                
-                <FoodButtonTrue
-                    className='button'
+              <div
+                key={index}
+                onClick={(event) => {
+                  handelClicked(index);
+                  console.log(index, 'index');
+                  console.log(isClicked(index));
+                }}
+              >
+                {colorList[index] ? (
+                  <FoodButtonTrue
+                    className="button"
                     float={floatFunc(index)}
-                    back = {back(index)}
-                    onClick={(event) => {
-                      handelClicked(index);
-                      console.log(index,"index");
-                      console.log(isClicked(index));
-                    }}
+                    back={back(index)}
                   >
                     {answer}
                   </FoodButtonTrue>
+                ) : (
+                  <FoodButtonFalse
+                    className="button"
+                    float={floatFunc(index)}
+                    back={back(index)}
+                  >
+                    {answer}
+                  </FoodButtonFalse>
+                )}
 
-                  {/* <style jsx>
+                {/* <style jsx>
                   {`
                     .button{
                       background: ${isClicked(index) ?  '#FF7B30': '#F2F2F2'};
@@ -149,7 +164,7 @@ const FoodDiv = styled.div`
 `;
 
 const FoodButtonTrue = styled.div<style>`
-  background:${(props) => props.back};
+  background: ${(props) => props.back};
   // color: #ffffff;
   border-radius: 15px;
   width: 45%;
@@ -163,8 +178,8 @@ const FoodButtonTrue = styled.div<style>`
   font-size: 25px;
 `;
 const FoodButtonFalse = styled.div<style>`
-  background: #F2F2F2;
-  color: #FF7B30;
+  background: #f2f2f2;
+  color: #ff7b30;
   border-radius: 15px;
   width: 45%;
   padding: 5% 0% 5% 0;
