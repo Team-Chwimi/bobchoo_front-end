@@ -8,6 +8,10 @@ import { useSelector } from '../../store';
 
 import styled from '@emotion/styled';
 
+import { useDispatch } from 'react-redux';
+import { answerActions } from '../../store/answer';
+import { AnswerType } from '../../types/answerType';
+
 interface SelectProps {
   qusetionId: number;
   answerList: Array<string>;
@@ -25,14 +29,19 @@ const SelectOverlap: React.FC<SelectProps> = ({
   const questionTotal = useSelector(
     (state) => state.question.questionTotalCount,
   );
+  const myAnswerList = useSelector(
+    (state) => state.answer.answerList,
+  );
   const clicked: Array<boolean> = new Array(questionTotal).fill(false);
   const [colorList, setColorList] = useState<boolean[]>(clicked);
 
-  const [num, setNum] = useState<number>(0);
+  const [num, setNum] = useState<number>(id);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (id) {
-      setNum(id++);
+      setNum(Number(id) + 1);
     }
   }, []);
 
@@ -71,25 +80,32 @@ const SelectOverlap: React.FC<SelectProps> = ({
                 }}
               >
                 {colorList[index] ? (
-                  <FoodButtonTrue
-                    className="button"
-                    float={floatFunc(index)}
-                  >
+                  <FoodButtonTrue className="button" float={floatFunc(index)}>
                     {answer}
                   </FoodButtonTrue>
                 ) : (
-                  <FoodButtonFalse
-                    className="button"
-                    float={floatFunc(index)}
-                  >
+                  <FoodButtonFalse className="button" float={floatFunc(index)}>
                     {answer}
                   </FoodButtonFalse>
                 )}
               </div>
             ))}
           <NextButton
-            onClick={(event) => {
+            onClick={() => {
+              let myFoodAnswer:string[] = [];
+              let cnt=0;
+              colorList.map((data,index)=> {
+                if (data) {
+                  myFoodAnswer[cnt] = answerList[index];
+                  cnt++;
+                }
+              })
+              let result: AnswerType = {questionId: qusetionId, answer: myFoodAnswer}
+              let curAnswerList =  [...myAnswerList];
+              curAnswerList[id-1] = result;
+              dispatch(answerActions.setAnswer({ lat:'', lng:'', answerList: curAnswerList }))
               router.push(`/survey/${num}`);
+              console.log(num);
             }}
           >
             다음
