@@ -4,6 +4,6 @@ export interface HeaderType {
 }
 
 export const LINK_HOME: HeaderType = {
-  linkName: 'Home',
+  linkName: '< Home',
   linkPath: '/',
 };
