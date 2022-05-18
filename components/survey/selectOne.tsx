@@ -1,17 +1,19 @@
 import Link from 'next/link';
 
 import { useEffect, useState, useMemo } from 'react';
-
+import { AxiosResponse } from 'axios';
 import { useRouter } from 'next/router';
 
 import { useDispatch } from 'react-redux';
 import { useSelector } from '../../store';
 
 import { answerActions } from '../../store/answer';
-import { AnswerType,SurveyRequestType } from '../../types/answerType';
+import { selectedFoodListActions } from '../../store/selectedFoodList';
+import { selectedFoodActions } from '../../store/selectedFood';
+import { AnswerType,SurveyRequestType,SurveyResponseType } from '../../types/answerType';
 import axios from 'axios';
 
-import useAnswer from '../../hooks/useQuestion';
+import useAnswer from '../../hooks/useAnswer';
 
 import styled from '@emotion/styled';
 import { axiosInstance } from '../../lib/api';
@@ -83,6 +85,14 @@ const SelectOne: React.FC<SelectProps> = ({ qusetionId, answerList, id }) => {
     const response = await axiosInstance.post(`/api/v1/surveys/results/list`,request);
       return response;
   }
+  
+  const request = { lat:"", lng:"", answerList: myAnswerList };
+  const obj = JSON.stringify(request);
+  const handelOnedata = async()=>{
+    const data = await postOneApi(obj);
+    console.log(data);
+    // dispatch(selectedFoodActions.setSelectedFood({foodName: data.foodName , foodImg: data.foodImg}))
+  }
   return (
     <Container>
       <Wrapper>
@@ -97,28 +107,22 @@ const SelectOne: React.FC<SelectProps> = ({ qusetionId, answerList, id }) => {
                 onClick={(event) => {
                   if (num === questionTotal + 1) {
                     //하나만 선택할 때
-                    const request = { lat:"", lng:"", answerList: myAnswerList };
-                    // console.log(request,"request");
-                    const obj = JSON.stringify(request);
                     console.log(obj,"obj");
                     if(index===0){
-                        const data = postOneApi(obj);
-                        console.log(data);
-                    }
-                    //여러개 선택할 때
-                    else{ 
+                       
+                        router.push(`/result`);
+                      }
+                      //여러개 선택할 때
+                      else{ 
                         const data = postMultiApi(obj);
-                    }
-                    router.push(`/result`);
-                  } else {
-                    if(index===0){
-                      let result: AnswerType = {questionId: qusetionId, answer: ["YES"]}
-                      let curAnswerList =  [...myAnswerList];
-                      curAnswerList[qusetionId-1] = result;
-                      console.log(myAnswerList,"list")
-                      dispatch(answerActions.setAnswer({ lat:"", lng:"", answerList: curAnswerList }))
+                      }
+                    } else {
+                      if(index===0){
+                        let result: AnswerType = {questionId: qusetionId, answer: ["YES"]}
+                        let curAnswerList =  [...myAnswerList];
+                        curAnswerList[qusetionId-1] = result;
+                        dispatch(answerActions.setAnswer({ lat:"", lng:"", answerList: curAnswerList }))
                     }else{
-                      console.log(myAnswerList,"list")
                       dispatch(answerActions.setAnswer({ lat:"", lng:"", answerList: myAnswerList }))
                     }
                     router.push(`/survey/${num}`);

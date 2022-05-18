@@ -9,4 +9,9 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+module.exports = {
+  nextConfig,
+  images: { 
+    domains: ["firebasestorage.googleapis.com"] 
+  },
+};

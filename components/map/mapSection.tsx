@@ -135,13 +135,13 @@ const MapSection: React.FC = () => {
       ),
       radius: '500', // 500m 이내만 우선 검색
       type: ['restaurant'], // restaurant 타입만 검색
-      keyword: selectedFood.name,
+      keyword: selectedFood.foodName,
       // openNow: true, // 현재 문 연 가게만 검색
     };
 
     service = new google.maps.places.PlacesService(map);
     service.nearbySearch(request, (results, status) => {
-      setTitleText(`${selectedFood.name} 가게 목록`);
+      setTitleText(`${selectedFood.foodName} 가게 목록`);
       if (status == google.maps.places.PlacesServiceStatus.OK) {
         if (results) {
           for (let i = 0; i < results.length; i++) {
@@ -188,7 +188,7 @@ const MapSection: React.FC = () => {
             // infowindow.setContent(data.name);
             // infowindow.open(map, marker);
             setIsStoreDetail(true);
-            setTitleText(`${selectedFood.name} 가게 정보`);
+            setTitleText(`${selectedFood.foodName} 가게 정보`);
             getStoreDetail(data.place_id, data.geometry, map);
           };
         })(marker),
@@ -299,7 +299,7 @@ const MapSection: React.FC = () => {
 
   const handleStoreDetailClick = (place_id: string, geometry: any) => {
     setIsStoreDetail(true);
-    setTitleText(`${selectedFood.name} 가게 정보`);
+    setTitleText(`${selectedFood.foodName} 가게 정보`);
     getStoreDetail(place_id, geometry, null);
   };
 

@@ -19,7 +19,7 @@ const useAnswer = (request: SurveyRequestType) => {
   const { isLoading, data, isError, error } = useQuery<
     AxiosResponse<SurveyResponseType>,
     AxiosError<ErrorResponse>
-  >('question', queryFn, {
+  >('answer', queryFn, {
     refetchOnWindowFocus: false,
     refetchOnMount: false,
     retry: false,

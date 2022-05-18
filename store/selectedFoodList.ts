@@ -10,7 +10,7 @@ const initialState: responseMultiState = {
 // };
 
 const selectedFoodList = createSlice({
-  name: 'food',
+  name: 'foodList',
   initialState,
   reducers: {
     setSelectedFood(state, action: PayloadAction<responseMultiState>) {
