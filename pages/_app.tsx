@@ -1,4 +1,5 @@
-import React from 'react';
+/* global kakao */
+import React, { useEffect } from 'react';
 
 import type { AppProps } from 'next/app';
 import Head from 'next/head';

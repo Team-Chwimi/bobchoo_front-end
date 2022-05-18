@@ -2,13 +2,29 @@ import type { NextPage } from 'next';
 
 import styled from '@emotion/styled';
 
-import MapSection from '../components/map/mapSection';
+// import KakaoMapSection from '../components/map/kakaoMapSection';
+
+import dynamic from 'next/dynamic';
+
+declare global {
+  interface Window {
+    kakao: any;
+  }
+}
+
+const KakaoMapSection = dynamic(
+  () => import('../components/map/kakaoMapSection'),
+  {
+    // Do not import in server side
+    ssr: false,
+  },
+);
 
 const Map: NextPage = () => {
   return (
     <Container>
       <Wrapper>
-        <MapSection />
+        <KakaoMapSection />
       </Wrapper>
     </Container>
   );
