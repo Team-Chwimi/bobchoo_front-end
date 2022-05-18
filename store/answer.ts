@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { DEAFULT_LOCATION } from '../data/location';
-import { AnswerState } from '../types/reduxState';
+import { AnswerState,responseOneState } from '../types/reduxState';
 import { AnswerType } from '../types/answerType';
 
 const initialState: AnswerState = {
@@ -8,6 +8,7 @@ const initialState: AnswerState = {
   lng: DEAFULT_LOCATION.lng,
   answerList: [],
 };
+
 
 const answer = createSlice({ 
   name: 'answer', 

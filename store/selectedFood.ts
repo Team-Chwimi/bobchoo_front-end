@@ -1,19 +1,22 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { responseOneState } from '../types/reduxState';
 
-interface foodType {
-  name: string;
-}
-
-const initialState: foodType = {
-  name: '김밥',
+const initialState: responseOneState = {
+  foodName: "",
+  foodImg: ""
 };
+
+// const initialState: foodType = {
+//   name: '김밥',
+// };
 
 const selectedFood = createSlice({
   name: 'food',
   initialState,
   reducers: {
-    setSelectedFood(state, action: PayloadAction<foodType>) {
-      state.name = action.payload.name;
+    setSelectedFood(state, action: PayloadAction<responseOneState>) {
+      state.foodName = action.payload.foodName;
+      state.foodImg = action.payload.foodImg;
     },
   },
 });

@@ -17,7 +17,4 @@ export interface SurveyResponseItem {
     foodId: number;
     foodName: string;
 }
-export interface SurveyResponseItemType {
-  responseList: SurveyResponseItem[];
-}
 
