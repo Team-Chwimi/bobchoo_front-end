@@ -16,6 +16,7 @@ interface SelectProps {
 }
 interface style {
   float: string;
+  back:string;
 }
 const SelectOverlap: React.FC<SelectProps> = ({
   qusetionId,
@@ -48,6 +49,13 @@ const SelectOverlap: React.FC<SelectProps> = ({
       return 'right';
     }
   };
+  const back = (i: number) => {
+    if (clicked[i]) {
+      return '#000000';
+    } else {
+      return '#FFFFFF';
+    }
+  };
   // 클릭 여부 판단
   const handelClicked = (i: number)=>{
     console.log(clicked);
@@ -72,6 +80,7 @@ const SelectOverlap: React.FC<SelectProps> = ({
                 <FoodButtonTrue
                     className='button'
                     float={floatFunc(index)}
+                    back = {back(index)}
                     onClick={(event) => {
                       handelClicked(index);
                       console.log(index,"index");
@@ -81,14 +90,14 @@ const SelectOverlap: React.FC<SelectProps> = ({
                     {answer}
                   </FoodButtonTrue>
 
-                  <style jsx>
+                  {/* <style jsx>
                   {`
                     .button{
                       background: ${isClicked(index) ?  '#FF7B30': '#F2F2F2'};
                       color: ${isClicked(index) ?  '#FFFFFF': '#FF7B30'};
                     }
                   `}
-                  </style>
+                  </style> */}
                 {/* { isClicked(index) ?
                   <FoodButtonTrue
                     className='button'
@@ -112,8 +121,8 @@ const SelectOverlap: React.FC<SelectProps> = ({
                   }}
                 >
                   {answer}
-                </FoodButtonFalse>
-                } */}
+                </FoodButtonFalse> */}
+                {/* } */}
               </div>
             ))}
           <NextButton
@@ -140,7 +149,7 @@ const FoodDiv = styled.div`
 `;
 
 const FoodButtonTrue = styled.div<style>`
-  // background: #FF7B30;
+  background:${(props) => props.back};
   // color: #ffffff;
   border-radius: 15px;
   width: 45%;
