@@ -17,6 +17,7 @@ const answer = createSlice({
       state.lat = action.payload.lat,
       state.lng = action.payload.lng,
       state.answerList = action.payload.answerList
+      return state
     },
   }}
   );
