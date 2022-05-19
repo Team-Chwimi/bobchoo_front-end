@@ -33,6 +33,10 @@ const checkStoresExist = async (foodName: string, lat: string, lng: string) => {
 
 const FoodListSection: React.FC = () => {
   const latlng = useSelector((state) => state.latlng);
+  const selectedFoodList = useSelector(
+    (state) => state.selectedFoodList.foodList,
+  );
+
   const dispatch = useDispatch();
 
   const router = useRouter();
@@ -87,10 +91,10 @@ const FoodListSection: React.FC = () => {
       <Wrapper>
         <TitleHeader title="오늘의 밥추 리스트!" />
         <FoodList>
-          {!FOOD_LIST_RESULT ? (
+          {!selectedFoodList ? (
             <></>
           ) : (
-            FOOD_LIST_RESULT.map((data, index) => (
+            selectedFoodList.map((data, index) => (
               <FoodItem
                 key={data.foodId}
                 onClick={() => handleSelectedClick(data.foodName)}
@@ -116,7 +120,7 @@ const FoodListSection: React.FC = () => {
           )}
         </FoodList>
         <ButtonSection>
-          <StartVoteButton>투표 시작하기</StartVoteButton>
+          {/* <StartVoteButton>투표 시작하기</StartVoteButton> */}
           <PickAgainButton>다시 고르기</PickAgainButton>
         </ButtonSection>
       </Wrapper>
