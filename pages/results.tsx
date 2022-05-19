@@ -2,7 +2,7 @@ import type { NextPage } from 'next';
 
 import styled from '@emotion/styled';
 
-import FoodListSection from '../components/vote/foodListSection';
+import FoodListSection from '../components/result/foodListSection';
 
 const Results: NextPage = () => {
   return (
