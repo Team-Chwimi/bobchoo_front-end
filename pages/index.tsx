@@ -12,6 +12,8 @@ import { useSelector } from '../store';
 import { latlngActions } from '../store/latlng';
 import { questionActions } from '../store/question';
 
+import { axiosInstance } from '../lib/api';
+
 import { QuestionType } from '../types/qestionType';
 
 import { PALETTE } from '../data/palette';
@@ -132,13 +134,31 @@ const Home: NextPage = () => {
     result: QuestionType[];
   };
 
-  const handleQestionData = async () => {
-    // const data = await qestionApi();
-    // const qestions: QuestionType[] = data?.questionList;
-    // const count: number = data?.questionTotalCount;
 
+  const randomnApi = async() => {
+    try{
+      const response = await axiosInstance.get(process.env.NEXT_PUBLIC_SERVER_URL+"/api/v1/random");
+      const result = response.data;
+      // const result = response.data.questionList;
+      // const count = response.data.questionTotalCount;
+      // return [result,count];
+      return result;
+    }catch(err){
+      console.log(err);
+    }
+
+  } 
+  const handleQestionData = async () => {
     dispatch(questionActions.setQuestions(data?.questionList!));
     dispatch(questionActions.setQuestionTotal(data?.questionTotalCount!));
+  };
+  const handleRandomData = async () => {
+    const randomdata = await randomnApi();
+    // console.log(randomdata);
+    // const qestions = randomdata;
+    const count = 1;
+    dispatch(questionActions.setQuestions([randomdata]));
+    dispatch(questionActions.setQuestionTotal(count));
   };
 
   return (
@@ -183,7 +203,12 @@ const Home: NextPage = () => {
             id="random"
             backgroundColor={PALETTE.gray_F2}
             fontColor={PALETTE.orange_point}
-            onClick={handleLocationCheckedClick}
+            onClick={(event) => {
+              // handleLocationCheckedClick(event);
+              handleRandomData().then(() => {
+                router.push('/random/1');
+              });
+            }}
           >
             랜덤으로 선택
           </StartButton>
