@@ -3,8 +3,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { responseOneState } from '../types/reduxState';
 
 const initialState: responseOneState = {
-  foodName: "",
-  foodImg: ""
+  foodName: '',
+  foodImg: '',
 };
 
 const selectedFood = createSlice({

@@ -10,9 +10,10 @@ interface HeaderProps extends HeaderType {}
 const Header: React.FC<HeaderProps> = ({ linkName, linkPath }) => {
   return (
     <HomeLink
-    onClick={()=>{
-      window.location.replace("/");
-    }}>
+      onClick={() => {
+        window.location.replace('/');
+      }}
+    >
       {/* <Link href={linkPath}>&#60; {linkName}</Link> */}
       {/* <Link href={linkPath}>{linkName}</Link> */}
       &#60; HOME
@@ -26,6 +27,7 @@ const HomeLink = styled.span`
   margin-left: 1vh;
   margin-top: 5vw;
   color: ${PALETTE.orange_point};
+  cursor: pointer;
 `;
 
 export default Header;
