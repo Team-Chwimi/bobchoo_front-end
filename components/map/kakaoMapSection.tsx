@@ -195,10 +195,10 @@ const KakaoMapSection: React.FC = () => {
 
     let iwContent = `
       <div style="width:100%; padding:8px 12px;">
-      <div style="color: #383838; font-size:10px; padding-bottom:4px;">${storeData[idx].category_name}</div>
-      <div style="color: #383838; font-size:15px; font-weight:800; padding-bottom:4px;">${storeData[idx].place_name}</div>
-      <div style="color: #383838; font-size:13px; padding-bottom:4px;">${storeData[idx].address_name}</div>
-      <div style="color: #383838; font-size:13px;">${storeData[idx].phone}</div>
+        <div style="color: #383838; font-size:10px; padding-bottom:4px;">${storeData[idx].category_name}</div>
+        <div style="color: #383838; font-size:15px; font-weight:800; padding-bottom:4px;">${storeData[idx].place_name}</div>
+        <div style="color: #383838; font-size:13px; padding-bottom:4px;">${storeData[idx].address_name}</div>
+        <div style="color: #383838; font-size:13px;">${storeData[idx].phone}</div>
       </div>
     `; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
     let iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
@@ -346,6 +346,17 @@ const KakaoMapSection: React.FC = () => {
                         />
                         상세보기
                       </StoreItemURL>
+                      <StoreItemWay
+                        onClick={handleUrlClick(
+                          `https:/map.kakao.com/link/to/${data.id}`,
+                        )}
+                      >
+                        <IconImg
+                          src="/images/map_marker.png"
+                          alt="지도 아이콘"
+                        />
+                        길찾기
+                      </StoreItemWay>
                       {/* {data.rating === 0 ? (
                       <>평점이 없습니다</>
                     ) : (
@@ -483,6 +494,14 @@ const StoreItemDistance = styled.div`
 `;
 
 const StoreItemURL = styled.div`
+  display: flex;
+  align-items: center;
+  padding-bottom: 4px;
+  font-size: 15px;
+  cursor: pointer;
+`;
+
+const StoreItemWay = styled.div`
   display: flex;
   align-items: center;
   padding-bottom: 4px;
