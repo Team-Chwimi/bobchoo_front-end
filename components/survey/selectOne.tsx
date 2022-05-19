@@ -85,24 +85,35 @@ const SelectOne: React.FC<SelectProps> = ({ qusetionId, answerList, id }) => {
     );
     return response.data;
   };
+
   const postMultiApi = async (request: string) => {
     const response = await axiosInstance.post(
       `/api/v1/surveys/results/list`,
       request,
     );
-    return response;
+    return response.data;
   };
 
   const request = { lat: '', lng: '', answerList: myAnswerList };
   const obj = JSON.stringify(request);
 
-  const handelOnedata = async () => {
+  const handleOneData = async () => {
     const data = await postOneApi(obj);
     console.log(data);
     dispatch(
       selectedFoodActions.setSelectedFood({
         foodName: data.foodName,
         foodImg: data.foodImg,
+      }),
+    );
+  };
+
+  const handleMultipleData = async () => {
+    const data = await postMultiApi(obj);
+    console.log(data);
+    dispatch(
+      selectedFoodListActions.setSelectedFoodList({
+        foodList: data,
       }),
     );
   };
@@ -122,13 +133,16 @@ const SelectOne: React.FC<SelectProps> = ({ qusetionId, answerList, id }) => {
                   if (num === questionTotal + 1) {
                     //하나만 선택할 때
                     console.log(obj, 'obj');
-                    handelOnedata().then();
                     if (index === 0) {
-                      router.push(`/result`);
+                      handleOneData().then(() => {
+                        router.push(`/result`);
+                      });
                     }
                     //여러개 선택할 때
                     else {
-                      const data = postMultiApi(obj);
+                      handleMultipleData().then(() => {
+                        router.push(`/results`);
+                      });
                     }
                   } else {
                     if (index === 0) {

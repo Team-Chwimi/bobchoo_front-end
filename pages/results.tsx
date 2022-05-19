@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 
 import FoodListSection from '../components/vote/foodListSection';
 
-const List: NextPage = () => {
+const Results: NextPage = () => {
   return (
     <Container>
       <Wrapper>
@@ -34,4 +34,4 @@ const Wrapper = styled.div`
   }
 `;
 
-export default List;
+export default Results;
