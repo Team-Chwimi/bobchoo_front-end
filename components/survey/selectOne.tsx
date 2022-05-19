@@ -21,6 +21,7 @@ import useAnswer from '../../hooks/useAnswer';
 
 import styled from '@emotion/styled';
 import { axiosInstance } from '../../lib/api';
+import { requestTypeActions } from '../../store/requestType';
 
 interface style {
   back: string;
@@ -174,6 +175,11 @@ const SelectOne: React.FC<SelectProps> = ({ qusetionId, answerList, id }) => {
                     console.log(obj, 'obj');
 
                     if (questionTotal === 1) {
+                      dispatch(
+                        requestTypeActions.setRequestType({
+                          type: 'random',
+                        }),
+                      );
                       if (index === 0) {
                         handleRandomOneData().then(() => {
                           router.push(`/result`);
@@ -186,6 +192,11 @@ const SelectOne: React.FC<SelectProps> = ({ qusetionId, answerList, id }) => {
                         });
                       }
                     } else {
+                      dispatch(
+                        requestTypeActions.setRequestType({
+                          type: 'survey',
+                        }),
+                      );
                       if (index === 0) {
                         handleOneData().then(() => {
                           router.push(`/result`);
