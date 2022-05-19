@@ -43,7 +43,15 @@ const Container = styled.section`
 `;
 
 const Wrapper = styled.div`
-  margin-top: 16px;
+  width: 100%;
+  max-width: 900px;
+
+  @media (max-width: 991px) {
+  }
+  @media (max-width: 767px) {
+  }
+  @media (max-width: 575px) {
+  }
 `;
 
 export default Map;

@@ -23,14 +23,14 @@ const TitleHeader: React.FC<TitleHeaderProps> = ({ title }) => {
 };
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
+  // display: flex;
+  // flex-direction: column;
 `;
 
 const LinkWrapper = styled.div`
-  position: absolute;
-  margin-top: 16px;
-  padding-left: 8px;
+  // position: absolute;
+  // margin-top: 16px;
+  // padding-left: 8px;
 `;
 
 const HeaderWrapper = styled.div`
@@ -43,13 +43,19 @@ const HeaderWrapper = styled.div`
 
 const Title = styled.div`
   color: ${PALETTE.gray_38};
-  font-size: 24px;
+  font-size: 40px;
+  font-style: normal;
   font-weight: 800;
+  margin-top: 5vh;
+  word-break: keep-all;
+  float: left;
 `;
 
 const ImageWrapper = styled.img`
   // width: 61px;
-  height: 61px;
+  height: 10vh;
+  float: right;
+  margin-right: 2vh;
 `;
 
 export default TitleHeader;
