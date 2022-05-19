@@ -34,17 +34,17 @@ interface StoreDataType {
   y: string;
 }
 
-interface StoreDetailType {
-  place_id: string;
-  name: string;
-  formatted_address: string;
-  formatted_phone_number: string;
-  isOpen: boolean;
-  // geometry: any;
-  time: any;
-  lat: number;
-  lng: number;
-  rating: number;
+interface StoreDetailType extends StoreDataType {
+  // place_id: string;
+  // name: string;
+  // formatted_address: string;
+  // formatted_phone_number: string;
+  // isOpen: boolean;
+  // // geometry: any;
+  // time: any;
+  // lat: number;
+  // lng: number;
+  // rating: number;
 }
 
 const KakaoMapSection: React.FC = () => {
@@ -56,6 +56,7 @@ const KakaoMapSection: React.FC = () => {
   const [kakaoMap, setKakaoMap] = useState(null);
 
   const [markerList, setMarkerList] = useState<any[]>();
+  const [infoWindowList, setInfoWindowList] = useState<any[]>();
 
   const [isStoreDetail, setIsStoreDetail] = useState<boolean>(false);
   const [storeDetailData, setStoreDetailData] = useState<StoreDetailType>();
@@ -63,6 +64,8 @@ const KakaoMapSection: React.FC = () => {
   const [titleText, setTitleText] = useState<string>('');
 
   const [storeData, setStoreData] = useState<StoreDataType[]>([]);
+
+  const [selectedMarker, setSelectedMarker] = useState<any>();
 
   const [currentLocation, setCurrentLocation] = useState<LatLngNumberType>({
     lat: Number(latlng.lat),
@@ -72,8 +75,8 @@ const KakaoMapSection: React.FC = () => {
   const kakaoKey: string = process.env
     .NEXT_PUBLIC_KAKAOMAP_REST_APPKEY as string;
 
-  var map: any;
-  var marker: any;
+  let map: any;
+  let marker: any;
 
   useEffect(() => {
     const container = document.getElementById('myMap');
@@ -102,6 +105,28 @@ const KakaoMapSection: React.FC = () => {
     displayPlaces();
   }, [storeData]);
 
+  let imageSrc = '/images/map_marker.png',
+    // 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커 이미지 url, 스프라이트 이미지를 씁니다
+    imageSize = new kakao.maps.Size(31, 32), // 마커 이미지의 크기
+    imgOptions = {
+      // spriteSize: new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
+      // spriteOrigin: new kakao.maps.Point(0, idx * 46 + 10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
+      offset: new kakao.maps.Point(13, 37), // 마커 좌표에 일치시킬 이미지 내에서의 좌표
+    },
+    markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions);
+
+  let imageSrcClicked = '/images/map_logo_point.png',
+    imgOptionsClicked = {
+      // spriteSize: new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
+      // spriteOrigin: new kakao.maps.Point(0, idx * 46 + 10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
+      offset: new kakao.maps.Point(13, 37), // 마커 좌표에 일치시킬 이미지 내에서의 좌표
+    },
+    clickImage = new kakao.maps.MarkerImage(
+      imageSrcClicked,
+      imageSize,
+      imgOptionsClicked,
+    );
+
   const searchStores = async () => {
     let url = `https://dapi.kakao.com/v2/local/search/keyword.json?query=${selectedFood.name}&y=${currentLocation.lat}&x=${currentLocation.lng}&radius=20000&category_group_code=FD6`;
     let config = {
@@ -121,65 +146,129 @@ const KakaoMapSection: React.FC = () => {
       removeMarker();
 
       let markers = [];
-      for (var i = 0; i < storeData.length; i++) {
-        var placePosition = new kakao.maps.LatLng(
+      let infoWindows: any[] = [];
+      for (let i = 0; i < storeData.length; i++) {
+        let placePosition = new kakao.maps.LatLng(
           storeData[i].y,
           storeData[i].x,
         );
-        marker = addMarker(placePosition, i, storeData[i].place_name, kakao);
+        let marker = addMarker(
+          placePosition,
+          i,
+          storeData[i].place_name,
+          kakao,
+          infoWindows,
+        );
+
         markers.push(marker);
       }
       setMarkerList(markers);
+      setInfoWindowList(infoWindows);
     }
   };
 
-  function addMarker(position: any, idx: number, title: any, kakao: any) {
-    var imageSrc = '/images/map_marker.png',
-      // 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커 이미지 url, 스프라이트 이미지를 씁니다
-      imageSize = new kakao.maps.Size(31, 32), // 마커 이미지의 크기
-      imgOptions = {
-        // spriteSize: new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
-        // spriteOrigin: new kakao.maps.Point(0, idx * 46 + 10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
-        offset: new kakao.maps.Point(13, 37), // 마커 좌표에 일치시킬 이미지 내에서의 좌표
-      },
-      markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions);
+  function addMarker(
+    position: any,
+    idx: number,
+    title: any,
+    kakao: any,
+    infoWindows: any[],
+  ) {
     marker = new kakao.maps.Marker({
-      // map: map,
       position: position, // 마커의 위치
       image: markerImage,
     });
-    // var iwContent =
-    //   '<div style="padding:5px;font-size:12px;">' + title + '</div>';
-    // var infowindow = new kakao.maps.InfoWindow({
-    //   content: iwContent,
-    // });
 
-    // // 마커에 마우스오버 이벤트를 등록합니다
-    // kakao.maps.event.addListener(marker, 'mouseover', function () {
-    //   // 마커에 마우스오버 이벤트가 발생하면 인포윈도우를 마커위에 표시합니다
-    //   infowindow.open(map, marker);
-    // });
+    marker.setMap(kakaoMap);
 
-    // // 마커에 마우스아웃 이벤트를 등록합니다
-    // kakao.maps.event.addListener(marker, 'mouseout', function () {
-    //   // 마커에 마우스아웃 이벤트가 발생하면 인포윈도우를 제거합니다
-    //   infowindow.close();
-    // });
+    let iwContent = `
+      <div style="width:100%; padding:8px 12px;">
+      <div style="color: #383838; font-size:10px; padding-bottom:4px;">${storeData[idx].category_name}</div>
+      <div style="color: #383838; font-size:15px; font-weight:800; padding-bottom:4px;">${storeData[idx].place_name}</div>
+      <div style="color: #383838; font-size:13px; padding-bottom:4px;">${storeData[idx].address_name}</div>
+      <div style="color: #383838; font-size:13px;">${storeData[idx].phone}</div>
+      </div>
+    `; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+    let iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
 
-    marker.setMap(kakaoMap); // 지도 위에 마커를 표출합니다
-    // markers.push(marker); // 배열에 생성된 마커를 추가합니다
+    // 마커에 표시할 인포윈도우를 생성합니다
+    let infowindow = new kakao.maps.InfoWindow({
+      content: iwContent, // 인포윈도우에 표시할 내용
+      removable: iwRemoveable,
+    });
+
+    infoWindows.push(infowindow);
+
+    // 마커에 이벤트를 등록하는 함수 만들고 즉시 호출하여 클로저를 만듭니다
+    // 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+    (function (marker, infowindow) {
+      // 마커에 mouseover 이벤트를 등록하고 마우스 오버 시 인포윈도우를 표시합니다
+      // kakao.maps.event.addListener(marker, 'mouseover', function () {
+      //   infowindow.open(kakaoMap, marker);
+      // });
+
+      // 마커에 mouseout 이벤트를 등록하고 마우스 아웃 시 인포윈도우를 닫습니다
+      // kakao.maps.event.addListener(marker, 'mouseout', function () {
+      //   infowindow.close();
+      // });
+
+      kakao.maps.event.addListener(marker, 'click', function () {
+        // 마커 위에 인포윈도우를 표시합니다
+        infowindow.open(kakaoMap, marker);
+      });
+    })(marker, infowindow);
 
     return marker;
   }
 
+  //marker click event
+  function makeClickListener(marker: any) {
+    // 마커에 click 이벤트를 등록합니다
+    kakao.maps.event.addListener(marker, 'click', function () {
+      // 클릭된 마커가 없고, click 마커가 클릭된 마커가 아니면
+      // 마커의 이미지를 클릭 이미지로 변경합니다
+      if (!selectedMarker || selectedMarker !== marker) {
+        console.log('aaa');
+        // 클릭된 마커 객체가 null이 아니면
+        // 클릭된 마커의 이미지를 기본 이미지로 변경하고
+        if (!!selectedMarker) {
+          console.log('dddd');
+          selectedMarker.setImage(markerImage);
+          selectedMarker(null);
+        } else {
+          console.log('cccc');
+        }
+        // 현재 클릭된 마커의 이미지는 클릭 이미지로 변경합니다
+        marker.setImage(clickImage);
+      }
+
+      // 클릭된 마커를 현재 클릭된 마커 객체로 설정합니다
+      // selectedMarker = marker;
+      setSelectedMarker(marker);
+    });
+  }
+
   function removeMarker() {
     if (markerList) {
-      for (var i = 0; i < markerList.length!; i++) {
+      for (let i = 0; i < markerList.length!; i++) {
         markerList[i].setMap(null);
       }
       setMarkerList([]);
     }
+
+    if (infoWindowList) {
+      for (let i = 0; i < infoWindowList.length!; i++) {
+        infoWindowList[i].setMap(null);
+      }
+      setInfoWindowList([]);
+    }
   }
+
+  const handleStoreDetailClick = () => {
+    setIsStoreDetail(true);
+    setTitleText(`${selectedFood.name} 가게 정보`);
+    //  getStoreDetail(place_id, geometry, null);
+  };
 
   return (
     <Container>
@@ -194,29 +283,47 @@ const KakaoMapSection: React.FC = () => {
         ></div>
         {!storeData ? (
           <LodaingCircular />
-        ) : (
-          <>
-            <StoreList>
-              {storeData.map((data) => (
-                <StoreItemWrapper key={data.id}>
-                  <StoreItem
-                  // onClick={() =>
-                  // handleStoreDetailClick(data.place_id, data.geometry)
-                  // }
-                  >
-                    <StoreItemName>{data.place_name}</StoreItemName>
-                    {/* {data.rating === 0 ? (
+        ) : !isStoreDetail ? (
+          <StoreList>
+            {storeData.map((data) => (
+              <StoreItemWrapper key={data.id}>
+                <StoreItem onClick={() => handleStoreDetailClick()}>
+                  <StoreItemName>{data.place_name}</StoreItemName>
+                  {/* {data.rating === 0 ? (
                       <>평점이 없습니다</>
                     ) : (
                       <StoreItemRating>
                         {data.rating.toFixed(1)}/5.0
                       </StoreItemRating>
                     )} */}
-                  </StoreItem>
-                  <StoreItemLine />
-                </StoreItemWrapper>
-              ))}
-            </StoreList>
+                </StoreItem>
+                <StoreItemLine />
+              </StoreItemWrapper>
+            ))}
+          </StoreList>
+        ) : (
+          <>
+            <ReturnListButton
+              onClick={() => {
+                setIsStoreDetail(false);
+                displayPlaces();
+              }}
+            >
+              ←
+            </ReturnListButton>
+            {!storeDetailData ? (
+              <LodaingCircular />
+            ) : (
+              <></>
+              // <StoreDetail
+              //   name={storeDetailData.name}
+              //   formatted_address={storeDetailData.formatted_address}
+              //   formatted_phone_number={storeDetailData.formatted_phone_number}
+              //   time={storeDetailData.time}
+              //   rating={storeDetailData.rating}
+              //   isOpen={false}
+              // />
+            )}
           </>
         )}
       </Wrapper>
@@ -277,6 +384,16 @@ const StoreItemAddress = styled.span`
 
 const StoreItemRating = styled.span`
   color: ${PALETTE.gray_38};
+`;
+
+const ReturnListButton = styled.button`
+  margin: 4px 0 0 12px;
+  border: none;
+  background: #ffffff;
+  color: ${PALETTE.orange_point};
+  font-size: 20px;
+  font-weight: 24100;
+  cursor: pointer;
 `;
 
 export default KakaoMapSection;
