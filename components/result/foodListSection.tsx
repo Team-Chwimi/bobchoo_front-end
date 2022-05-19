@@ -13,6 +13,7 @@ import { PALETTE } from '../../data/palette';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { selectedFoodListActions } from '../../store/selectedFoodList';
+import InfoFoodService from '../../lib/api/infoFood';
 
 const checkStoresExist = async (foodName: string, lat: string, lng: string) => {
   const kakaoKey: string = process.env
@@ -66,12 +67,17 @@ const FoodListSection: React.FC = () => {
   }, [distanceList]);
 
   const handleSelectedClick = (foodName: string) => {
-    dispatch(
-      selectedFoodActions.setSelectedFood({
-        foodName: foodName,
-        foodImg: '', // data.foodImg,
-      }),
-    );
+    InfoFoodService.getInfoFood(foodName)
+      .then((res) => {
+        dispatch(
+          selectedFoodActions.setSelectedFood({
+            foodName: foodName,
+            foodImg: res.data.foodImg,
+          }),
+        );
+      })
+      .catch((error) => {});
+
     router.push('/result');
   };
 
