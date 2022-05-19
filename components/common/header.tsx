@@ -20,12 +20,13 @@ const Header: React.FC<HeaderProps> = ({ linkName, linkPath }) => {
   );
 };
 
-const HomeLink = styled.span`
+const HomeLink = styled.div`
   font-size: 16px;
   font-weight: 800;
-  margin-left: 1vh;
-  margin-top: 5vw;
   color: ${PALETTE.orange_point};
+  // position: absolute;
+  margin-left: 8px;
+
 `;
 
 export default Header;

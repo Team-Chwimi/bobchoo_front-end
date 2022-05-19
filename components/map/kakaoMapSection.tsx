@@ -15,7 +15,9 @@ import { handleUrlClick, makeAddress } from '../../lib/utils';
 import { LatLngNumberType } from '../../types/MapType';
 
 import StoreDetail from './storeDetail';
-import TitleHeader from '../common/titleHeader';
+import Header from '../common/header';
+
+import { LINK_HOME } from '../../data/link';
 import LodaingCircular from '../common/loadingCircular';
 
 import { PALETTE } from '../../data/palette';
@@ -285,19 +287,27 @@ const KakaoMapSection: React.FC = () => {
   return (
     <Container>
       <Wrapper>
-        <TitleHeader title={titleText} />
+        <Header linkName={LINK_HOME.linkName} linkPath={LINK_HOME.linkPath} />
         <div
           id="myMap"
           style={{
-            width: '100%',
-            height: '300px',
-            maxWidth: '500px',
+            // width: '80%',
+            minWidth:'100vmin',
+            height: '40vh',
             position: 'sticky',
-            top: '0px',
+            // top: '3%',
             overflow: 'hidden',
             zIndex: '99',
+            borderTopLeftRadius: '15px',
+            borderTopRightRadius: '15px',
+            marginTop:'3vh'
           }}
         ></div>
+        <TitleBorder>
+          <TitleDiv>{titleText}</TitleDiv>
+        </TitleBorder>
+        
+        <ListDiv>
         {storeData.length === 0 ? (
           <CryingBobdolWrapper>
             <BobdolImg src="/images/bobdol_cry.gif" alt="우는 밥돌이 이미지" />
@@ -390,39 +400,49 @@ const KakaoMapSection: React.FC = () => {
             )} */}
           </>
         )}
+        </ListDiv>
       </Wrapper>
     </Container>
   );
 };
 
 const Container = styled.div`
-  // width: 100%;
-  max-width: 900px;
-  // box-sizing: border-box;
-  // margin-top: 8px;
-  // display: flex;
-  // flex-direction: column;
-  // align-items: center;
-  // width: 100%;
-
-  @media (max-width: 991px) {
-  }
-  @media (max-width: 767px) {
-  }
-  @media (max-width: 575px) {
-  }
 `;
 
 const Wrapper = styled.div`
-  box-sizing: border-box;
-  // max-width: 900px;
+`;
+const ListDiv = styled.div`
+  min-width: 100vmin;
+  margin-top: 6vh;
+`;
+const TitleBorder = styled.div`
+  padding: 3vh 0 3vh 0;
+  min-width: 100vmin;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  transform: translate(0%, -20%);
+  position: absolute;
+  background: #ffffff;
+  z-index: 1000;
+  // top:40vh;
+  
+`;
+const TitleDiv = styled.div`
+  font-style: normal;
+  font-weight: 800;
+  font-size: 20px;
+  margin-left: 3vh;
 `;
 
 const StoreList = styled.ul`
   box-sizing: border-box;
   width: 100%;
+  height: 45vh;
   padding: 12px 16px 12px;
   // overflow: hidden;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  table-layout:fixed;
 `;
 
 const StoreItemWrapper = styled.li``;
@@ -433,6 +453,7 @@ const StoreItem = styled.div`
   justify-content: space-between;
   margin: 4px 0;
   color: ${PALETTE.gray_38};
+  
 
   // cursor: pointer;
   // &::after {}
