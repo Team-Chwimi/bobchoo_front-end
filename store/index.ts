@@ -9,14 +9,16 @@ import latlng from './latlng';
 import selectedFood from './selectedFood';
 import question from './question';
 import answer from './answer';
-import selectedFoodList from './selectedFoodList'
+import selectedFoodList from './selectedFoodList';
+import requestType from './requestType';
 
 const rootReducer = combineReducers({
   latlng: latlng.reducer,
   selectedFood: selectedFood.reducer,
   question: question.reducer,
   answer: answer.reducer,
-  selectedFoodList: selectedFoodList.reducer
+  selectedFoodList: selectedFoodList.reducer,
+  requestType: requestType.reducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
