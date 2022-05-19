@@ -5,13 +5,14 @@ import styled from '@emotion/styled';
 
 import { useSelector } from '../../store';
 import { selectedFoodActions } from '../../store/selectedFood';
+import { axiosInstance } from '../../lib/api';
 
 import TitleHeader from '../common/titleHeader';
 
 import { PALETTE } from '../../data/palette';
-import { FOOD_LIST_RESULT } from '../../lib/data/foodResult';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { selectedFoodListActions } from '../../store/selectedFoodList';
 
 const checkStoresExist = async (foodName: string, lat: string, lng: string) => {
   const kakaoKey: string = process.env
@@ -33,6 +34,12 @@ const checkStoresExist = async (foodName: string, lat: string, lng: string) => {
 
 const FoodListSection: React.FC = () => {
   const latlng = useSelector((state) => state.latlng);
+  const selectedFoodList = useSelector(
+    (state) => state.selectedFoodList.foodList,
+  );
+  const answers = useSelector((state) => state.answer);
+  const requestType = useSelector((state) => state.requestType);
+
   const dispatch = useDispatch();
 
   const router = useRouter();
@@ -40,7 +47,7 @@ const FoodListSection: React.FC = () => {
 
   useEffect(() => {
     const res: boolean[] = [];
-    FOOD_LIST_RESULT.map((data, index) => {
+    selectedFoodList.map((data, index) => {
       checkStoresExist(data.foodName, latlng.lat, latlng.lng).then((value) => {
         // console.log(value, index);
         res[index] = value;
@@ -68,6 +75,44 @@ const FoodListSection: React.FC = () => {
     router.push('/result');
   };
 
+  const postMultiApi = async (request: string) => {
+    const response = await axiosInstance.post(
+      `/api/v1/surveys/results/list`,
+      request,
+    );
+    return response.data;
+  };
+
+  const postRandomListAPI = async (request: string) => {
+    const response = await axiosInstance.post(
+      `/api/v1/random/results/list`,
+      request,
+    );
+    return response.data;
+  };
+
+  const handleMultipleData = async () => {
+    const surveyRequest = answers;
+    const data = await postMultiApi(JSON.stringify(surveyRequest));
+    console.log(data);
+    dispatch(
+      selectedFoodListActions.setSelectedFoodList({
+        foodList: data,
+      }),
+    );
+  };
+
+  const handleRandomMultipleData = async () => {
+    const randomRequest = { lat: '', lng: '' };
+    const data = await postRandomListAPI(JSON.stringify(randomRequest));
+    console.log(data);
+    dispatch(
+      selectedFoodListActions.setSelectedFoodList({
+        foodList: data,
+      }),
+    );
+  };
+
   // const showDistance = (index: number) => {
   //   return (
   //     <>
@@ -81,16 +126,23 @@ const FoodListSection: React.FC = () => {
   //     </>
   //   );
   // };
+  const handlePickAgain = () => {
+    if (requestType.type === 'random') {
+      handleRandomMultipleData().then(() => {});
+    } else {
+      handleMultipleData().then(() => {});
+    }
+  };
 
   return (
     <Container>
       <Wrapper>
         <TitleHeader title="오늘의 밥추 리스트!" />
         <FoodList>
-          {!FOOD_LIST_RESULT ? (
+          {!selectedFoodList ? (
             <></>
           ) : (
-            FOOD_LIST_RESULT.map((data, index) => (
+            selectedFoodList.map((data, index) => (
               <FoodItem
                 key={data.foodId}
                 onClick={() => handleSelectedClick(data.foodName)}
@@ -116,8 +168,10 @@ const FoodListSection: React.FC = () => {
           )}
         </FoodList>
         <ButtonSection>
-          <StartVoteButton>투표 시작하기</StartVoteButton>
-          <PickAgainButton>다시 고르기</PickAgainButton>
+          {/* <StartVoteButton>투표 시작하기</StartVoteButton> */}
+          <PickAgainButton onClick={handlePickAgain}>
+            다시 고르기
+          </PickAgainButton>
         </ButtonSection>
       </Wrapper>
     </Container>

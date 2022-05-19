@@ -5,16 +5,16 @@ export interface SurveyRequestType extends LatLngType {
 }
 
 export interface AnswerType {
-	questionId : number,
-	answer: string[],
+  questionId: number;
+  answer: string[];
 }
 
 export interface SurveyResponseType {
   foodName: string;
   foodImg: string;
 }
-export interface SurveyResponseItem {
-    foodId: number;
-    foodName: string;
-}
 
+export interface SurveyResponseItem {
+  foodId: number;
+  foodName: string;
+}

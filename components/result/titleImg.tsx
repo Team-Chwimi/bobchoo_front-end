@@ -13,13 +13,71 @@ import { PALETTE } from '../../data/palette';
 
 import { FaShareAlt, FaMapMarkedAlt } from 'react-icons/fa';
 import { IoMdRefresh } from 'react-icons/io';
+import { axiosInstance } from '../../lib/api';
+import { useDispatch } from 'react-redux';
+import { selectedFoodActions } from '../../store/selectedFood';
 
 const TitleImg: React.FC = () => {
   const results = useSelector((state) => state.selectedFood);
+  const answers = useSelector((state) => state.answer);
+  const requestType = useSelector((state) => state.requestType);
+
+  const dispatch = useDispatch();
 
   const [isImgLoaded, setIsImgLoaded] = useState<boolean>(false);
 
   const router = useRouter();
+
+  const postOneApi = async (request: string) => {
+    const response = await axiosInstance.post(
+      `/api/v1/surveys/results`,
+      request,
+    );
+    return response.data;
+  };
+
+  const postRandomAPI = async (request: string) => {
+    const response = await axiosInstance.post(
+      `/api/v1/random/results`,
+      request,
+    );
+    return response.data;
+  };
+
+  const handleOneData = async () => {
+    const surveyRequest = answers;
+    const data = await postOneApi(JSON.stringify(surveyRequest));
+    dispatch(
+      selectedFoodActions.setSelectedFood({
+        foodName: data.foodName,
+        foodImg: data.foodImg,
+      }),
+    );
+  };
+
+  const handleRandomOneData = async () => {
+    const randomRequest = { lat: '', lng: '' };
+    const data = await postRandomAPI(JSON.stringify(randomRequest));
+    dispatch(
+      selectedFoodActions.setSelectedFood({
+        foodName: data.foodName,
+        foodImg: data.foodImg,
+      }),
+    );
+  };
+
+  const handlePickAgain = () => {
+    console.log(requestType.type);
+    if (requestType.type === 'random') {
+      handleRandomOneData().then(() => {
+        setIsImgLoaded(false);
+      });
+    } else {
+      handleOneData().then(() => {
+        setIsImgLoaded(false);
+      });
+    }
+  };
 
   return (
     <Container>
@@ -67,7 +125,7 @@ const TitleImg: React.FC = () => {
               <IconDiV>
                 <IoMdRefresh size={'6vmin'} />
               </IconDiV>
-              <ButtonName>다시 고르기</ButtonName>
+              <ButtonName onClick={handlePickAgain}>다시 고르기</ButtonName>
             </RechooseButton>
           </ButtonDiv>
         </>
@@ -93,7 +151,9 @@ const ButtonName = styled.span`
   font-style: normal;
   font-weight: 800;
   font-size: 6vmin;
+  cursor: pointer;
 `;
+
 const ButtonDiv = styled.div`
   padding: 0 5% 0 5%;
   margin-top: 4vh;
@@ -128,6 +188,7 @@ const ShareButton = styled.div`
   margin-top: 2vh;
 
   text-align: center;
+  cursor: pointer;
 `;
 
 const RechooseButton = styled.div`
@@ -143,7 +204,9 @@ const RechooseButton = styled.div`
   margin-top: 2vh;
 
   text-align: center;
+  cursor: pointer;
 `;
+
 const TitleDiv = styled.div`
   font-size: 40px;
   font-style: normal;
