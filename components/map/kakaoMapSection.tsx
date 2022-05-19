@@ -59,7 +59,7 @@ const KakaoMapSection: React.FC = () => {
   const [infoWindowList, setInfoWindowList] = useState<any[]>();
 
   const [isStoreDetail, setIsStoreDetail] = useState<boolean>(false);
-  const [storeDetailData, setStoreDetailData] = useState<StoreDetailType>();
+  // const [storeDetailData, setStoreDetailData] = useState<StoreDetailType>();
 
   const [titleText, setTitleText] = useState<string>(
     `${selectedFood.name} 가게 목록`,
@@ -81,7 +81,7 @@ const KakaoMapSection: React.FC = () => {
   let marker: any;
 
   useEffect(() => {
-    console.log(currentLocation);
+    // console.log(currentLocation);
     const container = document.getElementById('myMap');
     const options = {
       center: new kakao.maps.LatLng(currentLocation.lat, currentLocation.lng),
@@ -131,7 +131,7 @@ const KakaoMapSection: React.FC = () => {
     );
 
   const searchStores = async () => {
-    let url = `https://dapi.kakao.com/v2/local/search/keyword.json?query=${selectedFood.name}&y=${currentLocation.lat}&x=${currentLocation.lng}&radius=20000&category_group_code=FD6`;
+    let url = `https://dapi.kakao.com/v2/local/search/keyword.json?query=${selectedFood.name}&y=${currentLocation.lat}&x=${currentLocation.lng}&radius=1000&category_group_code=FD6`;
     let config = {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -231,15 +231,15 @@ const KakaoMapSection: React.FC = () => {
       // 클릭된 마커가 없고, click 마커가 클릭된 마커가 아니면
       // 마커의 이미지를 클릭 이미지로 변경합니다
       if (!selectedMarker || selectedMarker !== marker) {
-        console.log('aaa');
+        // console.log('aaa');
         // 클릭된 마커 객체가 null이 아니면
         // 클릭된 마커의 이미지를 기본 이미지로 변경하고
         if (!!selectedMarker) {
-          console.log('dddd');
+          // console.log('dddd');
           selectedMarker.setImage(markerImage);
           selectedMarker(null);
         } else {
-          console.log('cccc');
+          // console.log('cccc');
         }
         // 현재 클릭된 마커의 이미지는 클릭 이미지로 변경합니다
         marker.setImage(clickImage);
@@ -289,8 +289,11 @@ const KakaoMapSection: React.FC = () => {
             zIndex: '99',
           }}
         ></div>
-        {!storeData ? (
-          <LodaingCircular />
+        {storeData.length === 0 ? (
+          <CryingBobdolWrapper>
+            <BobdolImg src="/images/bobdol_cry.gif" alt="우는 밥돌이 이미지" />
+            <NoListMessage>주변에 음식점이 없어요</NoListMessage>
+          </CryingBobdolWrapper>
         ) : !isStoreDetail ? (
           <StoreList>
             {storeData.map((data) => (
@@ -393,7 +396,6 @@ const Container = styled.div`
 const Wrapper = styled.div`
   box-sizing: border-box;
   // max-width: 900px;
-  // box-sizing: border-box;
 `;
 
 const StoreList = styled.ul`
@@ -487,6 +489,23 @@ const ReturnListButton = styled.button`
   font-size: 20px;
   font-weight: 24100;
   cursor: pointer;
+`;
+
+const CryingBobdolWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 12px;
+`;
+
+const BobdolImg = styled.img`
+  width: 100px;
+  margin-bottom: 8px;
+`;
+
+const NoListMessage = styled.div`
+  font-size: 20px;
+  font-weight: 800;
 `;
 
 export default KakaoMapSection;
