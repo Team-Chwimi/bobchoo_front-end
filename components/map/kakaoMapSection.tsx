@@ -139,9 +139,18 @@ const KakaoMapSection: React.FC = () => {
       },
     };
     axios.defaults.withCredentials = false;
-    await axios.get(url, config).then((response) => {
-      setStoreData(response.data.documents);
-    });
+    let results: StoreDataType[];
+    await axios
+      .get(url, config)
+      .then((response) => {
+        results = [...response.data.documents];
+        results.sort(function (a, b) {
+          return Number(a.distance) > Number(b.distance) ? 1 : -1;
+        });
+      })
+      .then(() => {
+        setStoreData(results);
+      });
   };
 
   const displayPlaces = () => {
