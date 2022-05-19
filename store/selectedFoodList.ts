@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { responseMultiState } from '../types/reduxState';
 
 const initialState: responseMultiState = {
-  foodList : []
+  foodList: [],
 };
 
 // const initialState: foodType = {
@@ -13,7 +13,7 @@ const selectedFoodList = createSlice({
   name: 'foodList',
   initialState,
   reducers: {
-    setSelectedFood(state, action: PayloadAction<responseMultiState>) {
+    setSelectedFoodList(state, action: PayloadAction<responseMultiState>) {
       state.foodList = action.payload.foodList;
     },
   },
