@@ -100,12 +100,17 @@ const SelectOverlap: React.FC<SelectProps> = ({
                   cnt++;
                 }
               })
-              let result: AnswerType = {questionId: qusetionId, answer: myFoodAnswer}
-              let curAnswerList =  [...myAnswerList];
-              curAnswerList[id-1] = result;
-              dispatch(answerActions.setAnswer({ lat:"", lng:"", answerList: curAnswerList }))
-              router.push(`/survey/${num}`);
-              console.log(num);
+              if(myFoodAnswer.length<1){
+                alert("한개 이상 선택해 주세요!");
+              }else{
+
+                let result: AnswerType = {questionId: qusetionId, answer: myFoodAnswer}
+                let curAnswerList =  [...myAnswerList];
+                curAnswerList[id-1] = result;
+                dispatch(answerActions.setAnswer({ lat:"", lng:"", answerList: curAnswerList }))
+                router.push(`/survey/${num}`);
+                console.log(num);
+              }
             }}
           >
             다음
