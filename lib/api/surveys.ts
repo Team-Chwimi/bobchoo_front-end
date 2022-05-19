@@ -1,5 +1,5 @@
 import { axiosInstance } from '.';
-import {SurveyRequestType} from '../../types/answerType'
+import { SurveyRequestType } from '../../types/answerType';
 
 class SurveyService {
   public static async getQuestionAPI() {
@@ -7,9 +7,12 @@ class SurveyService {
     return response;
   }
 
-  public static async postAnswerAPI(request:SurveyRequestType) {
-    const response = await axiosInstance.post(`/api/v1/surveys/results`,request);
-    return response;
+  public static async postAnswerAPI(request: SurveyRequestType) {
+    const response = await axiosInstance.post(
+      `/api/v1/surveys/results`,
+      request,
+    );
+    return response.data;
   }
 }
 
