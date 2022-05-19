@@ -10,7 +10,11 @@ import { useSelector } from '../../store';
 import { answerActions } from '../../store/answer';
 import { selectedFoodListActions } from '../../store/selectedFoodList';
 import { selectedFoodActions } from '../../store/selectedFood';
-import { AnswerType,SurveyRequestType,SurveyResponseType } from '../../types/answerType';
+import {
+  AnswerType,
+  SurveyRequestType,
+  SurveyResponseType,
+} from '../../types/answerType';
 import axios from 'axios';
 
 import useAnswer from '../../hooks/useAnswer';
@@ -35,11 +39,8 @@ const SelectOne: React.FC<SelectProps> = ({ qusetionId, answerList, id }) => {
   const questionTotal = useSelector(
     (state) => state.question.questionTotalCount,
   );
-  
-  
-  const myAnswerList = useSelector(
-    (state) => state.answer.answerList,
-  );
+
+  const myAnswerList = useSelector((state) => state.answer.answerList);
 
   const [num, setNum] = useState<number>(0);
   const plus = useMemo(() => {
@@ -77,22 +78,35 @@ const SelectOne: React.FC<SelectProps> = ({ qusetionId, answerList, id }) => {
       return '80px';
     }
   };
-  const postOneApi = async(request:string)=>{
-    const response = await axiosInstance.post(`/api/v1/surveys/results`,request);
-      return response;
-  }
-  const postMultiApi = async(request:string)=>{
-    const response = await axiosInstance.post(`/api/v1/surveys/results/list`,request);
-      return response;
-  }
-  
-  const request = { lat:"", lng:"", answerList: myAnswerList };
+  const postOneApi = async (request: string) => {
+    const response = await axiosInstance.post(
+      `/api/v1/surveys/results`,
+      request,
+    );
+    return response.data;
+  };
+  const postMultiApi = async (request: string) => {
+    const response = await axiosInstance.post(
+      `/api/v1/surveys/results/list`,
+      request,
+    );
+    return response;
+  };
+
+  const request = { lat: '', lng: '', answerList: myAnswerList };
   const obj = JSON.stringify(request);
-  const handelOnedata = async()=>{
+
+  const handelOnedata = async () => {
     const data = await postOneApi(obj);
     console.log(data);
-    // dispatch(selectedFoodActions.setSelectedFood({foodName: data.foodName , foodImg: data.foodImg}))
-  }
+    dispatch(
+      selectedFoodActions.setSelectedFood({
+        foodName: data.foodName,
+        foodImg: data.foodImg,
+      }),
+    );
+  };
+
   return (
     <Container>
       <Wrapper>
@@ -107,23 +121,38 @@ const SelectOne: React.FC<SelectProps> = ({ qusetionId, answerList, id }) => {
                 onClick={(event) => {
                   if (num === questionTotal + 1) {
                     //하나만 선택할 때
-                    console.log(obj,"obj");
-                    if(index===0){
-                       
-                        router.push(`/result`);
-                      }
-                      //여러개 선택할 때
-                      else{ 
-                        const data = postMultiApi(obj);
-                      }
+                    console.log(obj, 'obj');
+                    handelOnedata().then();
+                    if (index === 0) {
+                      router.push(`/result`);
+                    }
+                    //여러개 선택할 때
+                    else {
+                      const data = postMultiApi(obj);
+                    }
+                  } else {
+                    if (index === 0) {
+                      let result: AnswerType = {
+                        questionId: qusetionId,
+                        answer: ['YES'],
+                      };
+                      let curAnswerList = [...myAnswerList];
+                      curAnswerList[qusetionId - 1] = result;
+                      dispatch(
+                        answerActions.setAnswer({
+                          lat: '',
+                          lng: '',
+                          answerList: curAnswerList,
+                        }),
+                      );
                     } else {
-                      if(index===0){
-                        let result: AnswerType = {questionId: qusetionId, answer: ["YES"]}
-                        let curAnswerList =  [...myAnswerList];
-                        curAnswerList[qusetionId-1] = result;
-                        dispatch(answerActions.setAnswer({ lat:"", lng:"", answerList: curAnswerList }))
-                    }else{
-                      dispatch(answerActions.setAnswer({ lat:"", lng:"", answerList: myAnswerList }))
+                      dispatch(
+                        answerActions.setAnswer({
+                          lat: '',
+                          lng: '',
+                          answerList: myAnswerList,
+                        }),
+                      );
                     }
                     router.push(`/survey/${num}`);
                   }
@@ -163,6 +192,7 @@ const FoodButton = styled.div<style>`
   font-size: ${(props) => props.size};
   color: ${(props) => props.color};
   word-break: keep-all;
+  cursor: pointer;
 `;
 
 const NextDiv = styled.div`
