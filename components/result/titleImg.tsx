@@ -1,9 +1,13 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
+import { useState } from 'react';
+
 import styled from '@emotion/styled';
 
 import { useSelector } from '../../store';
+
+import LoadingBobdol from '../common/loadingBobdol';
 
 import { PALETTE } from '../../data/palette';
 
@@ -13,42 +17,61 @@ import { IoMdRefresh } from 'react-icons/io';
 const TitleImg: React.FC = () => {
   const results = useSelector((state) => state.selectedFood);
 
+  const [isImgLoaded, setIsImgLoaded] = useState<boolean>(false);
+
   const router = useRouter();
 
   return (
     <Container>
-      <MainDiv>
-        <TitleDiv>오늘의 밥추!!</TitleDiv>
-        <ImageWrapper src="/images/bobdol_nacho.gif" alt="밥돌이 이미지" />
-      </MainDiv>
+      {!isImgLoaded ? (
+        <LoadingBobdol />
+      ) : (
+        <>
+          <MainDiv>
+            <TitleDiv>오늘의 밥추!!</TitleDiv>
+            <ImageWrapper src="/images/bobdol_nacho.gif" alt="밥돌이 이미지" />
+          </MainDiv>
+        </>
+      )}
       <ImgDiv>
-        <MenuImage src={results.foodImg} alt={`{results.foodName} 이미지`} />
-        <FoodNameDiv>{results.foodName}</FoodNameDiv>
+        <MenuImage
+          src={results.foodImg}
+          alt={`${results.foodName} 이미지`}
+          onLoad={() => {
+            setIsImgLoaded(true);
+          }}
+        />
+        {!isImgLoaded ? <></> : <FoodNameDiv>{results.foodName}</FoodNameDiv>}
       </ImgDiv>
-
-      <ButtonDiv>
-        <MapButton>
-          {' '}
-          <IconDiV>
-            <FaMapMarkedAlt size={'6vmin'} />
-          </IconDiV>
-          <ButtonName onClick={() => router.push('/map')}>
-            주변식당찾기
-          </ButtonName>
-        </MapButton>
-        <ShareButton>
-          <IconDiV>
-            <FaShareAlt size={'6vmin'} />
-          </IconDiV>
-          <ButtonName>공유하기</ButtonName>
-        </ShareButton>
-        <RechooseButton>
-          <IconDiV>
-            <IoMdRefresh size={'6vmin'} />
-          </IconDiV>
-          <ButtonName>다시 고르기</ButtonName>
-        </RechooseButton>
-      </ButtonDiv>
+      {!isImgLoaded ? (
+        <></>
+      ) : (
+        <>
+          <ButtonDiv>
+            <MapButton>
+              {' '}
+              <IconDiV>
+                <FaMapMarkedAlt size={'6vmin'} />
+              </IconDiV>
+              <ButtonName onClick={() => router.push('/map')}>
+                주변식당찾기
+              </ButtonName>
+            </MapButton>
+            <ShareButton>
+              <IconDiV>
+                <FaShareAlt size={'6vmin'} />
+              </IconDiV>
+              <ButtonName>공유하기</ButtonName>
+            </ShareButton>
+            <RechooseButton>
+              <IconDiV>
+                <IoMdRefresh size={'6vmin'} />
+              </IconDiV>
+              <ButtonName>다시 고르기</ButtonName>
+            </RechooseButton>
+          </ButtonDiv>
+        </>
+      )}
     </Container>
   );
 };
@@ -60,6 +83,7 @@ const Container = styled.span`
 `;
 
 const MainDiv = styled.div``;
+
 const IconDiV = styled.span`
   padding-top: 10%;
   margin-right: 2vh;
@@ -136,10 +160,12 @@ const ImageWrapper = styled.img`
   float: right;
   margin-right: 2vh;
 `;
+
 const ImgDiv = styled.div`
   padding: 0 5% 0 5%;
   position: relative;
 `;
+
 const MenuImage = styled.img`
   max-width: 100%;
   margin-top: 3vh;
@@ -163,4 +189,5 @@ const FoodNameDiv = styled.div`
   color: #383838;
   transform: translate(0%, -100%);
 `;
+
 export default TitleImg;
