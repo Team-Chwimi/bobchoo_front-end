@@ -11,6 +11,7 @@ import question from './question';
 import answer from './answer';
 import selectedFoodList from './selectedFoodList';
 import requestType from './requestType';
+import warningType from './warning';
 
 const rootReducer = combineReducers({
   latlng: latlng.reducer,
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   answer: answer.reducer,
   selectedFoodList: selectedFoodList.reducer,
   requestType: requestType.reducer,
+  warningType:warningType.reducer
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
