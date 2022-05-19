@@ -5,7 +5,6 @@ class RandomService {
     const response = await axiosInstance.get(`/api/v1/random`);
     return response;
   }
-
 }
 
 export default RandomService;
