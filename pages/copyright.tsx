@@ -10,7 +10,7 @@ import { useEffect } from 'react';
 
 const Copyright: NextPage = () => {
   useEffect(() => {
-    document.title = '밥추 저작권';
+    document.title = '밥추 | 저작권';
   }, []);
 
   return (

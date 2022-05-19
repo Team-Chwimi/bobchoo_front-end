@@ -1,5 +1,7 @@
 import type { NextPage } from 'next';
 
+import { useEffect } from 'react';
+
 import styled from '@emotion/styled';
 
 // import KakaoMapSection from '../components/map/kakaoMapSection';
@@ -21,6 +23,10 @@ const KakaoMapSection = dynamic(
 );
 
 const Map: NextPage = () => {
+  useEffect(() => {
+    document.title = '밥추 | 지도';
+  }, []);
+
   return (
     <Container>
       <Wrapper>
@@ -37,17 +43,7 @@ const Container = styled.section`
 `;
 
 const Wrapper = styled.div`
-  // display: flex;
-  // flex-direction: column;
-  // align-items: center;
-  // width: 100%;
-
-  @media (max-width: 991px) {
-  }
-  @media (max-width: 767px) {
-  }
-  @media (max-width: 575px) {
-  }
+  margin-top: 16px;
 `;
 
 export default Map;

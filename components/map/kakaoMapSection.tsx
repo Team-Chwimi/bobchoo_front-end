@@ -10,7 +10,7 @@ import { Loader } from '@googlemaps/js-api-loader';
 import { useSelector } from '../../store';
 import { latlngActions } from '../../store/latlng';
 
-import { makeAddress } from '../../lib/utils';
+import { handleUrlClick, makeAddress } from '../../lib/utils';
 
 import { LatLngNumberType } from '../../types/MapType';
 
@@ -61,7 +61,9 @@ const KakaoMapSection: React.FC = () => {
   const [isStoreDetail, setIsStoreDetail] = useState<boolean>(false);
   const [storeDetailData, setStoreDetailData] = useState<StoreDetailType>();
 
-  const [titleText, setTitleText] = useState<string>('');
+  const [titleText, setTitleText] = useState<string>(
+    `${selectedFood.name} 가게 목록`,
+  );
 
   const [storeData, setStoreData] = useState<StoreDataType[]>([]);
 
@@ -79,6 +81,7 @@ const KakaoMapSection: React.FC = () => {
   let marker: any;
 
   useEffect(() => {
+    console.log(currentLocation);
     const container = document.getElementById('myMap');
     const options = {
       center: new kakao.maps.LatLng(currentLocation.lat, currentLocation.lng),
@@ -277,8 +280,13 @@ const KakaoMapSection: React.FC = () => {
         <div
           id="myMap"
           style={{
-            width: '500px',
-            height: '500px',
+            width: '100%',
+            height: '300px',
+            maxWidth: '500px',
+            position: 'sticky',
+            top: '0px',
+            overflow: 'hidden',
+            zIndex: '99',
           }}
         ></div>
         {!storeData ? (
@@ -287,23 +295,62 @@ const KakaoMapSection: React.FC = () => {
           <StoreList>
             {storeData.map((data) => (
               <StoreItemWrapper key={data.id}>
-                <StoreItem onClick={() => handleStoreDetailClick()}>
-                  <StoreItemName>{data.place_name}</StoreItemName>
-                  {/* {data.rating === 0 ? (
+                {data.place_name && (
+                  <>
+                    <StoreItem
+                    // onClick={() => handleStoreDetailClick()}
+                    >
+                      <StoreItemNameCategory>
+                        <StoreItemName>{data.place_name}</StoreItemName>
+                        {data.category_name && (
+                          <StoreItemCategory>
+                            {data.category_name}
+                          </StoreItemCategory>
+                        )}
+                      </StoreItemNameCategory>
+                      {data.phone && (
+                        <StoreItemPhone>
+                          <IconImg
+                            src="/images/phone_icon.png"
+                            alt="전화기 아이콘"
+                          />
+                          <a href={'tel:' + data.phone}>{data.phone}</a>
+                        </StoreItemPhone>
+                      )}
+                      <StoreItemAddressDistance>
+                        <IconImg
+                          src="/images/map_logo_point.png"
+                          alt="지도 아이콘"
+                        />
+                        <StoreItemAddress>{data.address_name}</StoreItemAddress>
+                        <StoreItemDistance>
+                          ({data.distance}m)
+                        </StoreItemDistance>
+                      </StoreItemAddressDistance>
+                      <StoreItemURL onClick={handleUrlClick(data.place_url)}>
+                        <IconImg
+                          src="/images/info_logo.png"
+                          alt="정보 아이콘"
+                        />
+                        상세보기
+                      </StoreItemURL>
+                      {/* {data.rating === 0 ? (
                       <>평점이 없습니다</>
                     ) : (
                       <StoreItemRating>
                         {data.rating.toFixed(1)}/5.0
                       </StoreItemRating>
                     )} */}
-                </StoreItem>
-                <StoreItemLine />
+                    </StoreItem>
+                    <StoreItemLine />
+                  </>
+                )}
               </StoreItemWrapper>
             ))}
           </StoreList>
         ) : (
           <>
-            <ReturnListButton
+            {/* <ReturnListButton
               onClick={() => {
                 setIsStoreDetail(false);
                 displayPlaces();
@@ -316,14 +363,8 @@ const KakaoMapSection: React.FC = () => {
             ) : (
               <></>
               // <StoreDetail
-              //   name={storeDetailData.name}
-              //   formatted_address={storeDetailData.formatted_address}
-              //   formatted_phone_number={storeDetailData.formatted_phone_number}
-              //   time={storeDetailData.time}
-              //   rating={storeDetailData.rating}
-              //   isOpen={false}
               // />
-            )}
+            )} */}
           </>
         )}
       </Wrapper>
@@ -332,10 +373,14 @@ const KakaoMapSection: React.FC = () => {
 };
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
+  // width: 100%;
+  max-width: 900px;
+  // box-sizing: border-box;
+  // margin-top: 8px;
+  // display: flex;
+  // flex-direction: column;
+  // align-items: center;
+  // width: 100%;
 
   @media (max-width: 991px) {
   }
@@ -346,23 +391,28 @@ const Container = styled.div`
 `;
 
 const Wrapper = styled.div`
-  max-width: 900px;
+  box-sizing: border-box;
+  // max-width: 900px;
   // box-sizing: border-box;
 `;
 
 const StoreList = styled.ul`
-  padding: 8px 16px;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 12px 16px 12px;
+  // overflow: hidden;
 `;
 
 const StoreItemWrapper = styled.li``;
 
 const StoreItem = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
   margin: 4px 0;
-  cursor: pointer;
+  color: ${PALETTE.gray_38};
 
+  // cursor: pointer;
   // &::after {}
 `;
 
@@ -372,18 +422,61 @@ const StoreItemLine = styled.div`
   border-bottom: 0.5px solid ${PALETTE.gray_79};
 `;
 
-const StoreItemName = styled.span`
+const StoreItemNameCategory = styled.div`
+  display: flex;
+  padding: 8px 0;
+`;
+
+const StoreItemName = styled.div`
+  // position: relative;
   margin-right: 4px;
+  font-size: 16px;
   font-weight: 800;
-  color: ${PALETTE.gray_38};
 `;
 
-const StoreItemAddress = styled.span`
-  color: ${PALETTE.gray_38};
+const IconImg = styled.img`
+  width: 16px;
+  height: 16px;
+  padding-right: 4px;
 `;
 
-const StoreItemRating = styled.span`
-  color: ${PALETTE.gray_38};
+const StoreItemCategory = styled.div`
+  display: inline-block;
+  align-self: flex-end;
+  font-size: 11px;
+  color: ${PALETTE.gray_52};
+`;
+
+const StoreItemPhone = styled.div`
+  display: flex;
+  align-items: center;
+  padding-bottom: 4px;
+  font-size: 15px;
+`;
+
+const StoreItemAddressDistance = styled.div`
+  display: flex;
+  align-items: center;
+  padding-bottom: 4px;
+`;
+
+const StoreItemAddress = styled.div`
+  display: inline;
+  margin-right: 4px;
+  font-size: 15px;
+`;
+
+const StoreItemDistance = styled.div`
+  display: inline;
+  font-size: 12px;
+`;
+
+const StoreItemURL = styled.div`
+  display: flex;
+  align-items: center;
+  padding-bottom: 4px;
+  font-size: 15px;
+  cursor: pointer;
 `;
 
 const ReturnListButton = styled.button`
