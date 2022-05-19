@@ -151,7 +151,7 @@ const SelectOne: React.FC<SelectProps> = ({ qusetionId, answerList, id }) => {
                         answer: ['YES'],
                       };
                       let curAnswerList = [...myAnswerList];
-                      curAnswerList[qusetionId - 1] = result;
+                      curAnswerList[curAnswerList.length] = result;
                       dispatch(
                         answerActions.setAnswer({
                           lat: '',
@@ -160,13 +160,13 @@ const SelectOne: React.FC<SelectProps> = ({ qusetionId, answerList, id }) => {
                         }),
                       );
                     } else {
-                      dispatch(
-                        answerActions.setAnswer({
-                          lat: '',
-                          lng: '',
-                          answerList: myAnswerList,
-                        }),
-                      );
+                      // dispatch(
+                      //   answerActions.setAnswer({
+                      //     lat: '',
+                      //     lng: '',
+                      //     answerList: myAnswerList,
+                      //   }),
+                      // );
                     }
                     router.push(`/survey/${num}`);
                   }
