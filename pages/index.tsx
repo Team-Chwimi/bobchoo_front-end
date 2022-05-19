@@ -135,20 +135,20 @@ const Home: NextPage = () => {
     result: QuestionType[];
   };
 
-
-  const randomnApi = async() => {
-    try{
-      const response = await axiosInstance.get(process.env.NEXT_PUBLIC_SERVER_URL+"/api/v1/random");
+  const randomnApi = async () => {
+    try {
+      const response = await axiosInstance.get(
+        process.env.NEXT_PUBLIC_SERVER_URL + '/api/v1/random',
+      );
       const result = response.data;
       // const result = response.data.questionList;
       // const count = response.data.questionTotalCount;
       // return [result,count];
       return result;
-    }catch(err){
+    } catch (err) {
       console.log(err);
     }
-
-  } 
+  };
   const handleQestionData = async () => {
     dispatch(questionActions.setQuestions(data?.questionList!));
     dispatch(questionActions.setQuestionTotal(data?.questionTotalCount!));
@@ -207,7 +207,7 @@ const Home: NextPage = () => {
             onClick={(event) => {
               // handleLocationCheckedClick(event);
               handleRandomData().then(() => {
-                router.push('/random/1');
+                router.push('/random');
               });
             }}
           >
