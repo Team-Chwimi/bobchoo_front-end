@@ -62,7 +62,7 @@ const KakaoMapSection: React.FC = () => {
   // const [storeDetailData, setStoreDetailData] = useState<StoreDetailType>();
 
   const [titleText, setTitleText] = useState<string>(
-    `${selectedFood.name} 가게 목록`,
+    `${selectedFood.foodName} 가게 목록`,
   );
 
   const [storeData, setStoreData] = useState<StoreDataType[]>([]);
@@ -131,7 +131,7 @@ const KakaoMapSection: React.FC = () => {
     );
 
   const searchStores = async () => {
-    let url = `https://dapi.kakao.com/v2/local/search/keyword.json?query=${selectedFood.name}&y=${currentLocation.lat}&x=${currentLocation.lng}&radius=1000&category_group_code=FD6`;
+    let url = `https://dapi.kakao.com/v2/local/search/keyword.json?query=${selectedFood.foodName}&y=${currentLocation.lat}&x=${currentLocation.lng}&radius=1000&category_group_code=FD6`;
     let config = {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -278,7 +278,7 @@ const KakaoMapSection: React.FC = () => {
 
   const handleStoreDetailClick = () => {
     setIsStoreDetail(true);
-    setTitleText(`${selectedFood.name} 가게 정보`);
+    setTitleText(`${selectedFood.foodName} 가게 정보`);
     //  getStoreDetail(place_id, geometry, null);
   };
 
