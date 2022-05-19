@@ -2,22 +2,29 @@ import type { NextPage } from 'next';
 
 import styled from '@emotion/styled';
 
-import Header from '../components/common/header';
-import TitleImg from '../components/result/titleImg';
+import Header from '../../components/common/header';
+import Question from '../../components/survey/question';
 
-import { LINK_HOME } from '../data/link';
+import { LINK_HOME } from '../../data/link';
 
-const Result: NextPage = () => {
+type props = {
+  id: number;
+};
+const Random: NextPage<props> = ({ id }) => {
   return (
     <Container>
       <Wrapper>
         <Header linkName={LINK_HOME.linkName} linkPath={LINK_HOME.linkPath} />
-        <TitleImg/>
+        <Question id={id} />
       </Wrapper>
     </Container>
   );
 };
 
+Random.getInitialProps = async ({ query }: any) => {
+  const { id } = await query;
+  return { id };
+};
 
 const Container = styled.section`
   display: flex;
@@ -40,4 +47,4 @@ const Wrapper = styled.div`
 
 const Title = styled.h1``;
 
-export default Result;
+export default Random;
