@@ -21,6 +21,7 @@ import useAnswer from '../../hooks/useAnswer';
 
 import styled from '@emotion/styled';
 import { axiosInstance } from '../../lib/api';
+import { requestTypeActions } from '../../store/requestType';
 
 interface style {
   back: string;
@@ -94,6 +95,22 @@ const SelectOne: React.FC<SelectProps> = ({ qusetionId, answerList, id }) => {
     return response.data;
   };
 
+  const postRandomAPI = async (request: string) => {
+    const response = await axiosInstance.post(
+      `/api/v1/random/results`,
+      request,
+    );
+    return response.data;
+  };
+
+  const postRandomListAPI = async (request: string) => {
+    const response = await axiosInstance.post(
+      `/api/v1/random/results/list`,
+      request,
+    );
+    return response.data;
+  };
+
   const request = { lat: '', lng: '', answerList: myAnswerList };
   const obj = JSON.stringify(request);
 
@@ -118,6 +135,29 @@ const SelectOne: React.FC<SelectProps> = ({ qusetionId, answerList, id }) => {
     );
   };
 
+  const handleRandomOneData = async () => {
+    const randomRequest = { lat: '', lng: '' };
+    const data = await postRandomAPI(JSON.stringify(randomRequest));
+    console.log(data);
+    dispatch(
+      selectedFoodActions.setSelectedFood({
+        foodName: data.foodName,
+        foodImg: data.foodImg,
+      }),
+    );
+  };
+
+  const handleRandomMultipleData = async () => {
+    const randomRequest = { lat: '', lng: '' };
+    const data = await postRandomListAPI(JSON.stringify(randomRequest));
+    console.log(data);
+    dispatch(
+      selectedFoodListActions.setSelectedFoodList({
+        foodList: data,
+      }),
+    );
+  };
+
   return (
     <Container>
       <Wrapper>
@@ -133,16 +173,41 @@ const SelectOne: React.FC<SelectProps> = ({ qusetionId, answerList, id }) => {
                   if (num === questionTotal + 1) {
                     //하나만 선택할 때
                     console.log(obj, 'obj');
-                    if (index === 0) {
-                      handleOneData().then(() => {
-                        router.push(`/result`);
-                      });
-                    }
-                    //여러개 선택할 때
-                    else {
-                      handleMultipleData().then(() => {
-                        router.push(`/results`);
-                      });
+
+                    if (questionTotal === 1) {
+                      dispatch(
+                        requestTypeActions.setRequestType({
+                          type: 'random',
+                        }),
+                      );
+                      if (index === 0) {
+                        handleRandomOneData().then(() => {
+                          router.push(`/result`);
+                        });
+                      }
+                      //여러개 선택할 때
+                      else {
+                        handleRandomMultipleData().then(() => {
+                          router.push(`/results`);
+                        });
+                      }
+                    } else {
+                      dispatch(
+                        requestTypeActions.setRequestType({
+                          type: 'survey',
+                        }),
+                      );
+                      if (index === 0) {
+                        handleOneData().then(() => {
+                          router.push(`/result`);
+                        });
+                      }
+                      //여러개 선택할 때
+                      else {
+                        handleMultipleData().then(() => {
+                          router.push(`/results`);
+                        });
+                      }
                     }
                   } else {
                     if (index === 0) {

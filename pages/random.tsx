@@ -2,29 +2,29 @@ import type { NextPage } from 'next';
 
 import styled from '@emotion/styled';
 
-import Header from '../../components/common/header';
-import Question from '../../components/survey/question';
+import Header from '../components/common/header';
+import Question from '../components/survey/question';
 
-import { LINK_HOME } from '../../data/link';
+import { LINK_HOME } from '../data/link';
 
 type props = {
   id: number;
 };
-const Random: NextPage<props> = ({ id }) => {
+const Random: NextPage = () => {
   return (
     <Container>
       <Wrapper>
         <Header linkName={LINK_HOME.linkName} linkPath={LINK_HOME.linkPath} />
-        <Question id={id} />
+        <Question id={1} />
       </Wrapper>
     </Container>
   );
 };
 
-Random.getInitialProps = async ({ query }: any) => {
-  const { id } = await query;
-  return { id };
-};
+// Random.getInitialProps = async ({ query }: any) => {
+//   const { id } = await query;
+//   return { id };
+// };
 
 const Container = styled.section`
   display: flex;
