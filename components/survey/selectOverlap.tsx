@@ -103,7 +103,7 @@ const SelectOverlap: React.FC<SelectProps> = ({
               let result: AnswerType = {questionId: qusetionId, answer: myFoodAnswer}
               let curAnswerList =  [...myAnswerList];
               curAnswerList[id-1] = result;
-              dispatch(answerActions.setAnswer({ lat:'', lng:'', answerList: curAnswerList }))
+              dispatch(answerActions.setAnswer({ lat:"", lng:"", answerList: curAnswerList }))
               router.push(`/survey/${num}`);
               console.log(num);
             }}

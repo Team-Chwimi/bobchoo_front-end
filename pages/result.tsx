@@ -3,6 +3,7 @@ import type { NextPage } from 'next';
 import styled from '@emotion/styled';
 
 import Header from '../components/common/header';
+import TitleImg from '../components/result/titleImg';
 
 import { LINK_HOME } from '../data/link';
 
@@ -14,7 +15,7 @@ const Result: NextPage<props> = () => {
     <Container>
       <Wrapper>
         <Header linkName={LINK_HOME.linkName} linkPath={LINK_HOME.linkPath} />
-        <Title>결과페이지</Title>
+        <TitleImg/>
       </Wrapper>
     </Container>
   );

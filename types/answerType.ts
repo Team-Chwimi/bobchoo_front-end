@@ -13,9 +13,8 @@ export interface SurveyResponseType {
   foodName: string;
   foodImg: string;
 }
-
-export interface SurveyResponseItemType {
-  foodId: number;
-  foodName: string;
+export interface SurveyResponseItem {
+    foodId: number;
+    foodName: string;
 }
 
