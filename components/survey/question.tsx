@@ -2,8 +2,10 @@ import Link from 'next/link';
 
 import { useEffect, useState, useMemo } from 'react';
 
-import { useSelector } from '../../store';
+import ModalBase from '../../components/common/ModalBase';
+import CardModal from '../../components/UI/CardModal';
 
+import { useSelector } from '../../store';
 
 import styled from '@emotion/styled';
 
@@ -22,13 +24,25 @@ interface GraphProps {
 }
 
 const Question: React.FC<QuestionProps> = ({ id }) => {
-  const data = useSelector((state) => state.question.questions[id-1]);
+  const data = useSelector((state) => state.question.questions[id - 1]);
 
   const questionTotal = useSelector(
     (state) => state.question.questionTotalCount,
   );
 
+  const [isActive, setIsActive] = useState(false);
 
+  const onClickModalOn = () => {
+    setIsActive(true);
+  };
+
+  const onClickModalOff = () => {
+    setIsActive(false);
+  };
+
+  const onClickCardRemove = () => {
+    alert('이벤트 실행');
+  };
   return (
     <Container>
       <Wrapper>
@@ -36,6 +50,25 @@ const Question: React.FC<QuestionProps> = ({ id }) => {
           <></>
         ) : (
           <>
+              {(data.description!==null)&&
+              <>
+              <CopyrightImg
+                src="/images/info_logo.png"
+                alt="정보 로고"
+                onClick={onClickModalOn}
+              />
+              <ModalBase active={isActive} closeEvent={onClickModalOff}>
+                <CardModal
+                  closeEvent={onClickModalOff}
+                  title={data.question}
+                  actionMsg='질문'
+                  actionEvent={onClickCardRemove}
+                >
+                  {data.description}
+                </CardModal>
+              </ModalBase>
+              </>
+            }
             <QuestionDiv>
               <Title>{data.question}</Title>
               {data.overlap && <OverlapDiv>(중복 선택 가능)</OverlapDiv>}
@@ -49,19 +82,19 @@ const Question: React.FC<QuestionProps> = ({ id }) => {
                 {id}/{questionTotal}
               </SubDiv>
             </GraphDiv>
-            {data.overlap ? 
+            {data.overlap ? (
               <SelectOverlap
                 qusetionId={data.questionId}
                 answerList={data.answerList}
                 id={id}
               />
-              :
+            ) : (
               <SelectOne
                 qusetionId={data.questionId}
                 answerList={data.answerList}
                 id={id}
               />
-            }
+            )}
           </>
         )}
       </Wrapper>
@@ -135,6 +168,24 @@ const SubDiv = styled.div`
   font-size: 20px;
   color: #b9b9b9;
   margin-top: 1vh;
+`;
+
+const CopyrightImg = styled.img`
+  width: 32px;
+  height: 32px;
+  top: 5%;
+  right: 4%;
+  cursor: pointer;
+  float:right;
+
+  @media (max-width: 991px) {
+    top: 2%;
+    right: 3%;
+  }
+  @media (max-width: 767px) {
+    width: 24px;
+    height: 24px;
+  }
 `;
 
 export default Question;

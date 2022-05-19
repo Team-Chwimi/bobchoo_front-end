@@ -47,6 +47,7 @@ const Home: NextPage = () => {
   const { isLoading, data, isError, errorMessage } = useQuestion();
 
   useEffect(() => {
+    // window.location.reload();
     if (!location.hasCheckedLocation) {
       getLocation().then(() => {
         dispatch(
