@@ -1,24 +1,9 @@
 import type { NextPage } from 'next';
 
-import styled from '@emotion/styled';
-
-import Header from '../components/common/header';
-
-import { LINK_HOME } from '../data/link';
+import ErrorSection from '../components/common/errorSection';
 
 const Custom500: NextPage = () => {
-  return (
-    <Container>
-      <Header linkName={LINK_HOME.linkName} linkPath={LINK_HOME.linkPath} />
-      <h1>500 에러 페이지입니다</h1>
-    </Container>
-  );
+  return <ErrorSection errorMessage="내부 서버에 오류가 발생했습니다" />;
 };
-
-const Container = styled.section`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
 
 export default Custom500;

@@ -108,6 +108,7 @@ const MapSection: React.FC = () => {
         lat: currentLocation.lat,
         lng: currentLocation.lng,
       },
+      gestureHandling: 'greedy',
       zoom: 14,
     });
     setMapData(map);
