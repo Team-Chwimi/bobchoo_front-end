@@ -85,7 +85,7 @@ const SelectOne: React.FC<SelectProps> = ({ qusetionId, answerList, id }) => {
       `/api/v1/surveys/results`,
       request,
     );
-    return response;
+    return response.data;
   };
 
   const postMultiApi = async (request: string) => {
@@ -116,17 +116,15 @@ const SelectOne: React.FC<SelectProps> = ({ qusetionId, answerList, id }) => {
   const obj = JSON.stringify(request);
 
   const handleOneData = async () => {
-    const response = await postOneApi(obj);
-    console.log(response);
-    if (response.status === 404) {
-    } else {
-      dispatch(
-        selectedFoodActions.setSelectedFood({
-          foodName: response.data.foodName,
-          foodImg: response.data.foodImg,
-        }),
-      );
-    }
+    const data = await postOneApi(obj);
+    console.log(data);
+    dispatch(
+      selectedFoodActions.setSelectedFood({
+        foodName: data.foodName,
+        foodImg: data.foodImg,
+      }),
+    );
+    return data.foodName;
   };
 
   const handleMultipleData = async () => {
@@ -211,8 +209,12 @@ const SelectOne: React.FC<SelectProps> = ({ qusetionId, answerList, id }) => {
                         }),
                       );
                       if (index === 0) {
-                        handleOneData().then(() => {
-                          router.push(`/result`);
+                        handleOneData().then((value) => {
+                          if (value === '') {
+                            router.push('/warning');
+                          } else {
+                            router.push(`/result`);
+                          }
                         });
                       }
                       //여러개 선택할 때
