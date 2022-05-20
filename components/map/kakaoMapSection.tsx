@@ -546,17 +546,19 @@ const CryingBobdolWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 12px;
+  margin-top: 5vh;
 `;
 
 const BobdolImg = styled.img`
   width: 100px;
   margin-bottom: 8px;
+  margin-top: 5vh;
 `;
 
 const NoListMessage = styled.div`
   font-size: 20px;
   font-weight: 800;
+  margin-top: 2vh;
 `;
 
 export default KakaoMapSection;
