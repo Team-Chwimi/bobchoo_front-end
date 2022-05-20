@@ -8,6 +8,9 @@ import { selectedFoodActions } from '../../store/selectedFood';
 import { axiosInstance } from '../../lib/api';
 
 import TitleHeader from '../common/titleHeader';
+import Header from '../common/header';
+
+import { LINK_HOME } from '../../data/link';
 
 import { PALETTE } from '../../data/palette';
 import axios from 'axios';
@@ -155,41 +158,39 @@ const FoodListSection: React.FC = () => {
   return (
     <Container>
       <Wrapper>
-        <TitleHeader title="오늘의 밥추 리스트!" />
-        <FoodList>
-          {!distanceList ? (
-            <></>
-          ) : (
-            distanceList.map((data, index) => (
-              <FoodItem
-                key={data.foodId}
-                onClick={() => handleSelectedClick(data.foodName)}
-              >
-                <FoodItemName>{data.foodName}</FoodItemName>
-                {data.count > 0 ? <></> : <>1km 이내에 없음</>}
-                {/* {checkStoresExist(data.foodName, latlng.lat, latlng.lng).then(
-                  (value) => {
-                    return <></>;
-                  },
-                )} */}
-                {/* {! ? (
-                  <>dd</>
-                ) : distanceList[index] !== 0 ? (
-                  <>1km이내에 있음 {distanceList[index]}</>
-                ) : (
-                  <>1km이내에 없음 {distanceList[index]}</>
-                )} */}
-                {/* {showDistance(index)} */}
-              </FoodItem>
-            ))
-          )}
-        </FoodList>
-        <ButtonSection>
-          {/* <StartVoteButton>투표 시작하기</StartVoteButton> */}
-          <PickAgainButton onClick={handlePickAgain}>
-            다시 고르기
-          </PickAgainButton>
-        </ButtonSection>
+        {/* <TitleHeader title="오늘의 밥추 리스트!" /> */}
+
+        <Header linkName={LINK_HOME.linkName} linkPath={LINK_HOME.linkPath} />
+
+        <MainDiv>
+          <TitleWrapper>
+            <TitleDiv>오늘의 밥추 리스트!!</TitleDiv>
+          </TitleWrapper>
+          <ImageWrapper src="/images/bobdol_nacho.gif" alt="밥돌이 이미지" />
+        </MainDiv>
+        <ListDiv>
+          <FoodList>
+            {!distanceList ? (
+              <></>
+            ) : (
+              distanceList.map((data, index) => (
+                <FoodItem
+                  key={data.foodId}
+                  onClick={() => handleSelectedClick(data.foodName)}
+                >
+                  <FoodItemName>{data.foodName}</FoodItemName>
+                   {data.count > 0 ? <></> : <>1km 이내에 없음</>}
+                </FoodItem>
+              ))
+            )}
+            <ButtonSection>
+              <PickAgainButton onClick={handlePickAgain}>
+                다시 고르기
+              </PickAgainButton>
+              {/* <StartVoteButton>투표 시작하기</StartVoteButton> */}
+            </ButtonSection>
+          </FoodList>
+        </ListDiv>
       </Wrapper>
     </Container>
   );
@@ -197,44 +198,65 @@ const FoodListSection: React.FC = () => {
 
 const Container = styled.div``;
 
+
 const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 0 12px;
-  font-size: 17px;
-  color: ${PALETTE.gray_38};
+`;
+const MainDiv = styled.div`
+`;
+const TitleWrapper = styled.div`
+  width: 60%;
+`;
+const ImageWrapper = styled.img`
+  // width: 61px;
+  height: 10vh;
+  float: right;
+  margin-right: 2vh;
+`;
+const TitleDiv = styled.div`
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 800;
+  margin-top: 5vh;
+  margin-left: 2vh;
+  word-break: keep-all;
+  float: left;
 `;
 
-const FoodList = styled.ul`
-  display: flex;
-  flex-direction: column;
-  margin-top: 24px;
+const ListDiv = styled.div`
+  clear:both;
+  width:100%
 `;
 
-const FoodItem = styled.li`
-  display: flex;
+const FoodList = styled.div`
+  padding-top: 0.5vw;
+  text-align:center;
+`;
+
+const FoodItem = styled.ul`
   align-items: center;
   margin-bottom: 8px;
-  width: 276px;
-  height: 50px;
+  padding: 28px 0 28px 0;
   background: #f2f2f2;
   border-radius: 15px;
   cursor: pointer;
-`;
-
-const FoodItemName = styled.span`
-  padding-left: 20px;
+  margin-top: 2vh;
+  margin-left: 2vh;
+  margin-right: 2vh;
+  text-align: center;
+  `;
+  
+  const FoodItemName = styled.div`
   font-weight: 700;
-  font-size: 20px;
+  font-size: 3vmax;
+  text-align:center;
 `;
 
 const ButtonSection = styled.div`
-  display: flex;
   flex-direction: column;
   align-items: center;
   font-weight: 700;
-  font-size: 20px;
+  font-size: 3vmax;
+  text-align:center;
 `;
 
 const StartVoteButton = styled.button`
@@ -250,16 +272,22 @@ const StartVoteButton = styled.button`
   cursor: pointer;
 `;
 
-const PickAgainButton = styled.button`
-  width: 276px;
-  height: 55px;
-  background: #f2f2f2;
-  border: 0px;
+const PickAgainButton = styled.div`
+  // width: 100%;
+  background: #FF7B30;
+  color: #ffffff;
+  align-items: center;
+  margin-bottom: 8px;
+  padding: 28px 0 28px 0;
   border-radius: 15px;
-  font-weight: 700;
-  font-size: 20px;
-  color: #ff7b30;
   cursor: pointer;
+  margin-top: 2vh;
+  margin-left: 2vh;
+  margin-right: 2vh;
+  text-align: center;
+  font-weight: 700;
+  font-size: 3vmax;
+  text-align:center;
 `;
 
 export default FoodListSection;
