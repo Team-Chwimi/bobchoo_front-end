@@ -22,6 +22,7 @@ import useAnswer from '../../hooks/useAnswer';
 import styled from '@emotion/styled';
 import { axiosInstance } from '../../lib/api';
 import { requestTypeActions } from '../../store/requestType';
+import { warningTypeActions } from '../../store/warning';
 
 interface style {
   back: string;
@@ -84,7 +85,7 @@ const SelectOne: React.FC<SelectProps> = ({ qusetionId, answerList, id }) => {
       `/api/v1/surveys/results`,
       request,
     );
-    return response.data;
+    return response;
   };
 
   const postMultiApi = async (request: string) => {
@@ -115,24 +116,36 @@ const SelectOne: React.FC<SelectProps> = ({ qusetionId, answerList, id }) => {
   const obj = JSON.stringify(request);
 
   const handleOneData = async () => {
-    const data = await postOneApi(obj);
-    console.log(data);
-    dispatch(
-      selectedFoodActions.setSelectedFood({
-        foodName: data.foodName,
-        foodImg: data.foodImg,
-      }),
-    );
+    const response = await postOneApi(obj);
+    console.log(response);
+    if (response.status === 404) {
+    } else {
+      dispatch(
+        selectedFoodActions.setSelectedFood({
+          foodName: response.data.foodName,
+          foodImg: response.data.foodImg,
+        }),
+      );
+    }
   };
 
   const handleMultipleData = async () => {
     const data = await postMultiApi(obj);
     console.log(data);
-    dispatch(
-      selectedFoodListActions.setSelectedFoodList({
-        foodList: data,
-      }),
-    );
+    if (data.length === 0) {
+      dispatch(
+        warningTypeActions.setWarningType({
+          type: 'noData',
+        }),
+      );
+      router.push('/warning');
+    } else {
+      dispatch(
+        selectedFoodListActions.setSelectedFoodList({
+          foodList: data,
+        }),
+      );
+    }
   };
 
   const handleRandomOneData = async () => {

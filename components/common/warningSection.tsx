@@ -24,7 +24,7 @@ const WarningSection: React.FC = () => {
       ) : (
         <>
           <BobdolImg src="/images/bobdol_cry.gif" alt="밥돌이 우는 이미지" />
-          <ErrorMessage></ErrorMessage>
+          <ErrorMessage>조건에 맞는 음식이 없습니다</ErrorMessage>
         </>
       )}
     </Container>
@@ -39,8 +39,8 @@ const Container = styled.section`
 `;
 
 const BobdolImg = styled.img`
-  width: 300px;
-  margin: 4% 0 6%;
+  width: 250px;
+  margin: 4% 0 3%;
 
   @media (max-width: 767px) {
     margin: 3% 0 14%;

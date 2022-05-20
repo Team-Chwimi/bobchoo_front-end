@@ -17,6 +17,11 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { selectedFoodListActions } from '../../store/selectedFoodList';
 import InfoFoodService from '../../lib/api/infoFood';
+import { SurveyResponseItem } from '../../types/answerType';
+
+interface foodListItemType extends SurveyResponseItem {
+  count: number;
+}
 
 const checkStoresExist = async (foodName: string, lat: string, lng: string) => {
   const kakaoKey: string = process.env
@@ -33,7 +38,8 @@ const checkStoresExist = async (foodName: string, lat: string, lng: string) => {
   let response = await axios.get(url, config);
   let count = Number(response.data.documents.length);
 
-  return count === 0 ? false : true;
+  return count;
+  // return count === 0 ? false : true;
 };
 
 const FoodListSection: React.FC = () => {
@@ -47,27 +53,32 @@ const FoodListSection: React.FC = () => {
   const dispatch = useDispatch();
 
   const router = useRouter();
-  const [distanceList, setDistanceList] = useState<boolean[]>([]);
+  const [distanceList, setDistanceList] = useState<foodListItemType[]>([]);
 
   useEffect(() => {
-    const res: boolean[] = [];
+    // const res: boolean[] = [];
     selectedFoodList.map((data, index) => {
       checkStoresExist(data.foodName, latlng.lat, latlng.lng).then((value) => {
         // console.log(value, index);
-        res[index] = value;
+        // res[index] = value;
+        setDistanceList((old) => [
+          ...old,
+          { foodId: data.foodId, foodName: data.foodName, count: value },
+        ]);
       });
     });
-    setDistance(res);
-  }, []);
 
-  const setDistance = (res: boolean[]) => {
-    setDistanceList(res);
-    // console.log(distanceList);
-  };
+    // setDistance(res);
+  }, [selectedFoodList]);
 
-  useEffect(() => {
-    // console.log(distanceList);
-  }, [distanceList]);
+  // const setDistance = (res: boolean[]) => {
+  //   setDistanceList(res);
+  //   // console.log(distanceList);
+  // };
+
+  // useEffect(() => {
+  //   // console.log(distanceList);
+  // }, [distanceList]);
 
   const handleSelectedClick = (foodName: string) => {
     InfoFoodService.getInfoFood(foodName)
@@ -136,6 +147,7 @@ const FoodListSection: React.FC = () => {
   //   );
   // };
   const handlePickAgain = () => {
+    setDistanceList([]);
     if (requestType.type === 'random') {
       handleRandomMultipleData().then(() => {});
     } else {
@@ -158,30 +170,16 @@ const FoodListSection: React.FC = () => {
         </MainDiv>
         <ListDiv>
           <FoodList>
-            {!selectedFoodList ? (
+            {!distanceList ? (
               <></>
             ) : (
-              selectedFoodList.map((data, index) => (
+              distanceList.map((data, index) => (
                 <FoodItem
                   key={data.foodId}
                   onClick={() => handleSelectedClick(data.foodName)}
                 >
                   <FoodItemName>{data.foodName}</FoodItemName>
-                  {/* {checkStoresExist(data.foodName, latlng.lat, latlng.lng).then(
-                  (value) => {
-                    return <></>;
-                  },
-                )} */}
-                  {/* {!distanceList ? (
-                  <>dd</>
-                ) : distanceList[index] ? (
-                  <>1km이내에 없음</>
-                ) : (
-                  <>
-                    {distanceList[index]} dsd {index}
-                  </>
-                )} */}
-                  {/* {showDistance(index)} */}
+                   {data.count > 0 ? <></> : <>1km 이내에 없음</>}
                 </FoodItem>
               ))
             )}
