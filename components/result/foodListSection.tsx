@@ -18,6 +18,7 @@ import { useEffect, useState } from 'react';
 import { selectedFoodListActions } from '../../store/selectedFoodList';
 import InfoFoodService from '../../lib/api/infoFood';
 import { SurveyResponseItem } from '../../types/answerType';
+import { IoMdRefresh } from 'react-icons/io';
 
 interface foodListItemType extends SurveyResponseItem {
   count: number;
@@ -179,12 +180,17 @@ const FoodListSection: React.FC = () => {
                   onClick={() => handleSelectedClick(data.foodName)}
                 >
                   <FoodItemName>{data.foodName}</FoodItemName>
-                   {data.count > 0 ? <></> : <>1km 이내에 없음</>}
+                  <KmSpan>
+                     {data.count > 0 ? <></> : <>1km 이내에 없음</>}
+                  </KmSpan>
                 </FoodItem>
               ))
             )}
             <ButtonSection>
               <PickAgainButton onClick={handlePickAgain}>
+              <IconDiV>
+                <IoMdRefresh size={'6vmin'} />
+              </IconDiV>
                 다시 고르기
               </PickAgainButton>
               {/* <StartVoteButton>투표 시작하기</StartVoteButton> */}
@@ -220,6 +226,7 @@ const TitleDiv = styled.div`
   margin-left: 2vh;
   word-break: keep-all;
   float: left;
+  margin-top: 3vh;
 `;
 
 const ListDiv = styled.div`
@@ -229,36 +236,43 @@ const ListDiv = styled.div`
 
 const FoodList = styled.div`
   padding-top: 0.5vw;
-  text-align:center;
+`;
+const KmSpan = styled.span`
+  float:right;
+  margin-right: 5vw;
+  font-weight: 700;
+  font-size: 1.5vmax;
+  margin-top: 0.5vh;
+  color: #FF7B30;
 `;
 
 const FoodItem = styled.ul`
   align-items: center;
   margin-bottom: 8px;
-  padding: 28px 0 28px 0;
+  padding: 2.5vmax 0 2.5vmax 0;
   background: #f2f2f2;
   border-radius: 15px;
   cursor: pointer;
   margin-top: 2vh;
   margin-left: 2vh;
   margin-right: 2vh;
-  text-align: center;
+  color: #383838;
   `;
   
-  const FoodItemName = styled.div`
+  const FoodItemName = styled.span`
   font-weight: 700;
-  font-size: 3vmax;
-  text-align:center;
+  font-size: 2vmax;
+  margin-left: 5vw;
 `;
 
 const ButtonSection = styled.div`
-  flex-direction: column;
-  align-items: center;
-  font-weight: 700;
-  font-size: 3vmax;
-  text-align:center;
+ 
 `;
-
+const IconDiV = styled.span`
+  padding-top: 10%;
+  margin-right: 2vh;
+  vertical-align: middle;
+`;
 const StartVoteButton = styled.button`
   margin-bottom: 4px;
   width: 276px;
@@ -278,10 +292,10 @@ const PickAgainButton = styled.div`
   color: #ffffff;
   align-items: center;
   margin-bottom: 8px;
-  padding: 28px 0 28px 0;
+  padding: 2vmax 0 2vmax 0;
   border-radius: 15px;
   cursor: pointer;
-  margin-top: 2vh;
+  margin-top: 4vh;
   margin-left: 2vh;
   margin-right: 2vh;
   text-align: center;
