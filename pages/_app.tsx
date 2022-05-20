@@ -11,9 +11,22 @@ import { wrapper } from '../store';
 
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { useRouter } from 'next/router';
+import * as gtag from '../lib/gtag';
 
 const app = ({ Component, pageProps }: AppProps) => {
   const queryClient = new QueryClient();
+  // const router = useRouter();
+
+  // useEffect(() => {
+  //   const handleRouteChange = (url: any) => {
+  //     gtag.pageview(url);
+  //   };
+  //   router.events.on('routeChangeComplete', handleRouteChange);
+  //   return () => {
+  //     router.events.off('routeChangeComplete', handleRouteChange);
+  //   };
+  // }, [router.events]);
 
   return (
     <>
