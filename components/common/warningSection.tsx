@@ -15,11 +15,8 @@ const WarningSection: React.FC = () => {
       <Header linkName={LINK_HOME.linkName} linkPath={LINK_HOME.linkPath} />
       {warningType === 'badAnswer' ? (
         <>
-          <BobdolImg
-            src="/images/bobdol_angry.gif"
-            alt="밥돌이 화난 모습 이미지"
-          />
-          <ErrorMessage></ErrorMessage>
+          <BobdolImg src="/images/dog.gif" alt="강아지 화난 모습 이미지" />
+          <ErrorMessage>잘못된 답변을 했습니다</ErrorMessage>
         </>
       ) : (
         <>

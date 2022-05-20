@@ -234,8 +234,10 @@ const SelectOne: React.FC<SelectProps> = ({ qusetionId, answerList, id }) => {
                         questionId: qusetionId,
                         answer: ['YES'],
                       };
+
                       let curAnswerList = [...myAnswerList];
                       curAnswerList[curAnswerList.length] = result;
+
                       dispatch(
                         answerActions.setAnswer({
                           lat: '',
@@ -244,6 +246,15 @@ const SelectOne: React.FC<SelectProps> = ({ qusetionId, answerList, id }) => {
                         }),
                       );
                     } else {
+                      // console.log(myAnswerList);
+                      if (myAnswerList.length === 1 && num === 5) {
+                        dispatch(
+                          warningTypeActions.setWarningType({
+                            type: 'badAnswer',
+                          }),
+                        );
+                        router.push(`/warning`);
+                      }
                       // dispatch(
                       //   answerActions.setAnswer({
                       //     lat: '',
