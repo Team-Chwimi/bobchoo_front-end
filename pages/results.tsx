@@ -17,7 +17,7 @@ const Results: NextPage = () => {
 const Container = styled.section`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: center;;
 `;
 
 const Wrapper = styled.div`

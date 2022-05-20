@@ -17,6 +17,10 @@ import { axiosInstance } from '../../lib/api';
 import { useDispatch } from 'react-redux';
 import { selectedFoodActions } from '../../store/selectedFood';
 
+interface style {
+  display: string;
+}
+
 const TitleImg: React.FC = () => {
   const results = useSelector((state) => state.selectedFood);
   const answers = useSelector((state) => state.answer);
@@ -78,7 +82,13 @@ const TitleImg: React.FC = () => {
       });
     }
   };
-
+  const display = () => {
+    if (!isImgLoaded) {
+      return 'none';
+    } else {
+      return 'block';
+    }
+  };
   return (
     <Container>
       {!isImgLoaded ? (
@@ -91,7 +101,7 @@ const TitleImg: React.FC = () => {
           </MainDiv>
         </>
       )}
-      <ImgDiv>
+      <ImgDiv display={display()}>
         <MenuImage
           src={results.foodImg}
           alt={`${results.foodName} 이미지`}
@@ -115,12 +125,12 @@ const TitleImg: React.FC = () => {
                 주변식당찾기
               </ButtonName>
             </MapButton>
-            <ShareButton>
+            {/* <ShareButton>
               <IconDiV>
                 <FaShareAlt size={'6vmin'} />
               </IconDiV>
               <ButtonName>공유하기</ButtonName>
-            </ShareButton>
+            </ShareButton> */}
             <RechooseButton>
               <IconDiV>
                 <IoMdRefresh size={'6vmin'} />
@@ -135,9 +145,7 @@ const TitleImg: React.FC = () => {
 };
 
 const Container = styled.span`
-  //   font-size: 16px;
-  //   font-weight: 800;
-  //   color: ${PALETTE.orange_point};
+  // width:100%;
 `;
 
 const MainDiv = styled.div``;
@@ -150,12 +158,12 @@ const IconDiV = styled.span`
 const ButtonName = styled.span`
   font-style: normal;
   font-weight: 800;
-  font-size: 6vmin;
+  font-size: 3vmax;
   cursor: pointer;
 `;
 
 const ButtonDiv = styled.div`
-  padding: 0 5% 0 5%;
+  padding: 0 0% 0 5%;
   margin-top: 4vh;
   min-height: 100px;
 `;
@@ -212,7 +220,7 @@ const TitleDiv = styled.div`
   font-style: normal;
   font-weight: 800;
   margin-top: 5vh;
-  margin-left: 2vh;
+  margin-left: 3vh;
   word-break: keep-all;
   float: left;
 `;
@@ -221,12 +229,13 @@ const ImageWrapper = styled.img`
   // width: 61px;
   height: 10vh;
   float: right;
-  margin-right: 2vh;
+  // margin-right: 2vh;
 `;
 
-const ImgDiv = styled.div`
-  padding: 0 5% 0 5%;
+const ImgDiv = styled.div<style>`
+  padding: 0 0% 0 5%;
   position: relative;
+  display: ${(props) => props.display};
 `;
 
 const MenuImage = styled.img`
@@ -240,7 +249,7 @@ const MenuImage = styled.img`
 `;
 const FoodNameDiv = styled.div`
   position: absolute;
-  width: 90vmin;
+  min-width: 100%;
   background: rgba(255, 255, 255, 0.75);
   font-style: normal;
   font-weight: 800;
