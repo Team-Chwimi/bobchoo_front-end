@@ -138,7 +138,6 @@ const SelectOne: React.FC<SelectProps> = ({ qusetionId, answerList, id }) => {
           type: 'noData',
         }),
       );
-      router.push('/warning');
     } else {
       dispatch(
         selectedFoodListActions.setSelectedFoodList({
@@ -146,6 +145,7 @@ const SelectOne: React.FC<SelectProps> = ({ qusetionId, answerList, id }) => {
         }),
       );
     }
+    return data.length;
   };
 
   const handleRandomOneData = async () => {
@@ -217,8 +217,12 @@ const SelectOne: React.FC<SelectProps> = ({ qusetionId, answerList, id }) => {
                       }
                       //여러개 선택할 때
                       else {
-                        handleMultipleData().then(() => {
-                          router.push(`/results`);
+                        handleMultipleData().then((value) => {
+                          if (value === 0) {
+                            router.push('/warning');
+                          } else {
+                            router.push(`/results`);
+                          }
                         });
                       }
                     }
