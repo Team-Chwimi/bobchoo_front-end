@@ -252,6 +252,7 @@ const Container = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
+  
 `;
 
 const Wrapper = styled.div`
@@ -284,6 +285,7 @@ const CopyrightImg = styled.img`
 `;
 
 const TitleWrapper = styled.section`
+
   display: flex;
   flex-direction: column;
   align-items: center;
