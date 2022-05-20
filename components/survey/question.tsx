@@ -50,25 +50,27 @@ const Question: React.FC<QuestionProps> = ({ id }) => {
           <></>
         ) : (
           <>
-              {(data.description!==null)&&
+            {data.description !== null && (
               <>
-              <CopyrightImg
-                src="/images/info_logo.png"
-                alt="정보 로고"
-                onClick={onClickModalOn}
-              />
-              <ModalBase active={isActive} closeEvent={onClickModalOff}>
-                <CardModal
-                  closeEvent={onClickModalOff}
-                  title={data.question}
-                  actionMsg='질문'
-                  actionEvent={onClickCardRemove}
-                >
-                  {data.description}
-                </CardModal>
-              </ModalBase>
+                <CopyrightImgWrapper>
+                  <CopyrightImg
+                    src="/images/question_icon.png"
+                    alt="정보 로고"
+                    onClick={onClickModalOn}
+                  />
+                </CopyrightImgWrapper>
+                <ModalBase active={isActive} closeEvent={onClickModalOff}>
+                  <CardModal
+                    closeEvent={onClickModalOff}
+                    title={data.question}
+                    actionMsg="질문"
+                    actionEvent={onClickCardRemove}
+                  >
+                    {data.description}
+                  </CardModal>
+                </ModalBase>
               </>
-            }
+            )}
             <QuestionDiv>
               <Title>{data.question}</Title>
               {data.overlap && <OverlapDiv>(중복 선택 가능)</OverlapDiv>}
@@ -115,7 +117,7 @@ const Title = styled.div`
   font-size: 30px;
   font-style: normal;
   font-weight: 800;
-  margin-top: 5vh;
+  margin-top: 2vh;
   margin-left: 2vh;
   word-break: keep-all;
 `;
@@ -134,7 +136,7 @@ const ImageWrapper = styled.img`
   // width: 61px;
   height: 100px;
   float: right;
-  margin-top: 3vh;
+  margin-top: 1vh;
   margin-right: 2vh;
 `;
 
@@ -170,13 +172,17 @@ const SubDiv = styled.div`
   margin-top: 1vh;
 `;
 
+const CopyrightImgWrapper = styled.div``;
+
 const CopyrightImg = styled.img`
   width: 32px;
   height: 32px;
   top: 5%;
-  right: 4%;
+  margin-top: 1.5vh;
+  margin-left: 1vh;
+  // right: 4%;
   cursor: pointer;
-  float:right;
+  // float: right;
 
   @media (max-width: 991px) {
     top: 2%;
@@ -185,6 +191,7 @@ const CopyrightImg = styled.img`
   @media (max-width: 767px) {
     width: 24px;
     height: 24px;
+    margin-left: 3vh;
   }
 `;
 

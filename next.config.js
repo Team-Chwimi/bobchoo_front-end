@@ -8,12 +8,13 @@ const nextConfig = {
     NEXT_PUBLIC_GOOGLE_PLACE_KEY: process.env.NEXT_PUBLIC_GOOGLE_PLACE_KEY,
     NEXT_PUBLIC_KAKAOMAP_REST_APPKEY:
       process.env.NEXT_PUBLIC_KAKAOMAP_REST_APPKEY,
+    NEXT_PUBLIC_GA_TRACKING_ID: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
   },
 };
 
 module.exports = {
   nextConfig,
-  images: { 
-    domains: ["firebasestorage.googleapis.com"] 
+  images: {
+    domains: ['firebasestorage.googleapis.com'],
   },
 };

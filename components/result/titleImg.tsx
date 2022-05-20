@@ -17,8 +17,8 @@ import { axiosInstance } from '../../lib/api';
 import { useDispatch } from 'react-redux';
 import { selectedFoodActions } from '../../store/selectedFood';
 
-interface style{
-  display:string;
+interface style {
+  display: string;
 }
 
 const TitleImg: React.FC = () => {
@@ -82,13 +82,13 @@ const TitleImg: React.FC = () => {
       });
     }
   };
-  const display = ()=>{
-    if(!isImgLoaded){
+  const display = () => {
+    if (!isImgLoaded) {
       return 'none';
-    }else{
+    } else {
       return 'block';
     }
-  }
+  };
   return (
     <Container>
       {!isImgLoaded ? (
@@ -235,7 +235,7 @@ const ImageWrapper = styled.img`
 const ImgDiv = styled.div<style>`
   padding: 0 0% 0 5%;
   position: relative;
-  display:${(props) => props.display};
+  display: ${(props) => props.displ
 `;
 
 const MenuImage = styled.img`
@@ -248,7 +248,7 @@ const MenuImage = styled.img`
   border-bottom-right-radius: 15px;
 `;
 const FoodNameDiv = styled.div`
-  position: absolute; 
+  position: absolute;
   min-width: 100%;
   background: rgba(255, 255, 255, 0.75);
   font-style: normal;

@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
+import Script from 'next/script';
 
 import styled from '@emotion/styled';
 
@@ -19,6 +20,7 @@ import { QuestionType } from '../types/qestionType';
 import { PALETTE } from '../data/palette';
 
 import Swal from 'sweetalert2';
+
 // import axios from 'axios';
 
 interface ButtonProps {
@@ -164,6 +166,19 @@ const Home: NextPage = () => {
 
   return (
     <Container>
+      <Script
+        src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_TRACKING_ID}`}
+        strategy="afterInteractive"
+      />
+      <Script id="google-analytics" strategy="afterInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){window.dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', ${process.env.NEXT_PUBLIC_GA_TRACKING_ID});
+        `}
+      </Script>
       {/* {
         // location.hasCheckedLocation && !location.hasCurrentLoaction
         !isFirst && !canGetLocation ? (
@@ -189,7 +204,7 @@ const Home: NextPage = () => {
       >
         우선 결과 전체화면으로 이동하는 버튼
       </button> */}
-      
+
       <Wrapper>
         <CopyrightImg
           src="/images/info_logo.png"
@@ -264,7 +279,7 @@ const CopyrightImg = styled.img`
   top: 5%;
   right: 4%;
   cursor: pointer;
-  float:right;
+  float: right;
   margin-top: 3vh;
   margin-right: 2vh;
 `;
