@@ -292,7 +292,7 @@ const KakaoMapSection: React.FC = () => {
           id="myMap"
           style={{
             // width: '80%',
-            minWidth:'100vmin',
+            minWidth: '100vmin',
             height: '40vh',
             position: 'sticky',
             // top: '3%',
@@ -300,90 +300,95 @@ const KakaoMapSection: React.FC = () => {
             zIndex: '99',
             borderTopLeftRadius: '15px',
             borderTopRightRadius: '15px',
-            marginTop:'3vh'
+            marginTop: '3vh',
           }}
         ></div>
         <TitleBorder>
           <TitleDiv>{titleText}</TitleDiv>
         </TitleBorder>
-        
+
         <ListDiv>
-        {storeData.length === 0 ? (
-          <CryingBobdolWrapper>
-            <BobdolImg src="/images/bobdol_cry.gif" alt="우는 밥돌이 이미지" />
-            <NoListMessage>주변에 음식점이 없어요</NoListMessage>
-          </CryingBobdolWrapper>
-        ) : !isStoreDetail ? (
-          <StoreList>
-            {storeData.map((data) => (
-              <StoreItemWrapper key={data.id}>
-                {data.place_name && (
-                  <>
-                    <StoreItem
-                    // onClick={() => handleStoreDetailClick()}
-                    >
-                      <StoreItemNameCategory>
-                        <StoreItemName>{data.place_name}</StoreItemName>
-                        {data.category_name && (
-                          <StoreItemCategory>
-                            {data.category_name}
-                          </StoreItemCategory>
-                        )}
-                      </StoreItemNameCategory>
-                      {data.phone && (
-                        <StoreItemPhone>
-                          <IconImg
-                            src="/images/phone_icon.png"
-                            alt="전화기 아이콘"
-                          />
-                          <a href={'tel:' + data.phone}>{data.phone}</a>
-                        </StoreItemPhone>
-                      )}
-                      <StoreItemAddressDistance>
-                        <IconImg
-                          src="/images/map_logo_point.png"
-                          alt="지도 아이콘"
-                        />
-                        <StoreItemAddress>{data.address_name}</StoreItemAddress>
-                        <StoreItemDistance>
-                          ({data.distance}m)
-                        </StoreItemDistance>
-                      </StoreItemAddressDistance>
-                      <StoreItemURL onClick={handleUrlClick(data.place_url)}>
-                        <IconImg
-                          src="/images/info_logo.png"
-                          alt="정보 아이콘"
-                        />
-                        상세보기
-                      </StoreItemURL>
-                      <StoreItemWay
-                        onClick={handleUrlClick(
-                          `https:/map.kakao.com/link/to/${data.id}`,
-                        )}
+          {storeData.length === 0 ? (
+            <CryingBobdolWrapper>
+              <BobdolImg
+                src="/images/bobdol_cry.gif"
+                alt="우는 밥돌이 이미지"
+              />
+              <NoListMessage>주변에 음식점이 없어요</NoListMessage>
+            </CryingBobdolWrapper>
+          ) : !isStoreDetail ? (
+            <StoreList>
+              {storeData.map((data) => (
+                <StoreItemWrapper key={data.id}>
+                  {data.place_name && (
+                    <>
+                      <StoreItem
+                      // onClick={() => handleStoreDetailClick()}
                       >
-                        <IconImg
-                          src="/images/map_marker.png"
-                          alt="지도 아이콘"
-                        />
-                        길찾기
-                      </StoreItemWay>
-                      {/* {data.rating === 0 ? (
+                        <StoreItemNameCategory>
+                          <StoreItemName>{data.place_name}</StoreItemName>
+                          {data.category_name && (
+                            <StoreItemCategory>
+                              {data.category_name}
+                            </StoreItemCategory>
+                          )}
+                        </StoreItemNameCategory>
+                        {data.phone && (
+                          <StoreItemPhone>
+                            <IconImg
+                              src="/images/phone_icon.png"
+                              alt="전화기 아이콘"
+                            />
+                            <a href={'tel:' + data.phone}>{data.phone}</a>
+                          </StoreItemPhone>
+                        )}
+                        <StoreItemAddressDistance>
+                          <IconImg
+                            src="/images/map_logo_point.png"
+                            alt="지도 아이콘"
+                          />
+                          <StoreItemAddress>
+                            {data.address_name}
+                          </StoreItemAddress>
+                          <StoreItemDistance>
+                            ({data.distance}m)
+                          </StoreItemDistance>
+                        </StoreItemAddressDistance>
+                        <StoreItemURL onClick={handleUrlClick(data.place_url)}>
+                          <IconImg
+                            src="/images/info_logo.png"
+                            alt="정보 아이콘"
+                          />
+                          상세보기
+                        </StoreItemURL>
+                        <StoreItemWay
+                          onClick={handleUrlClick(
+                            `https://map.kakao.com/link/to/${data.id}`,
+                          )}
+                        >
+                          <IconImg
+                            src="/images/map_marker.png"
+                            alt="지도 아이콘"
+                          />
+                          길찾기
+                        </StoreItemWay>
+                        {/* {data.rating === 0 ? (
                       <>평점이 없습니다</>
                     ) : (
                       <StoreItemRating>
                         {data.rating.toFixed(1)}/5.0
                       </StoreItemRating>
                     )} */}
-                    </StoreItem>
-                    <StoreItemLine />
-                  </>
-                )}
-              </StoreItemWrapper>
-            ))}
-          </StoreList>
-        ) : (
-          <>
-            {/* <ReturnListButton
+                      </StoreItem>
+                      <StoreItemLine />
+                    </>
+                  )}
+                </StoreItemWrapper>
+              ))}
+            </StoreList>
+          ) : (
+            <>
+              {/* <ReturnListButton
               onClick={() => {
                 setIsStoreDetail(false);
                 displayPlaces();
@@ -398,19 +403,17 @@ const KakaoMapSection: React.FC = () => {
               // <StoreDetail
               // />
             )} */}
-          </>
-        )}
+            </>
+          )}
         </ListDiv>
       </Wrapper>
     </Container>
   );
 };
 
-const Container = styled.div`
-`;
+const Container = styled.div``;
 
-const Wrapper = styled.div`
-`;
+const Wrapper = styled.div``;
 const ListDiv = styled.div`
   min-width: 100vmin;
   margin-top: 6vh;
@@ -425,7 +428,6 @@ const TitleBorder = styled.div`
   background: #ffffff;
   z-index: 1000;
   // top:40vh;
-  
 `;
 const TitleDiv = styled.div`
   font-style: normal;
@@ -442,7 +444,7 @@ const StoreList = styled.ul`
   // overflow: hidden;
   overflow-y: scroll;
   overflow-x: hidden;
-  table-layout:fixed;
+  table-layout: fixed;
 `;
 
 const StoreItemWrapper = styled.li``;
@@ -453,7 +455,6 @@ const StoreItem = styled.div`
   justify-content: space-between;
   margin: 4px 0;
   color: ${PALETTE.gray_38};
-  
 
   // cursor: pointer;
   // &::after {}
@@ -527,6 +528,7 @@ const StoreItemWay = styled.div`
   align-items: center;
   padding-bottom: 4px;
   font-size: 15px;
+  flex-direction: row-reverse;
   cursor: pointer;
 `;
 
