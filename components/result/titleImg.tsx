@@ -235,7 +235,7 @@ const ImageWrapper = styled.img`
 const ImgDiv = styled.div<style>`
   padding: 0 0% 0 5%;
   position: relative;
-  display: ${(props) => props.displ
+  display: ${(props) => props.display};
 `;
 
 const MenuImage = styled.img`
