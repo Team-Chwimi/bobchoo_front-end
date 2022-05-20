@@ -21,10 +21,8 @@ const Container = styled.section`
 `;
 
 const Wrapper = styled.div`
-  // display: flex;
-  // flex-direction: column;
-  // align-items: center;
-  // width: 100%;
+  width: 100%;
+  max-width: 900px;
 
   @media (max-width: 991px) {
   }
