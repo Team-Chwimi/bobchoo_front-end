@@ -189,12 +189,13 @@ const Home: NextPage = () => {
       >
         우선 결과 전체화면으로 이동하는 버튼
       </button> */}
-      <CopyrightImg
-        src="/images/info_logo.png"
-        alt="정보 로고"
-        onClick={() => router.push('/copyright')}
-      />
+      
       <Wrapper>
+        <CopyrightImg
+          src="/images/info_logo.png"
+          alt="정보 로고"
+          onClick={() => router.push('/copyright')}
+        />
         <TitleWrapper>
           <TitleImg src="/images/title_logo.png" alt="밥추 로고" />
           <TitleInfo>식사 메뉴 추천 서비스</TitleInfo>
@@ -232,25 +233,22 @@ const Home: NextPage = () => {
   );
 };
 
-const Container = styled.div`
+const Container = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
+  
 `;
 
 const Wrapper = styled.div`
   width: 100%;
   max-width: 900px;
-  margin-top: 3vh;
 
   @media (max-width: 991px) {
-    // margin-top: 1%;
   }
   @media (max-width: 767px) {
-    margin-top: 6%;
   }
   @media (max-width: 575px) {
-    margin-top: 9%;
   }
 `;
 
@@ -263,49 +261,44 @@ const CurrentLocationInfo = styled.span`
 const CopyrightImg = styled.img`
   width: 32px;
   height: 32px;
-  position: absolute;
   top: 5%;
   right: 4%;
   cursor: pointer;
-
-  @media (max-width: 991px) {
-    top: 2%;
-    right: 3%;
-  }
-  @media (max-width: 767px) {
-    width: 24px;
-    height: 24px;
-  }
+  float:right;
+  margin-top: 3vh;
+  margin-right: 2vh;
 `;
 
 const TitleWrapper = styled.section`
+
   display: flex;
   flex-direction: column;
   align-items: center;
   margin: 0 28%;
+  margin-top: 15vh;
 
-  @media (max-width: 991px) {
-    margin: 0 24%;
-  }
-  @media (max-width: 767px) {
-  }
-  @media (max-width: 575px) {
-    margin: 0 16%;
-  }
+  // @media (max-width: 991px) {
+  //   margin: 0 24%;
+  // }
+  // @media (max-width: 767px) {
+  // }
+  // @media (max-width: 575px) {
+  //   margin: 0 16%;
+  // }
 `;
 
 const TitleImg = styled.img`
-  width: 95%;
+  width: 30vh;
 
-  @media (max-width: 991px) {
-    width: 85%;
-  }
-  @media (max-width: 767px) {
-    width: 95%;
-  }
-  @media (max-width: 575px) {
-    width: 100%;
-  }
+  // @media (max-width: 991px) {
+  //   width: 85%;
+  // }
+  // @media (max-width: 767px) {
+  //   width: 95%;
+  // }
+  // @media (max-width: 575px) {
+  //   width: 100%;
+  // }
 `;
 
 const TitleInfo = styled.h2`

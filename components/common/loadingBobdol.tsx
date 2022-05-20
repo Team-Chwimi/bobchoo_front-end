@@ -6,11 +6,13 @@ const LoadingBobdol: React.FC = () => {
   return (
     <Wrapper>
       <ThinkingText>뭘 먹을지 생각중...</ThinkingText>
-      <CircleDiv></CircleDiv>
-      <BobdolImage
-        src="/images/bobdol_carrot.gif"
-        alt="나쵸 먹는 밥돌이 이미지"
-      />
+      <DivWrapper>
+        <CircleDiv></CircleDiv>
+        <BobdolImage
+          src="/images/bobdol_carrot.gif"
+          alt="나쵸 먹는 밥돌이 이미지"
+        />
+      </DivWrapper>
       <WaitText>기다려 주세요</WaitText>
     </Wrapper>
   );
@@ -23,6 +25,8 @@ const Wrapper = styled.div`
   color: ${PALETTE.gray_38};
   font-size: 24px;
   font-weight: 700;
+  margin-top: 5vh;
+  text-aligh-center;
 `;
 
 const BobdolImage = styled.img`
@@ -48,8 +52,13 @@ width: 300px;
 height: 300px;
 border-radius: 300px;
 
+
 `;
 
 const WaitText = styled.div``;
+const DivWrapper = styled.div`
+  margin-top: 10vh;
+  text-align: center;
+`;
 
 export default LoadingBobdol;
