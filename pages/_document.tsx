@@ -27,9 +27,10 @@ class MyDocument extends Document {
             type="text/javascript"
             src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAOMAP_APPKEY}&libraries=services`}
           ></script>
-          {/* <script
+
+          <script
             async
-            src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
+            src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_TRACKING_ID}`}
           ></script>
           <script
             dangerouslySetInnerHTML={{
@@ -38,12 +39,12 @@ class MyDocument extends Document {
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
 
-            gtag('config', '${GA_TRACKING_ID}', {
+            gtag('config', '${process.env.NEXT_PUBLIC_GA_TRACKING_ID}', {
               page_path: window.location.pathname,
             });
           `,
             }}
-          /> */}
+          />
           {/* <script
             // type="text/javascript"
             src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_KEY}`}

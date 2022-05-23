@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import Script from 'next/script';
+// import Script from 'next/script';
 
 import styled from '@emotion/styled';
 
@@ -166,7 +166,7 @@ const Home: NextPage = () => {
 
   return (
     <Container>
-      <Script
+      {/* <Script
         src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_TRACKING_ID}`}
         strategy="afterInteractive"
       />
@@ -178,7 +178,7 @@ const Home: NextPage = () => {
 
           gtag('config', ${process.env.NEXT_PUBLIC_GA_TRACKING_ID});
         `}
-      </Script>
+      </Script> */}
       {/* {
         // location.hasCheckedLocation && !location.hasCurrentLoaction
         !isFirst && !canGetLocation ? (
@@ -252,7 +252,6 @@ const Container = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-  
 `;
 
 const Wrapper = styled.div`
@@ -285,7 +284,6 @@ const CopyrightImg = styled.img`
 `;
 
 const TitleWrapper = styled.section`
-
   display: flex;
   flex-direction: column;
   align-items: center;
