@@ -10,15 +10,19 @@ export type CardModalProps = {
   actionEvent?: (e?: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
-const CardModal = ({ closeEvent, title, children, actionMsg, actionEvent }: CardModalProps) => {
-
+const CardModal = ({
+  closeEvent,
+  title,
+  children,
+  actionMsg,
+  actionEvent,
+}: CardModalProps) => {
   return (
     <>
       <CardModalContainer>
         <h3>{title}</h3>
         <div className="msg">{children}</div>
-        <div className="action_box">
-        </div>
+        <div className="action_box"></div>
       </CardModalContainer>
     </>
   );
@@ -28,9 +32,7 @@ CardModal.defaultProps = {
   active: false,
 };
 
-const Button = styled.div`
-
-`;
+const Button = styled.div``;
 const CardModalContainer = styled.div`
   h3 {
     font-size: 1.5rem;

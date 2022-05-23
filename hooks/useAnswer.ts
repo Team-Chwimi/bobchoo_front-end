@@ -6,14 +6,17 @@ import SurveyService from '../lib/api/surveys';
 
 import { useSelector } from 'react-redux';
 import { ErrorResponse } from '../types/commonTypes';
-import { AnswerType,SurveyRequestType,SurveyResponseType } from '../types/answerType';
+import {
+  AnswerType,
+  SurveyRequestType,
+  SurveyResponseType,
+} from '../types/answerType';
 
 const useAnswer = (request: SurveyRequestType) => {
-  
   const myAnswerList = useSelector<SurveyRequestType>(
     (state) => state.answerList,
   );
-  request = { lat:'', lng:'', answerList: myAnswerList as AnswerType[] };
+  request = { lat: '', lng: '', answerList: myAnswerList as AnswerType[] };
 
   const queryFn = () => SurveyService.postAnswerAPI(request);
   const { isLoading, data, isError, error } = useQuery<

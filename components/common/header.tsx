@@ -10,24 +10,23 @@ interface HeaderProps extends HeaderType {}
 const Header: React.FC<HeaderProps> = ({ linkName, linkPath }) => {
   return (
     <HeaderWrapper>
-
-    <HomeLink
-      onClick={() => {
-        window.location.replace('/');
-      }}
+      <HomeLink
+        onClick={() => {
+          window.location.replace('/');
+        }}
       >
-      {/* <Link href={linkPath}>&#60; {linkName}</Link> */}
-      {/* <Link href={linkPath}>{linkName}</Link> */}
-      &#60; HOME
-    </HomeLink>
-      </HeaderWrapper>
+        {/* <Link href={linkPath}>&#60; {linkName}</Link> */}
+        {/* <Link href={linkPath}>{linkName}</Link> */}
+        &#60; HOME
+      </HomeLink>
+    </HeaderWrapper>
   );
 };
 
 const HeaderWrapper = styled.div`
   margin-left: 8px;
   margin-top: 3vh;
-  `;
+`;
 const HomeLink = styled.div`
   font-size: 2vh;
   font-weight: 800;

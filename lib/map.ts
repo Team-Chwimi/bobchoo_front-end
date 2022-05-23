@@ -1,6 +1,10 @@
 import axios from 'axios';
 
-export const checkStoresExist = async (foodName: string, lat: string, lng: string) => {
+export const checkStoresExist = async (
+  foodName: string,
+  lat: string,
+  lng: string,
+) => {
   const kakaoKey: string = process.env
     .NEXT_PUBLIC_KAKAOMAP_REST_APPKEY as string;
 
