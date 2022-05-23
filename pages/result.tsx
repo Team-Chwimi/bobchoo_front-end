@@ -12,17 +12,16 @@ const Result: NextPage = () => {
     <Container>
       <Wrapper>
         <Header linkName={LINK_HOME.linkName} linkPath={LINK_HOME.linkPath} />
-        <TitleImg/>
+        <TitleImg />
       </Wrapper>
     </Container>
   );
 };
 
-
 const Container = styled.section`
   display: flex;
   flex-direction: column;
-  align-items: center;;
+  align-items: center; ;
 `;
 
 const Wrapper = styled.div`

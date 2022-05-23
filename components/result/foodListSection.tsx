@@ -181,16 +181,16 @@ const FoodListSection: React.FC = () => {
                 >
                   <FoodItemName>{data.foodName}</FoodItemName>
                   <KmSpan>
-                     {data.count > 0 ? <></> : <>1km 이내에 없음</>}
+                    {data.count > 0 ? <></> : <>1km 이내에 없음</>}
                   </KmSpan>
                 </FoodItem>
               ))
             )}
             <ButtonSection>
               <PickAgainButton onClick={handlePickAgain}>
-              <IconDiV>
-                <IoMdRefresh size={'6vmin'} />
-              </IconDiV>
+                <IconDiV>
+                  <IoMdRefresh size={'6vmin'} />
+                </IconDiV>
                 다시 고르기
               </PickAgainButton>
               {/* <StartVoteButton>투표 시작하기</StartVoteButton> */}
@@ -204,11 +204,8 @@ const FoodListSection: React.FC = () => {
 
 const Container = styled.div``;
 
-
-const Wrapper = styled.div`
-`;
-const MainDiv = styled.div`
-`;
+const Wrapper = styled.div``;
+const MainDiv = styled.div``;
 const TitleWrapper = styled.div`
   width: 60%;
 `;
@@ -230,20 +227,20 @@ const TitleDiv = styled.div`
 `;
 
 const ListDiv = styled.div`
-  clear:both;
-  width:100%
+  clear: both;
+  width: 100%;
 `;
 
 const FoodList = styled.div`
   padding-top: 0.5vw;
 `;
 const KmSpan = styled.span`
-  float:right;
+  float: right;
   margin-right: 5vw;
   font-weight: 700;
   font-size: 1.5vmax;
   margin-top: 0.5vh;
-  color: #FF7B30;
+  color: #ff7b30;
 `;
 
 const FoodItem = styled.ul`
@@ -257,17 +254,15 @@ const FoodItem = styled.ul`
   margin-left: 2vh;
   margin-right: 2vh;
   color: #383838;
-  `;
-  
-  const FoodItemName = styled.span`
+`;
+
+const FoodItemName = styled.span`
   font-weight: 700;
   font-size: 2vmax;
   margin-left: 5vw;
 `;
 
-const ButtonSection = styled.div`
- 
-`;
+const ButtonSection = styled.div``;
 const IconDiV = styled.span`
   padding-top: 10%;
   margin-right: 2vh;
@@ -288,7 +283,7 @@ const StartVoteButton = styled.button`
 
 const PickAgainButton = styled.div`
   // width: 100%;
-  background: #FF7B30;
+  background: #ff7b30;
   color: #ffffff;
   align-items: center;
   margin-bottom: 8px;
@@ -301,7 +296,7 @@ const PickAgainButton = styled.div`
   text-align: center;
   font-weight: 700;
   font-size: 3vmax;
-  text-align:center;
+  text-align: center;
 `;
 
 export default FoodListSection;

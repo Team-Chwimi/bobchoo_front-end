@@ -41,18 +41,16 @@ const BobdolImage = styled.img`
     height: 225px;
     z-index: -1;
   }
-  
+
   transform: translate(0%, -150%);
 `;
 
 const ThinkingText = styled.div``;
 const CircleDiv = styled.div`
-background: #FAAC69;
-width: 300px;
-height: 300px;
-border-radius: 300px;
-
-
+  background: #faac69;
+  width: 300px;
+  height: 300px;
+  border-radius: 300px;
 `;
 
 const WaitText = styled.div``;

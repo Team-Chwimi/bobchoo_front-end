@@ -29,9 +29,7 @@ const SelectOverlap: React.FC<SelectProps> = ({
   const questionTotal = useSelector(
     (state) => state.question.questionTotalCount,
   );
-  const myAnswerList = useSelector(
-    (state) => state.answer.answerList,
-  );
+  const myAnswerList = useSelector((state) => state.answer.answerList);
   const clicked: Array<boolean> = new Array(questionTotal).fill(false);
   const [colorList, setColorList] = useState<boolean[]>(clicked);
 
@@ -92,22 +90,30 @@ const SelectOverlap: React.FC<SelectProps> = ({
             ))}
           <NextButton
             onClick={() => {
-              let myFoodAnswer:string[] = [];
-              let cnt=0;
-              colorList.map((data,index)=> {
+              let myFoodAnswer: string[] = [];
+              let cnt = 0;
+              colorList.map((data, index) => {
                 if (data) {
                   myFoodAnswer[cnt] = answerList[index];
                   cnt++;
                 }
-              })
-              if(myFoodAnswer.length<1){
-                alert("한개 이상 선택해 주세요!");
-              }else{
-
-                let result: AnswerType = {questionId: qusetionId, answer: myFoodAnswer}
-                let curAnswerList =  [...myAnswerList];
-                curAnswerList[id-1] = result;
-                dispatch(answerActions.setAnswer({ lat:"", lng:"", answerList: curAnswerList }))
+              });
+              if (myFoodAnswer.length < 1) {
+                alert('한개 이상 선택해 주세요!');
+              } else {
+                let result: AnswerType = {
+                  questionId: qusetionId,
+                  answer: myFoodAnswer,
+                };
+                let curAnswerList = [...myAnswerList];
+                curAnswerList[id - 1] = result;
+                dispatch(
+                  answerActions.setAnswer({
+                    lat: '',
+                    lng: '',
+                    answerList: curAnswerList,
+                  }),
+                );
                 router.push(`/survey/${num}`);
                 console.log(num);
               }

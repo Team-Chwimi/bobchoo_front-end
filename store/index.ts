@@ -20,7 +20,7 @@ const rootReducer = combineReducers({
   answer: answer.reducer,
   selectedFoodList: selectedFoodList.reducer,
   requestType: requestType.reducer,
-  warningType:warningType.reducer
+  warningType: warningType.reducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

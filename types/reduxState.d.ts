@@ -1,6 +1,10 @@
 import { LatLngType } from './MapType';
 import { QuestionType, QuestionTotalType } from './qestionType';
-import { SurveyRequestType, SurveyResponseType, SurveyResponseItem } from './answerType';
+import {
+  SurveyRequestType,
+  SurveyResponseType,
+  SurveyResponseItem,
+} from './answerType';
 
 export type LatLngState = LatLngType & {
   hasCurrentLoaction: boolean;
