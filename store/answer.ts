@@ -19,6 +19,9 @@ const answer = createSlice({
         (state.answerList = action.payload.answerList);
       return state;
     },
+    reset(state) {
+      Object.assign(state, initialState);
+    },
   },
 });
 

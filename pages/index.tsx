@@ -20,6 +20,7 @@ import { QuestionType } from '../types/qestionType';
 import { PALETTE } from '../data/palette';
 
 import Swal from 'sweetalert2';
+import { answerActions } from '../store/answer';
 
 // import axios from 'axios';
 
@@ -59,6 +60,10 @@ const Home: NextPage = () => {
     } else {
       setIsFirst(false);
     }
+  }, []);
+
+  useEffect(() => {
+    dispatch(answerActions.reset());
   }, []);
 
   const getLocation = async () => {
