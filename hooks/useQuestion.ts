@@ -5,7 +5,7 @@ import { useQuery } from 'react-query';
 import SurveyService from '../lib/api/surveys';
 
 import { ErrorResponse } from '../types/commonTypes';
-import { QuestionResultType } from '../types/qestionType';
+import { QuestionResultType } from '../types/questionType';
 
 const useQuestion = () => {
   const queryFn = () => SurveyService.getQuestionAPI();

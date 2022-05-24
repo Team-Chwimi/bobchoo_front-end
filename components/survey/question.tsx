@@ -9,7 +9,7 @@ import CardModal from '../../components/UI/CardModal';
 import SelectOverlap from './selectOverlap';
 import SelectOne from './selectOne';
 
-import { QuestionType } from '../../types/qestionType';
+import { QuestionType } from '../../types/questionType';
 
 interface QuestionProps {
   id: number;

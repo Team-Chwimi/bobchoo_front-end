@@ -16,7 +16,7 @@ import { answerActions } from '../store/answer';
 
 import { axiosInstance } from '../lib/api';
 
-import { QuestionType } from '../types/qestionType';
+import { QuestionType } from '../types/questionType';
 
 import LoadingCircular from '../components/common/loadingCircular';
 
