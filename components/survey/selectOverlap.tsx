@@ -114,7 +114,7 @@ const SelectOverlap: React.FC<SelectProps> = ({
                   }),
                 );
                 router.push(`/survey/${num}`);
-                console.log(num);
+                // console.log(num);
               }
             }}
           >

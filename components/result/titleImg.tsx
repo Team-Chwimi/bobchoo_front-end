@@ -69,7 +69,7 @@ const TitleImg: React.FC = () => {
   };
 
   const handlePickAgain = () => {
-    console.log(requestType.type);
+    // console.log(requestType.type);
     if (requestType.type === 'random') {
       handleRandomOneData().then(() => {
         setIsImgLoaded(false);

@@ -115,7 +115,7 @@ const FoodListSection: React.FC = () => {
   const handleMultipleData = async () => {
     const surveyRequest = answers;
     const data = await postMultiApi(JSON.stringify(surveyRequest));
-    console.log(data);
+    // console.log(data);
     dispatch(
       selectedFoodListActions.setSelectedFoodList({
         foodList: data,
@@ -126,7 +126,7 @@ const FoodListSection: React.FC = () => {
   const handleRandomMultipleData = async () => {
     const randomRequest = { lat: '', lng: '' };
     const data = await postRandomListAPI(JSON.stringify(randomRequest));
-    console.log(data);
+    // console.log(data);
     dispatch(
       selectedFoodListActions.setSelectedFoodList({
         foodList: data,

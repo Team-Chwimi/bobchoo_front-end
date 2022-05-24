@@ -153,7 +153,7 @@ const Home: NextPage = () => {
       // return [result,count];
       return result;
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   };
   const handleQestionData = async () => {

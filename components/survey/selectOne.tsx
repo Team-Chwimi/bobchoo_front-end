@@ -111,7 +111,7 @@ const SelectOne: React.FC<SelectProps> = ({ qusetionId, answerList, id }) => {
 
   const handleOneData = async () => {
     const data = await postOneApi(obj);
-    console.log(data);
+    // console.log(data);
     dispatch(
       selectedFoodActions.setSelectedFood({
         foodName: data.foodName,
@@ -123,7 +123,7 @@ const SelectOne: React.FC<SelectProps> = ({ qusetionId, answerList, id }) => {
 
   const handleMultipleData = async () => {
     const data = await postMultiApi(obj);
-    console.log(data);
+    // console.log(data);
     if (data.length === 0) {
       dispatch(
         warningTypeActions.setWarningType({
@@ -143,7 +143,7 @@ const SelectOne: React.FC<SelectProps> = ({ qusetionId, answerList, id }) => {
   const handleRandomOneData = async () => {
     const randomRequest = { lat: '', lng: '' };
     const data = await postRandomAPI(JSON.stringify(randomRequest));
-    console.log(data);
+    // console.log(data);
     dispatch(
       selectedFoodActions.setSelectedFood({
         foodName: data.foodName,
@@ -155,7 +155,7 @@ const SelectOne: React.FC<SelectProps> = ({ qusetionId, answerList, id }) => {
   const handleRandomMultipleData = async () => {
     const randomRequest = { lat: '', lng: '' };
     const data = await postRandomListAPI(JSON.stringify(randomRequest));
-    console.log(data);
+    // console.log(data);
     dispatch(
       selectedFoodListActions.setSelectedFoodList({
         foodList: data,
@@ -177,7 +177,7 @@ const SelectOne: React.FC<SelectProps> = ({ qusetionId, answerList, id }) => {
                 onClick={(event) => {
                   if (num === questionTotal + 1) {
                     //하나만 선택할 때
-                    console.log(obj, 'obj');
+                    // console.log(obj, 'obj');
 
                     if (questionTotal === 1) {
                       dispatch(
