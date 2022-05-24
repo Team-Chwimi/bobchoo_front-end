@@ -15,7 +15,7 @@ import { makeAddress } from '../../lib/utils';
 import { LatLngNumberType } from '../../types/MapType';
 
 import StoreDetail from './storeDetail';
-import TitleHeader from '../common/titleHeader';
+import TitleHeader from './titleHeader';
 import LodaingCircular from '../common/loadingCircular';
 
 import { PALETTE } from '../../data/palette';

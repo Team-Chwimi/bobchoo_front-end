@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-import Header from './header';
+import Header from '../common/header';
 
 import { PALETTE } from '../../data/palette';
 
