@@ -1,7 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { DEAFULT_LOCATION } from '../data/location';
+
 import { AnswerState, responseOneState } from '../types/reduxState';
 import { AnswerType } from '../types/answerType';
+
+import { DEAFULT_LOCATION } from '../data/location';
 
 const initialState: AnswerState = {
   lat: DEAFULT_LOCATION.lat,

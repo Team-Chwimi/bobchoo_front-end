@@ -50,7 +50,6 @@ const Home: NextPage = () => {
   const { isLoading, data, isError, errorMessage } = useQuestion();
 
   useEffect(() => {
-    // window.location.reload();
     if (!location.hasCheckedLocation) {
       getLocation().then(() => {
         dispatch(
@@ -184,32 +183,6 @@ const Home: NextPage = () => {
           gtag('config', ${process.env.NEXT_PUBLIC_GA_TRACKING_ID});
         `}
       </Script> */}
-      {/* {
-        // location.hasCheckedLocation && !location.hasCurrentLoaction
-        !isFirst && !canGetLocation ? (
-          <CurrentLocationInfo>현재 위치 파악 불가</CurrentLocationInfo>
-        ) : (
-          <></>
-        )
-      } */}
-      {/* <button
-        style={{ position: 'absolute', left: 0 }}
-        onClick={(event) => {
-          handleLocationCheckedClick(event);
-          router.push('/map');
-        }}
-      >
-        맵으로 이동하는 임시버튼
-      </button>
-      <button
-        style={{ position: 'absolute', left: 0, top: 25 }}
-        onClick={(event) => {
-          router.push('/list');
-        }}
-      >
-        우선 결과 전체화면으로 이동하는 버튼
-      </button> */}
-
       <Wrapper>
         <CopyrightImg
           src="/images/info_logo.png"
@@ -262,12 +235,6 @@ const Container = styled.section`
 const Wrapper = styled.div`
   width: 100%;
   max-width: 900px;
-`;
-
-const CurrentLocationInfo = styled.span`
-  position: absolute;
-  top: 4px;
-  right: 5%;
 `;
 
 const CopyrightImg = styled.img`

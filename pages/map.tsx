@@ -1,12 +1,10 @@
 import type { NextPage } from 'next';
-
+import dynamic from 'next/dynamic';
 import { useEffect } from 'react';
 
 import styled from '@emotion/styled';
 
 // import KakaoMapSection from '../components/map/kakaoMapSection';
-
-import dynamic from 'next/dynamic';
 
 declare global {
   interface Window {
