@@ -5,8 +5,6 @@ import styled from '@emotion/styled';
 import Header from '../../components/common/header';
 import Question from '../../components/survey/question';
 
-import { LINK_HOME } from '../../data/link';
-
 type props = {
   id: number;
 };
@@ -14,7 +12,7 @@ const SurveyDetail: NextPage<props> = ({ id }) => {
   return (
     <Container>
       <Wrapper>
-        <Header linkName={LINK_HOME.linkName} linkPath={LINK_HOME.linkPath} />
+        <Header />
         <Question id={id} />
       </Wrapper>
     </Container>

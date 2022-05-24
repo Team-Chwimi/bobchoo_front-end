@@ -17,7 +17,6 @@ import { LatLngNumberType } from '../../types/MapType';
 import StoreDetail from './storeDetail';
 import Header from '../common/header';
 
-import { LINK_HOME } from '../../data/link';
 import LodaingCircular from '../common/loadingCircular';
 
 import { PALETTE } from '../../data/palette';
@@ -287,7 +286,7 @@ const KakaoMapSection: React.FC = () => {
   return (
     <Container>
       <Wrapper>
-        <Header linkName={LINK_HOME.linkName} linkPath={LINK_HOME.linkPath} />
+        <Header />
         <div
           id="myMap"
           style={{

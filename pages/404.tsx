@@ -4,12 +4,10 @@ import styled from '@emotion/styled';
 
 import Header from '../components/common/header';
 
-import { LINK_HOME } from '../data/link';
-
 const Custom404: NextPage = () => {
   return (
     <Container>
-      <Header linkName={LINK_HOME.linkName} linkPath={LINK_HOME.linkPath} />
+      <Header />
       <Wrapper>
         <Img src="/images/404_error.gif" alt="404 에러 이미지" />
       </Wrapper>

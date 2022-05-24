@@ -5,14 +5,13 @@ import Header from './header';
 import { useSelector } from '../../store';
 
 import { PALETTE } from '../../data/palette';
-import { LINK_HOME } from '../../data/link';
 
 const WarningSection: React.FC = () => {
   const warningType = useSelector((state) => state.warningType.type);
 
   return (
     <Container>
-      <Header linkName={LINK_HOME.linkName} linkPath={LINK_HOME.linkPath} />
+      <Header />
       {warningType === 'badAnswer' ? (
         <>
           <BobdolImg src="/images/dog.gif" alt="강아지 화난 모습 이미지" />

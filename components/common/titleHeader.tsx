@@ -12,7 +12,7 @@ const TitleHeader: React.FC<TitleHeaderProps> = ({ title }) => {
   return (
     <Container>
       <LinkWrapper>
-        <Header linkName="Home" linkPath="/" />
+        <Header />
       </LinkWrapper>
       <HeaderWrapper>
         <Title>{title}</Title>

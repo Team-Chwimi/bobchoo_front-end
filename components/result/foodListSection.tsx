@@ -10,8 +10,6 @@ import { axiosInstance } from '../../lib/api';
 import TitleHeader from '../common/titleHeader';
 import Header from '../common/header';
 
-import { LINK_HOME } from '../../data/link';
-
 import { PALETTE } from '../../data/palette';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -161,7 +159,7 @@ const FoodListSection: React.FC = () => {
       <Wrapper>
         {/* <TitleHeader title="오늘의 밥추 리스트!" /> */}
 
-        <Header linkName={LINK_HOME.linkName} linkPath={LINK_HOME.linkPath} />
+        <Header />
 
         <MainDiv>
           <TitleWrapper>
