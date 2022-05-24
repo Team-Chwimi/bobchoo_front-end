@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import type { NextPage } from 'next';
@@ -12,15 +12,17 @@ import useQuestion from '../hooks/useQuestion';
 import { useSelector } from '../store';
 import { latlngActions } from '../store/latlng';
 import { questionActions } from '../store/question';
+import { answerActions } from '../store/answer';
 
 import { axiosInstance } from '../lib/api';
 
 import { QuestionType } from '../types/qestionType';
 
+import LodaingCircular from '../components/common/loadingCircular';
+
 import { PALETTE } from '../data/palette';
 
 import Swal from 'sweetalert2';
-import { answerActions } from '../store/answer';
 
 // import axios from 'axios';
 
@@ -46,8 +48,21 @@ const Home: NextPage = () => {
 
   const [canGetLocation, setCanGetLocation] = useState<boolean>(false);
   const [isFirst, setIsFirst] = useState<boolean>(true);
+  const [isImgLoaded, setIsImgLoaded] = useState<boolean>(false);
 
   const { isLoading, data, isError, errorMessage } = useQuestion();
+
+  const imgRef = useRef<HTMLImageElement>(null);
+
+  function onLoad() {
+    setIsImgLoaded(true);
+  }
+
+  useEffect(() => {
+    if (imgRef.current?.complete) {
+      onLoad();
+    }
+  }, []);
 
   useEffect(() => {
     if (!location.hasCheckedLocation) {
@@ -190,7 +205,13 @@ const Home: NextPage = () => {
           onClick={() => router.push('/copyright')}
         />
         <TitleWrapper>
-          <TitleImg src="/images/title_logo.png" alt="밥추 로고" />
+          {!isImgLoaded ? <LodaingCircular /> : <></>}
+          <TitleImg
+            src="/images/title_logo.png"
+            alt="밥추 로고"
+            ref={imgRef}
+            onLoad={onLoad}
+          />
           <TitleInfo>식사 메뉴 추천 서비스</TitleInfo>
         </TitleWrapper>
         <ButtonWrapper>
