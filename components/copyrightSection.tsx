@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import useCopyrights from '../hooks/useCopyrights';
 import { handleUrlClick } from '../lib/utils';
 
-import LodaingCircular from './common/loadingCircular';
+import LoadingCircular from './common/loadingCircular';
 
 import { PALETTE } from '../data/palette';
 
@@ -18,7 +18,7 @@ const CopyrightSection: React.FC = () => {
     <Container>
       <Wrapper>
         {isLoading || !data ? (
-          <LodaingCircular />
+          <LoadingCircular />
         ) : (
           <>
             <Title>저작권</Title>

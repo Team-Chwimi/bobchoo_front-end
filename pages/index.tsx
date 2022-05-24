@@ -18,7 +18,7 @@ import { axiosInstance } from '../lib/api';
 
 import { QuestionType } from '../types/qestionType';
 
-import LodaingCircular from '../components/common/loadingCircular';
+import LoadingCircular from '../components/common/loadingCircular';
 
 import { PALETTE } from '../data/palette';
 
@@ -205,7 +205,7 @@ const Home: NextPage = () => {
           onClick={() => router.push('/copyright')}
         />
         <TitleWrapper>
-          {!isImgLoaded ? <LodaingCircular /> : <></>}
+          {!isImgLoaded ? <LoadingCircular /> : <></>}
           <TitleImg
             src="/images/title_logo.png"
             alt="밥추 로고"
