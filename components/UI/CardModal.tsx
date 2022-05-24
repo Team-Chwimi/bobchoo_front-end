@@ -40,11 +40,11 @@ const CardModalContainer = styled.div`
   }
 
   .msg {
-    line-height: 1.5;
-    font-size: 1rem;
-    color: rgb(73, 80, 87);
     margin-top: 1rem;
     margin-bottom: 1rem;
+    line-height: 1.5;
+    color: rgb(73, 80, 87);
+    font-size: 1rem;
     white-space: pre-wrap;
   }
 

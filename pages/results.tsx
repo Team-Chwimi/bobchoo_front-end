@@ -23,13 +23,6 @@ const Container = styled.section`
 const Wrapper = styled.div`
   width: 100%;
   max-width: 900px;
-
-  @media (max-width: 991px) {
-  }
-  @media (max-width: 767px) {
-  }
-  @media (max-width: 575px) {
-  }
 `;
 
 export default Results;

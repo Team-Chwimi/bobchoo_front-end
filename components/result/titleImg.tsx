@@ -1,11 +1,12 @@
 import { useRouter } from 'next/router';
-import Link from 'next/link';
-
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 import styled from '@emotion/styled';
 
 import { useSelector } from '../../store';
+import { axiosInstance } from '../../lib/api';
+import { selectedFoodActions } from '../../store/selectedFood';
 
 import LoadingBobdol from '../common/loadingBobdol';
 
@@ -13,9 +14,6 @@ import { PALETTE } from '../../data/palette';
 
 import { FaShareAlt, FaMapMarkedAlt } from 'react-icons/fa';
 import { IoMdRefresh } from 'react-icons/io';
-import { axiosInstance } from '../../lib/api';
-import { useDispatch } from 'react-redux';
-import { selectedFoodActions } from '../../store/selectedFood';
 
 interface style {
   display: string;
@@ -144,42 +142,40 @@ const TitleImg: React.FC = () => {
   );
 };
 
-const Container = styled.span`
-  // width:100%;
-`;
+const Container = styled.section``;
 
 const MainDiv = styled.div``;
 
 const IconDiV = styled.span`
-  padding-top: 10%;
   margin-right: 2vh;
+  padding-top: 10%;
   vertical-align: middle;
 `;
+
 const ButtonName = styled.span`
-  font-style: normal;
-  font-weight: 800;
-  font-size: 3vmax;
   cursor: pointer;
+  font-style: normal;
+  font-size: 3vmax;
+  font-weight: 800;
 `;
 
 const ButtonDiv = styled.div`
-  padding: 0 0% 0 5%;
-  margin-top: 4vh;
   min-height: 100px;
+  margin-top: 4vh;
+  padding: 0 0% 0 5%;
 `;
 
 const MapButton = styled.div`
+  max-width: 100%;
+  min-height: 70px;
+  margin-top: 2vh;
+  padding: 2% 0% 2% 0%;
   background: #ff7b30;
   border-radius: 15px;
-  line-height: 70px;
-  min-height: 70px;
-  max-width: 100%;
-  padding: 2% 0% 2% 0%;
-  border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
+  border-bottom-left-radius: 15px;
+  line-height: 70px;
   color: #ffffff;
-  margin-top: 2vh;
-
   text-align: center;
 `;
 
@@ -200,64 +196,61 @@ const ShareButton = styled.div`
 `;
 
 const RechooseButton = styled.div`
-  background: #f2f2f2;
-  border-radius: 15px;
   max-width: 100%;
-  line-height: 70px;
   min-height: 70px;
-  padding: 2% 0% 2% 0%;
-  border-bottom-left-radius: 15px;
-  border-bottom-right-radius: 15px;
-  color: #ff7b30;
   margin-top: 2vh;
-
-  text-align: center;
+  padding: 2% 0% 2% 0%;
+  border-radius: 15px;
+  border-bottom-right-radius: 15px;
+  border-bottom-left-radius: 15px;
+  background: #f2f2f2;
   cursor: pointer;
+  color: #ff7b30;
+  text-align: center;
+  line-height: 70px;
 `;
 
 const TitleDiv = styled.div`
-  font-size: 40px;
-  font-style: normal;
-  font-weight: 800;
+  float: left;
   margin-top: 5vh;
   margin-left: 3vh;
+  font-size: 40px;
+  font-weight: 800;
   word-break: keep-all;
-  float: left;
 `;
 
 const ImageWrapper = styled.img`
-  // width: 61px;
-  height: 10vh;
   float: right;
-  // margin-right: 2vh;
+  height: 10vh;
 `;
 
 const ImgDiv = styled.div<style>`
-  padding: 0 0% 0 5%;
   position: relative;
   display: ${(props) => props.display};
+  padding: 0 0% 0 5%;
 `;
 
 const MenuImage = styled.img`
   max-width: 100%;
   margin-top: 3vh;
   object-fit: cover;
-  border-top-left-radius: 15px;
   border-top-right-radius: 15px;
-  border-bottom-left-radius: 15px;
+  border-top-left-radius: 15px;
   border-bottom-right-radius: 15px;
+  border-bottom-left-radius: 15px;
 `;
+
 const FoodNameDiv = styled.div`
   position: absolute;
   min-width: 100%;
-  background: rgba(255, 255, 255, 0.75);
-  font-style: normal;
-  font-weight: 800;
-  font-size: 8vmin;
-  text-align: center;
   padding: 5% 0% 5% 0%;
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
+  background: rgba(255, 255, 255, 0.75);
+  font-style: normal;
+  font-size: 8vmin;
+  font-weight: 800;
+  text-align: center;
   color: #383838;
   transform: translate(0%, -100%);
 `;

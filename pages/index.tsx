@@ -262,13 +262,6 @@ const Container = styled.section`
 const Wrapper = styled.div`
   width: 100%;
   max-width: 900px;
-
-  @media (max-width: 991px) {
-  }
-  @media (max-width: 767px) {
-  }
-  @media (max-width: 575px) {
-  }
 `;
 
 const CurrentLocationInfo = styled.span`
@@ -278,45 +271,25 @@ const CurrentLocationInfo = styled.span`
 `;
 
 const CopyrightImg = styled.img`
-  width: 32px;
-  height: 32px;
+  float: right;
   top: 5%;
   right: 4%;
-  cursor: pointer;
-  float: right;
+  width: 32px;
+  height: 32px;
   margin-top: 3vh;
   margin-right: 2vh;
+  cursor: pointer;
 `;
 
 const TitleWrapper = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0 28%;
-  margin-top: 15vh;
-
-  // @media (max-width: 991px) {
-  //   margin: 0 24%;
-  // }
-  // @media (max-width: 767px) {
-  // }
-  // @media (max-width: 575px) {
-  //   margin: 0 16%;
-  // }
+  margin: 15vh 28% 0;
 `;
 
 const TitleImg = styled.img`
   width: 30vh;
-
-  // @media (max-width: 991px) {
-  //   width: 85%;
-  // }
-  // @media (max-width: 767px) {
-  //   width: 95%;
-  // }
-  // @media (max-width: 575px) {
-  //   width: 100%;
-  // }
 `;
 
 const TitleInfo = styled.h2`
@@ -356,16 +329,16 @@ const ButtonWrapper = styled.section`
 const StartButton = styled.button<ButtonProps>`
   width: 300px;
   height: 120px;
-  background-color: ${(props) => props.backgroundColor};
-  color: ${(props) => props.fontColor};
-  font-size: 40px;
-  font-weight: 800;
-  font-family: 'NanumSquareRound';
-  line-height: 23px;
   border: 0px;
   border-radius: 15px;
-  transition: color 0.08s ease-in-out;
+  background-color: ${(props) => props.backgroundColor};
   cursor: pointer;
+  font-family: 'NanumSquareRound';
+  font-size: 40px;
+  font-weight: 800;
+  color: ${(props) => props.fontColor};
+  line-height: 23px;
+  transition: color 0.08s ease-in-out;
 
   &:first-of-type {
     margin-right: 32px;
@@ -391,7 +364,7 @@ const StartButton = styled.button<ButtonProps>`
     font-size: 20px;
 
     &:first-of-type {
-      margin: 0 0 11px;
+      margin-bottom: 11px;
     }
   }
 `;

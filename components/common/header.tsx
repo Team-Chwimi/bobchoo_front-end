@@ -21,10 +21,10 @@ const HeaderWrapper = styled.div`
 
 const HomeLink = styled.div`
   margin-left: 8px;
+  cursor: pointer;
   font-size: 2vh;
   font-weight: 800;
   color: ${PALETTE.orange_point};
-  cursor: pointer;
 `;
 
 export default Header;

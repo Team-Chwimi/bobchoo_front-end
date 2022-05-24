@@ -11,8 +11,8 @@ import { wrapper } from '../store';
 
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { useRouter } from 'next/router';
-import * as gtag from '../lib/gtag';
+// import { useRouter } from 'next/router';
+// import * as gtag from '../lib/gtag';
 
 const app = ({ Component, pageProps }: AppProps) => {
   const queryClient = new QueryClient();

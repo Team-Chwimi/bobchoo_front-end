@@ -1,18 +1,15 @@
-import Link from 'next/link';
-
 import { useEffect, useState, useMemo } from 'react';
-
-import ModalBase from '../../components/common/ModalBase';
-import CardModal from '../../components/UI/CardModal';
-
-import { useSelector } from '../../store';
 
 import styled from '@emotion/styled';
 
-import { QuestionType } from '../../types/qestionType';
+import { useSelector } from '../../store';
 
+import ModalBase from '../../components/common/ModalBase';
+import CardModal from '../../components/UI/CardModal';
 import SelectOverlap from './selectOverlap';
 import SelectOne from './selectOne';
+
+import { QuestionType } from '../../types/qestionType';
 
 interface QuestionProps {
   id: number;
@@ -109,33 +106,33 @@ const Container = styled.div``;
 const Wrapper = styled.div``;
 
 const QuestionDiv = styled.div`
-  width: 60%;
   float: left;
+  width: 60%;
 `;
 
 const Title = styled.div`
-  font-size: 30px;
-  font-style: normal;
-  font-weight: 800;
   margin-top: 2vh;
   margin-left: 2vh;
+  font-style: normal;
+  font-size: 30px;
+  font-weight: 800;
   word-break: keep-all;
 `;
 
 const OverlapDiv = styled.div`
   clear: both;
+  margin-top: 1vh;
   margin-left: 2vh;
   font-style: normal;
-  font-weight: 400;
   font-size: 15px;
-  margin-top: 1vh;
+  font-weight: 400;
   color: #797979;
 `;
 
 const ImageWrapper = styled.img`
+  float: right;
   // width: 61px;
   height: 100px;
-  float: right;
   margin-top: 1vh;
   margin-right: 2vh;
 `;
@@ -147,40 +144,40 @@ const GraphDiv = styled.div`
 
 const GraphBack = styled.div`
   height: 10px;
-  background-color: #faac69;
   border-radius: 10px;
+  background-color: #faac69;
 `;
 
 export const Graph = styled.div<GraphProps>`
-  z-index=0;
   position: relative;
+  z-index=0;
   // top: -10px;
-  height: 10px;
-  background-color: #FF7B30;
-  border-radius: 10px;
   width: ${(props) => {
     return (props.index / props.total) * 100;
   }}%;
+  height: 10px;
+  background-color: #FF7B30;
+  border-radius: 10px;
 `;
 
 const SubDiv = styled.div`
-  text-align: right;
-  font-style: normal;
-  font-weight: 800;
-  font-size: 20px;
-  color: #b9b9b9;
   margin-top: 1vh;
+  color: #b9b9b9;
+  font-style: normal;
+  font-size: 20px;
+  font-weight: 800;
+  text-align: right;
 `;
 
 const CopyrightImgWrapper = styled.div``;
 
 const CopyrightImg = styled.img`
+  top: 5%;
+  // right: 4%;
   width: 32px;
   height: 32px;
-  top: 5%;
   margin-top: 1.5vh;
   margin-left: 1vh;
-  // right: 4%;
   cursor: pointer;
   // float: right;
 

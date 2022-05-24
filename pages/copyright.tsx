@@ -1,11 +1,10 @@
 import type { NextPage } from 'next';
+import { useEffect } from 'react';
 
 import styled from '@emotion/styled';
 
 import Header from '../components/common/header';
 import CopyrightSection from '../components/copyrightSection';
-
-import { useEffect } from 'react';
 
 const Copyright: NextPage = () => {
   useEffect(() => {

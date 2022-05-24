@@ -35,9 +35,9 @@ const BobdolImg = styled.img`
 `;
 
 const ErrorMessage = styled.h1`
+  font: ${PALETTE.gray_38};
   font-size: 28px;
   font-weight: 800;
-  font: ${PALETTE.gray_38};
 
   @media (max-width: 767px) {
     font-size: 24px;

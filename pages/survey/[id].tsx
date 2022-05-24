@@ -8,6 +8,7 @@ import Question from '../../components/survey/question';
 type props = {
   id: number;
 };
+
 const SurveyDetail: NextPage<props> = ({ id }) => {
   return (
     <Container>
@@ -33,16 +34,6 @@ const Container = styled.section`
 const Wrapper = styled.div`
   width: 100%;
   max-width: 900px;
-
-  @media (max-width: 991px) {
-  }
-  @media (max-width: 767px) {
-  }
-  @media (max-width: 575px) {
-  }
 `;
-// const Question = styled.div`<{qestionId:string}>`;
-
-const Title = styled.h1``;
 
 export default SurveyDetail;
