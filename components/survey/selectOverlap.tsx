@@ -9,6 +9,8 @@ import { answerActions } from '../../store/answer';
 
 import { AnswerType } from '../../types/answerType';
 
+import Swal from 'sweetalert2';
+
 interface SelectProps {
   qusetionId: number;
   answerList: Array<string>;
@@ -98,7 +100,12 @@ const SelectOverlap: React.FC<SelectProps> = ({
                 }
               });
               if (myFoodAnswer.length < 1) {
-                alert('한개 이상 선택해 주세요!');
+                // alert('한개 이상 선택해 주세요!');
+                Swal.fire({
+                  icon: 'error',
+                  title: '한 개 이상 선택해 주세요!',
+                  confirmButtonText: '&nbsp&nbsp확인&nbsp&nbsp',
+                });
               } else {
                 let result: AnswerType = {
                   questionId: qusetionId,
