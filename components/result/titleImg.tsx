@@ -34,7 +34,7 @@ const TitleImg: React.FC = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (answers.answerList.length === 0) {
+    if (answers.answerList.length === 0 && results.foodName === '') {
       Swal.fire({
         icon: 'warning',
         title: '잘못된 접근입니다',
@@ -51,10 +51,6 @@ const TitleImg: React.FC = () => {
   useEffect(() => {
     setBeforeFood(results.foodName);
   }, []);
-
-  useEffect(() => {
-    console.log(isImgLoaded);
-  }, [isImgLoaded]);
 
   const postOneApi = async (request: string) => {
     const response = await axiosInstance.post(

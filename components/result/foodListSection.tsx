@@ -53,12 +53,12 @@ const FoodListSection: React.FC = () => {
   const requestType = useSelector((state) => state.requestType);
 
   const dispatch = useDispatch();
-
   const router = useRouter();
+
   const [distanceList, setDistanceList] = useState<foodListItemType[]>([]);
 
   useEffect(() => {
-    if (answers.answerList.length === 0) {
+    if (answers.answerList.length === 0 && selectedFoodList.length === 0) {
       Swal.fire({
         icon: 'warning',
         title: '잘못된 접근입니다',
