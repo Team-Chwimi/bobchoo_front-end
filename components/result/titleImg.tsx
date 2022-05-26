@@ -139,6 +139,22 @@ const TitleImg: React.FC = () => {
     }
   };
 
+  const handleKakaoShare = () => {
+    window.Kakao.Link.sendDefault({
+      objectType: 'feed',
+      content: {
+        title: '밥추',
+        description: results.foodName,
+        imageUrl: results.foodImg,
+        link: {
+          webUrl: `https://bobchoo.site/result/${results.foodName}`,
+          mobileWebUrl: `https://bobchoo.site/result/${results.foodName}`,
+          androidExecutionParams: 'test',
+        },
+      },
+    });
+  };
+
   return (
     <Container>
       {!isImgLoaded ? (
@@ -166,25 +182,23 @@ const TitleImg: React.FC = () => {
       ) : (
         <>
           <ButtonDiv>
-            <MapButton>
+            <MapButton onClick={() => router.push('/map')}>
               <IconDiV>
                 <FaMapMarkedAlt size={'6vmin'} />
               </IconDiV>
-              <ButtonName onClick={() => router.push('/map')}>
-                주변식당찾기
-              </ButtonName>
+              <ButtonName>주변식당찾기</ButtonName>
             </MapButton>
-            {/* <ShareButton>
+            {/* <ShareButton onClick={handleKakaoShare}>
               <IconDiV>
                 <FaShareAlt size={'6vmin'} />
               </IconDiV>
               <ButtonName>공유하기</ButtonName>
             </ShareButton> */}
-            <RechooseButton>
+            <RechooseButton onClick={handlePickAgain}>
               <IconDiV>
                 <IoMdRefresh size={'6vmin'} />
               </IconDiV>
-              <ButtonName onClick={handlePickAgain}>다시 고르기</ButtonName>
+              <ButtonName>다시 고르기</ButtonName>
             </RechooseButton>
           </ButtonDiv>
         </>
@@ -231,19 +245,18 @@ const MapButton = styled.div`
 `;
 
 const ShareButton = styled.div`
-  background: #faac69;
-  border-radius: 15px;
-  line-height: 70px;
-  min-height: 70px;
   max-width: 100%;
+  min-height: 70px;
+  margin-top: 2vh;
   padding: 2% 0% 2% 0%;
+  border-radius: 15px;
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
-  color: #ffffff;
-  margin-top: 2vh;
-
-  text-align: center;
+  background: #faac69;
   cursor: pointer;
+  color: #ffffff;
+  text-align: center;
+  line-height: 70px;
 `;
 
 const RechooseButton = styled.div`
