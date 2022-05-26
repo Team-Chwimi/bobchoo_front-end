@@ -1,4 +1,5 @@
 import type { NextPage } from 'next';
+import { useEffect } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -10,6 +11,10 @@ type props = {
 };
 
 const SurveyDetail: NextPage<props> = ({ id }) => {
+  useEffect(() => {
+    document.title = '밥추 | 설문';
+  }, []);
+
   return (
     <Container>
       <Wrapper>
