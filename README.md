@@ -1,6 +1,6 @@
 <div align="center">
   <br />
-  <img src="./readme_assets/logo.png" alt="밥추" width="100px" height="100px" />
+  <img src="https://github.com/Team-Chwimi/bobchoo_docs/blob/master/readme_assets/logo.png" alt="밥추" width="100px" height="100px" />
   <br />
   <h1>밥추</h1>
   <br />
@@ -59,11 +59,11 @@
 
 ### **기술 스택**
 
-<img src="readme_assets/figma_mobile.PNG" alt="Figma" />
+<img src="https://github.com/Team-Chwimi/bobchoo_docs/blob/master/readme_assets/tech_stack.png" alt="Figma" />
 
 ### **서비스 구성도**
 
-<img src="readme_assets/figma_mobile.PNG" alt="Figma" />
+<img src="https://github.com/Team-Chwimi/bobchoo_docs/blob/master/readme_assets/technical_architecture.png" alt="Figma" />
 
 <br />
 
@@ -85,10 +85,10 @@
 
 ## 💻 화면 설계 내용
 
-| [Figma](https://www.figma.com/file/xwVM8exgzfoKCq5dmpims5/%EC%B7%A8%EB%AF%B8%ED%8C%80?node-id=0%3A1) |
-| :--------------------------------------------------------------------------------------------------: |
-|                                                모바일                                                |
-|                       <img src="readme_assets/figma_mobile.PNG" alt="Figma" />                       |
+|   [Figma](https://www.figma.com/file/xwVM8exgzfoKCq5dmpims5/%EC%B7%A8%EB%AF%B8%ED%8C%80?node-id=0%3A1)    |
+| :-------------------------------------------------------------------------------------------------------: |
+|                                                  모바일                                                   |
+| <img src="https://github.com/Team-Chwimi/bobchoo_docs/blob/master/readme_assets/figma.png" alt="Figma" /> |
 
 <br />
 
@@ -130,11 +130,13 @@
 
 ## 🐷 캐릭터 디자인
 
-### 밥돌이 (밥추의 마스코트) (디자인 : [이아영](https://github.com/dgh03207))
+### 밥돌이 (밥추의 마스코트)
 
-|                                 나쵸 먹는 밥돌이                                  |                                  당근 먹는 밥돌이                                  |
-| :-------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------: |
-| <img src="readme_assets/bobdol_nacho.gif" alt="나쵸 먹는 밥돌이" height="300px"/> | <img src="readme_assets/bobdol_carrot.gif" alt="당근 먹는 밥돌이" height="300px"/> |
+(디자인 : [이아영](https://github.com/dgh03207))
+
+|                                                             나쵸 먹는 밥돌이                                                              |                                                              당근 먹는 밥돌이                                                              |
+| :---------------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------: |
+| <img src="https://github.com/Team-Chwimi/bobchoo_docs/blob/master/readme_assets/bobdol_nacho.gif" alt="나쵸 먹는 밥돌이" height="300px"/> | <img src="https://github.com/Team-Chwimi/bobchoo_docs/blob/master/readme_assets/bobdol_carrot.gif" alt="당근 먹는 밥돌이" height="300px"/> |
 
 <br />
 
