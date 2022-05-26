@@ -1,3 +1,4 @@
+import router from 'next/router';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
@@ -9,10 +10,10 @@ import { handleUrlClick } from '../../lib/utils';
 import { LatLngNumberType } from '../../types/MapType';
 
 import Header from '../common/header';
-
 import { PALETTE } from '../../data/palette';
 import { IoMdRefresh } from 'react-icons/io';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 interface StoreDataType {
   id: string;
@@ -60,7 +61,19 @@ const KakaoMapSection: React.FC = () => {
   let marker: any;
 
   useEffect(() => {
-    // console.log(currentLocation);
+    if (selectedFood.foodName === '') {
+      Swal.fire({
+        icon: 'warning',
+        title: '잘못된 접근입니다',
+        text: '곧 메인페이지로 이동합니다',
+        confirmButtonText: '&nbsp&nbsp확인&nbsp&nbsp',
+        timer: 3000,
+        timerProgressBar: true,
+      }).then(() => {
+        router.push('/');
+      });
+    }
+
     const container = document.getElementById('myMap');
     const options = {
       center: new kakao.maps.LatLng(currentLocation.lat, currentLocation.lng),
@@ -110,26 +123,28 @@ const KakaoMapSection: React.FC = () => {
     );
 
   const searchStores = async () => {
-    let url = `https://dapi.kakao.com/v2/local/search/keyword.json?query=${selectedFood.foodName}&y=${currentLocation.lat}&x=${currentLocation.lng}&radius=1000&category_group_code=FD6`;
-    let config = {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': `KakaoAK ${kakaoKey}`,
-      },
-    };
-    axios.defaults.withCredentials = false;
-    let results: StoreDataType[];
-    await axios
-      .get(url, config)
-      .then((response) => {
-        results = [...response.data.documents];
-        results.sort(function (a, b) {
-          return Number(a.distance) > Number(b.distance) ? 1 : -1;
+    if (selectedFood.foodName !== '') {
+      let url = `https://dapi.kakao.com/v2/local/search/keyword.json?query=${selectedFood.foodName}&y=${currentLocation.lat}&x=${currentLocation.lng}&radius=1000&category_group_code=FD6`;
+      let config = {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': `KakaoAK ${kakaoKey}`,
+        },
+      };
+      axios.defaults.withCredentials = false;
+      let results: StoreDataType[];
+      await axios
+        .get(url, config)
+        .then((response) => {
+          results = [...response.data.documents];
+          results.sort(function (a, b) {
+            return Number(a.distance) > Number(b.distance) ? 1 : -1;
+          });
+        })
+        .then(() => {
+          setStoreData(results);
         });
-      })
-      .then(() => {
-        setStoreData(results);
-      });
+    }
   };
 
   const displayPlaces = () => {
