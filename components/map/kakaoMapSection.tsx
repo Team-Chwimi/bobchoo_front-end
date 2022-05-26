@@ -11,6 +11,7 @@ import { LatLngNumberType } from '../../types/MapType';
 import Header from '../common/header';
 
 import { PALETTE } from '../../data/palette';
+import { IoMdRefresh } from 'react-icons/io';
 import axios from 'axios';
 
 interface StoreDataType {
@@ -32,7 +33,7 @@ const KakaoMapSection: React.FC = () => {
 
   const { kakao } = window;
 
-  const [kakaoMap, setKakaoMap] = useState(null);
+  const [kakaoMap, setKakaoMap] = useState<any>(null);
 
   const [markerList, setMarkerList] = useState<any[]>();
   const [infoWindowList, setInfoWindowList] = useState<any[]>();
@@ -71,12 +72,12 @@ const KakaoMapSection: React.FC = () => {
     displayPlaces();
   }, []);
 
-  useEffect(() => {
-    kakao.maps.event.addListener(map, 'dragend', function () {
-      let curLatLng = map.getCenter();
-      setCurrentLocation({ lat: curLatLng.getLat(), lng: curLatLng.getLng() });
-    });
-  }, []);
+  // useEffect(() => {
+  //   kakao.maps.event.addListener(map, 'dragend', function () {
+  //     let curLatLng = map.getCenter();
+  //     setCurrentLocation({ lat: curLatLng.getLat(), lng: curLatLng.getLng() });
+  //   });
+  // }, []);
 
   useEffect(() => {
     searchStores();
@@ -214,6 +215,13 @@ const KakaoMapSection: React.FC = () => {
     }
   }
 
+  const handleCenterButton = () => {
+    if (kakaoMap) {
+      let curLatLng = kakaoMap.getCenter();
+      setCurrentLocation({ lat: curLatLng.getLat(), lng: curLatLng.getLng() });
+    }
+  };
+
   return (
     <Container>
       <Wrapper>
@@ -234,7 +242,12 @@ const KakaoMapSection: React.FC = () => {
           }}
         ></div>
         <TitleBorder>
-          <TitleDiv>{titleText}</TitleDiv>
+          <TitleDiv>
+            {titleText}
+            <IconWrapper>
+              <IoMdRefresh size={'20px'} onClick={() => handleCenterButton()} />
+            </IconWrapper>
+          </TitleDiv>
         </TitleBorder>
         <ListDiv>
           {storeData.length === 0 ? (
@@ -352,7 +365,14 @@ const TitleDiv = styled.div`
   margin-left: 3vh;
   font-style: normal;
   font-size: 20px;
-  font-weight: 800;
+  font-weight: 800;pu
+`;
+
+const IconWrapper = styled.span`
+  vertical-align: middle;
+  float: right;
+  margin-right: 16px;
+  color: ${PALETTE.orange_point};
 `;
 
 const StoreList = styled.ul`
