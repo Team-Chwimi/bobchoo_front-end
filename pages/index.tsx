@@ -1,19 +1,16 @@
-import { useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
-
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 // import Script from 'next/script';
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 import styled from '@emotion/styled';
 
 import useQuestion from '../hooks/useQuestion';
-
 import { useSelector } from '../store';
 import { latlngActions } from '../store/latlng';
 import { questionActions } from '../store/question';
 import { answerActions } from '../store/answer';
-
 import { axiosInstance } from '../lib/api';
 
 import { QuestionType } from '../types/questionType';
@@ -205,7 +202,7 @@ const Home: NextPage = () => {
           onClick={() => router.push('/copyright')}
         />
         <TitleWrapper>
-          {!isImgLoaded ? <LoadingCircular /> : <></>}
+          {/* {!isImgLoaded ? <LoadingCircular /> : <></>} */}
           <TitleImg
             src="/images/title_logo.png"
             alt="밥추 로고"
