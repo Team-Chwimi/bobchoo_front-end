@@ -1,3 +1,4 @@
+import router from 'next/router';
 import { useEffect, useState, useMemo } from 'react';
 
 import styled from '@emotion/styled';
@@ -8,8 +9,9 @@ import ModalBase from '../../components/common/ModalBase';
 import CardModal from '../../components/UI/CardModal';
 import SelectOverlap from './selectOverlap';
 import SelectOne from './selectOne';
-
 import { QuestionType } from '../../types/questionType';
+
+import Swal from 'sweetalert2';
 
 interface QuestionProps {
   id: number;
@@ -22,6 +24,21 @@ interface GraphProps {
 
 const Question: React.FC<QuestionProps> = ({ id }) => {
   const data = useSelector((state) => state.question.questions[id - 1]);
+
+  useEffect(() => {
+    if (data === undefined) {
+      Swal.fire({
+        icon: 'warning',
+        title: '잘못된 접근입니다',
+        text: '곧 메인페이지로 이동합니다',
+        confirmButtonText: '&nbsp&nbsp확인&nbsp&nbsp',
+        timer: 3000,
+        timerProgressBar: true,
+      }).then(() => {
+        router.push('/');
+      });
+    }
+  }, []);
 
   const questionTotal = useSelector(
     (state) => state.question.questionTotalCount,
@@ -40,6 +57,7 @@ const Question: React.FC<QuestionProps> = ({ id }) => {
   const onClickCardRemove = () => {
     alert('이벤트 실행');
   };
+
   return (
     <Container>
       <Wrapper>

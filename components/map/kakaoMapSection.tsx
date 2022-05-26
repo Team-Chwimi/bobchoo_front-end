@@ -1,3 +1,4 @@
+import router from 'next/router';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
@@ -9,9 +10,10 @@ import { handleUrlClick } from '../../lib/utils';
 import { LatLngNumberType } from '../../types/MapType';
 
 import Header from '../common/header';
-
 import { PALETTE } from '../../data/palette';
+import { IoMdRefresh } from 'react-icons/io';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 interface StoreDataType {
   id: string;
@@ -32,7 +34,7 @@ const KakaoMapSection: React.FC = () => {
 
   const { kakao } = window;
 
-  const [kakaoMap, setKakaoMap] = useState(null);
+  const [kakaoMap, setKakaoMap] = useState<any>(null);
 
   const [markerList, setMarkerList] = useState<any[]>();
   const [infoWindowList, setInfoWindowList] = useState<any[]>();
@@ -59,7 +61,19 @@ const KakaoMapSection: React.FC = () => {
   let marker: any;
 
   useEffect(() => {
-    // console.log(currentLocation);
+    if (selectedFood.foodName === '') {
+      Swal.fire({
+        icon: 'warning',
+        title: '잘못된 접근입니다',
+        text: '곧 메인페이지로 이동합니다',
+        confirmButtonText: '&nbsp&nbsp확인&nbsp&nbsp',
+        timer: 3000,
+        timerProgressBar: true,
+      }).then(() => {
+        router.push('/');
+      });
+    }
+
     const container = document.getElementById('myMap');
     const options = {
       center: new kakao.maps.LatLng(currentLocation.lat, currentLocation.lng),
@@ -71,12 +85,12 @@ const KakaoMapSection: React.FC = () => {
     displayPlaces();
   }, []);
 
-  useEffect(() => {
-    kakao.maps.event.addListener(map, 'dragend', function () {
-      let curLatLng = map.getCenter();
-      setCurrentLocation({ lat: curLatLng.getLat(), lng: curLatLng.getLng() });
-    });
-  }, []);
+  // useEffect(() => {
+  //   kakao.maps.event.addListener(map, 'dragend', function () {
+  //     let curLatLng = map.getCenter();
+  //     setCurrentLocation({ lat: curLatLng.getLat(), lng: curLatLng.getLng() });
+  //   });
+  // }, []);
 
   useEffect(() => {
     searchStores();
@@ -109,26 +123,28 @@ const KakaoMapSection: React.FC = () => {
     );
 
   const searchStores = async () => {
-    let url = `https://dapi.kakao.com/v2/local/search/keyword.json?query=${selectedFood.foodName}&y=${currentLocation.lat}&x=${currentLocation.lng}&radius=1000&category_group_code=FD6`;
-    let config = {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': `KakaoAK ${kakaoKey}`,
-      },
-    };
-    axios.defaults.withCredentials = false;
-    let results: StoreDataType[];
-    await axios
-      .get(url, config)
-      .then((response) => {
-        results = [...response.data.documents];
-        results.sort(function (a, b) {
-          return Number(a.distance) > Number(b.distance) ? 1 : -1;
+    if (selectedFood.foodName !== '') {
+      let url = `https://dapi.kakao.com/v2/local/search/keyword.json?query=${selectedFood.foodName}&y=${currentLocation.lat}&x=${currentLocation.lng}&radius=1000&category_group_code=FD6`;
+      let config = {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': `KakaoAK ${kakaoKey}`,
+        },
+      };
+      axios.defaults.withCredentials = false;
+      let results: StoreDataType[];
+      await axios
+        .get(url, config)
+        .then((response) => {
+          results = [...response.data.documents];
+          results.sort(function (a, b) {
+            return Number(a.distance) > Number(b.distance) ? 1 : -1;
+          });
+        })
+        .then(() => {
+          setStoreData(results);
         });
-      })
-      .then(() => {
-        setStoreData(results);
-      });
+    }
   };
 
   const displayPlaces = () => {
@@ -214,6 +230,13 @@ const KakaoMapSection: React.FC = () => {
     }
   }
 
+  const handleCenterButton = () => {
+    if (kakaoMap) {
+      let curLatLng = kakaoMap.getCenter();
+      setCurrentLocation({ lat: curLatLng.getLat(), lng: curLatLng.getLng() });
+    }
+  };
+
   return (
     <Container>
       <Wrapper>
@@ -234,9 +257,13 @@ const KakaoMapSection: React.FC = () => {
           }}
         ></div>
         <TitleBorder>
-          <TitleDiv>{titleText}</TitleDiv>
+          <TitleDiv>
+            {titleText}
+            <IconWrapper>
+              <IoMdRefresh size={'20px'} onClick={() => handleCenterButton()} />
+            </IconWrapper>
+          </TitleDiv>
         </TitleBorder>
-
         <ListDiv>
           {storeData.length === 0 ? (
             <CryingBobdolWrapper>
@@ -337,7 +364,10 @@ const ListDiv = styled.div`
 const TitleBorder = styled.div`
   position: absolute;
   z-index: 1000;
+  width: 100%;
   min-width: 100vmin;
+  max-width: 900px;
+  box-sizing: border-box;
   padding: 3vh 0 3vh 0;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
@@ -350,7 +380,14 @@ const TitleDiv = styled.div`
   margin-left: 3vh;
   font-style: normal;
   font-size: 20px;
-  font-weight: 800;
+  font-weight: 800;pu
+`;
+
+const IconWrapper = styled.span`
+  vertical-align: middle;
+  float: right;
+  margin-right: 16px;
+  color: ${PALETTE.orange_point};
 `;
 
 const StoreList = styled.ul`

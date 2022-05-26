@@ -1,13 +1,13 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 
+const meta = {
+  title: '밥추',
+  description: '당신을 위한 식사 메뉴 추천 서비스',
+  image: '../images/logo.png',
+};
+
 class MyDocument extends Document {
   render() {
-    const meta = {
-      title: '밥추',
-      description: '당신을 위한 식사 메뉴 추천 서비스',
-      image: '../images/logo.png',
-    };
-
     return (
       <Html lang="ko">
         <Head>
@@ -27,7 +27,7 @@ class MyDocument extends Document {
             type="text/javascript"
             src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAOMAP_APPKEY}&libraries=services`}
           ></script>
-
+          <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
           <script
             async
             src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_TRACKING_ID}`}
