@@ -15,6 +15,7 @@ import { axiosInstance } from '../lib/api';
 
 import { QuestionType } from '../types/questionType';
 
+import Footer from '../components/common/footer';
 import LoadingCircular from '../components/common/loadingCircular';
 
 import { PALETTE } from '../data/palette';
@@ -240,6 +241,7 @@ const Home: NextPage = () => {
           </StartButton>
         </ButtonWrapper>
       </Wrapper>
+      <Footer />
     </Container>
   );
 };
