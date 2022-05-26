@@ -1,26 +1,26 @@
-import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 // import Script from 'next/script';
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 import styled from '@emotion/styled';
 
 import useQuestion from '../hooks/useQuestion';
-
 import { useSelector } from '../store';
 import { latlngActions } from '../store/latlng';
 import { questionActions } from '../store/question';
-
+import { answerActions } from '../store/answer';
 import { axiosInstance } from '../lib/api';
 
-import { QuestionType } from '../types/qestionType';
+import { QuestionType } from '../types/questionType';
+
+import Footer from '../components/common/footer';
+import LoadingCircular from '../components/common/loadingCircular';
 
 import { PALETTE } from '../data/palette';
 
 import Swal from 'sweetalert2';
-import { answerActions } from '../store/answer';
 
 // import axios from 'axios';
 
@@ -46,11 +46,23 @@ const Home: NextPage = () => {
 
   const [canGetLocation, setCanGetLocation] = useState<boolean>(false);
   const [isFirst, setIsFirst] = useState<boolean>(true);
+  const [isImgLoaded, setIsImgLoaded] = useState<boolean>(false);
 
   const { isLoading, data, isError, errorMessage } = useQuestion();
 
+  const imgRef = useRef<HTMLImageElement>(null);
+
+  function onLoad() {
+    setIsImgLoaded(true);
+  }
+
   useEffect(() => {
-    // window.location.reload();
+    if (imgRef.current?.complete) {
+      onLoad();
+    }
+  }, []);
+
+  useEffect(() => {
     if (!location.hasCheckedLocation) {
       getLocation().then(() => {
         dispatch(
@@ -153,7 +165,7 @@ const Home: NextPage = () => {
       // return [result,count];
       return result;
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   };
   const handleQestionData = async () => {
@@ -184,32 +196,6 @@ const Home: NextPage = () => {
           gtag('config', ${process.env.NEXT_PUBLIC_GA_TRACKING_ID});
         `}
       </Script> */}
-      {/* {
-        // location.hasCheckedLocation && !location.hasCurrentLoaction
-        !isFirst && !canGetLocation ? (
-          <CurrentLocationInfo>현재 위치 파악 불가</CurrentLocationInfo>
-        ) : (
-          <></>
-        )
-      } */}
-      {/* <button
-        style={{ position: 'absolute', left: 0 }}
-        onClick={(event) => {
-          handleLocationCheckedClick(event);
-          router.push('/map');
-        }}
-      >
-        맵으로 이동하는 임시버튼
-      </button>
-      <button
-        style={{ position: 'absolute', left: 0, top: 25 }}
-        onClick={(event) => {
-          router.push('/list');
-        }}
-      >
-        우선 결과 전체화면으로 이동하는 버튼
-      </button> */}
-
       <Wrapper>
         <CopyrightImg
           src="/images/info_logo.png"
@@ -217,7 +203,13 @@ const Home: NextPage = () => {
           onClick={() => router.push('/copyright')}
         />
         <TitleWrapper>
-          <TitleImg src="/images/title_logo.png" alt="밥추 로고" />
+          {/* {!isImgLoaded ? <LoadingCircular /> : <></>} */}
+          <TitleImg
+            src="/images/title_logo.png"
+            alt="밥추 로고"
+            ref={imgRef}
+            onLoad={onLoad}
+          />
           <TitleInfo>식사 메뉴 추천 서비스</TitleInfo>
         </TitleWrapper>
         <ButtonWrapper>
@@ -249,6 +241,7 @@ const Home: NextPage = () => {
           </StartButton>
         </ButtonWrapper>
       </Wrapper>
+      <Footer />
     </Container>
   );
 };
@@ -262,61 +255,28 @@ const Container = styled.section`
 const Wrapper = styled.div`
   width: 100%;
   max-width: 900px;
-
-  @media (max-width: 991px) {
-  }
-  @media (max-width: 767px) {
-  }
-  @media (max-width: 575px) {
-  }
-`;
-
-const CurrentLocationInfo = styled.span`
-  position: absolute;
-  top: 4px;
-  right: 5%;
 `;
 
 const CopyrightImg = styled.img`
-  width: 32px;
-  height: 32px;
+  float: right;
   top: 5%;
   right: 4%;
-  cursor: pointer;
-  float: right;
+  width: 32px;
+  height: 32px;
   margin-top: 3vh;
   margin-right: 2vh;
+  cursor: pointer;
 `;
 
 const TitleWrapper = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0 28%;
-  margin-top: 15vh;
-
-  // @media (max-width: 991px) {
-  //   margin: 0 24%;
-  // }
-  // @media (max-width: 767px) {
-  // }
-  // @media (max-width: 575px) {
-  //   margin: 0 16%;
-  // }
+  margin: 15vh 28% 0;
 `;
 
 const TitleImg = styled.img`
   width: 30vh;
-
-  // @media (max-width: 991px) {
-  //   width: 85%;
-  // }
-  // @media (max-width: 767px) {
-  //   width: 95%;
-  // }
-  // @media (max-width: 575px) {
-  //   width: 100%;
-  // }
 `;
 
 const TitleInfo = styled.h2`
@@ -356,16 +316,16 @@ const ButtonWrapper = styled.section`
 const StartButton = styled.button<ButtonProps>`
   width: 300px;
   height: 120px;
-  background-color: ${(props) => props.backgroundColor};
-  color: ${(props) => props.fontColor};
-  font-size: 40px;
-  font-weight: 800;
-  font-family: 'NanumSquareRound';
-  line-height: 23px;
   border: 0px;
   border-radius: 15px;
-  transition: color 0.08s ease-in-out;
+  background-color: ${(props) => props.backgroundColor};
   cursor: pointer;
+  font-family: 'NanumSquareRound';
+  font-size: 40px;
+  font-weight: 800;
+  color: ${(props) => props.fontColor};
+  line-height: 23px;
+  transition: color 0.08s ease-in-out;
 
   &:first-of-type {
     margin-right: 32px;
@@ -391,7 +351,7 @@ const StartButton = styled.button<ButtonProps>`
     font-size: 20px;
 
     &:first-of-type {
-      margin: 0 0 11px;
+      margin-bottom: 11px;
     }
   }
 `;

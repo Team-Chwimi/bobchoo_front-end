@@ -1,12 +1,10 @@
 import type { NextPage } from 'next';
+import { useEffect } from 'react';
 
 import styled from '@emotion/styled';
 
 import Header from '../components/common/header';
 import CopyrightSection from '../components/copyrightSection';
-
-import { LINK_HOME } from '../data/link';
-import { useEffect } from 'react';
 
 const Copyright: NextPage = () => {
   useEffect(() => {
@@ -16,7 +14,7 @@ const Copyright: NextPage = () => {
   return (
     <Container>
       <Wrapper>
-        <Header linkName={LINK_HOME.linkName} linkPath={LINK_HOME.linkPath} />
+        <Header />
         <CopyrightSection />
       </Wrapper>
     </Container>

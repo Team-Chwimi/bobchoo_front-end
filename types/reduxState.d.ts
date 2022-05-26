@@ -1,5 +1,5 @@
 import { LatLngType } from './MapType';
-import { QuestionType, QuestionTotalType } from './qestionType';
+import { QuestionType, QuestionTotalType } from './questionType';
 import {
   SurveyRequestType,
   SurveyResponseType,

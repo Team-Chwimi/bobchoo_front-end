@@ -1,25 +1,26 @@
-import Link from 'next/link';
-
-import { useEffect, useState } from 'react';
-
 import { useRouter } from 'next/router';
-
-import { useSelector } from '../../store';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 import styled from '@emotion/styled';
 
-import { useDispatch } from 'react-redux';
+import { useSelector } from '../../store';
 import { answerActions } from '../../store/answer';
+
 import { AnswerType } from '../../types/answerType';
+
+import Swal from 'sweetalert2';
 
 interface SelectProps {
   qusetionId: number;
   answerList: Array<string>;
   id: number;
 }
+
 interface style {
   float: string;
 }
+
 const SelectOverlap: React.FC<SelectProps> = ({
   qusetionId,
   answerList,
@@ -99,7 +100,12 @@ const SelectOverlap: React.FC<SelectProps> = ({
                 }
               });
               if (myFoodAnswer.length < 1) {
-                alert('한개 이상 선택해 주세요!');
+                // alert('한개 이상 선택해 주세요!');
+                Swal.fire({
+                  icon: 'error',
+                  title: '한 개 이상 선택해 주세요!',
+                  confirmButtonText: '&nbsp&nbsp확인&nbsp&nbsp',
+                });
               } else {
                 let result: AnswerType = {
                   questionId: qusetionId,
@@ -115,7 +121,7 @@ const SelectOverlap: React.FC<SelectProps> = ({
                   }),
                 );
                 router.push(`/survey/${num}`);
-                console.log(num);
+                // console.log(num);
               }
             }}
           >
@@ -132,54 +138,52 @@ const Container = styled.div``;
 const Wrapper = styled.div``;
 
 const FoodDiv = styled.div`
-  margin-left: 5%;
-  margin-right: 5%;
-  margin-top: 2vh;
+  margin: 2vh 5% 0;
 `;
 
 const FoodButtonTrue = styled.div<style>`
+  float: ${(props) => props.float};
+  width: 45%;
   background: #ff7b30;
+  margin-bottom: 4vh;
+  padding: 5% 0% 5% 0;
+  border-radius: 15px;
+  cursor: pointer;
+  font-style: normal;
+  font-size: 25px;
+  font-weight: 700;
   color: #ffffff;
-  border-radius: 15px;
-  width: 45%;
-  padding: 5% 0% 5% 0;
-  float: ${(props) => props.float};
-  margin-bottom: 4vh;
   text-align: center;
-  cursor: pointer;
-  font-style: normal;
-  font-weight: 700;
-  font-size: 25px;
 `;
+
 const FoodButtonFalse = styled.div<style>`
-  background: #f2f2f2;
-  color: #ff7b30;
-  border-radius: 15px;
+  float: ${(props) => props.float};
   width: 45%;
   padding: 5% 0% 5% 0;
-  float: ${(props) => props.float};
+  border-radius: 15px;
   margin-bottom: 4vh;
-  text-align: center;
+  background: #f2f2f2;
   cursor: pointer;
   font-style: normal;
-  font-weight: 700;
   font-size: 25px;
+  font-weight: 700;
+  color: #ff7b30;
+  text-align: center;
 `;
 
 const NextButton = styled.div`
-  cursor: pointer;
   float: left;
   align-self: center;
-  text-align: center;
-  border-radius: 15px;
   width: 100%;
   padding: 5% 0% 5% 0;
-
-  font-style: normal;
-  font-weight: 700;
-  font-size: 25px;
-  color: #ffffff;
+  cursor: pointer;
+  border-radius: 15px;
   background: #ff7b30;
+  color: #ffffff;
+  font-style: normal;
+  font-size: 25px;
+  font-weight: 700;
+  text-align: center;
 `;
 
 export default SelectOverlap;

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 
@@ -52,34 +53,35 @@ ModalBase.defaultProps = {
 
 const ModalBaseContainer = styled.div<{ active: boolean }>`
   display: flex;
+  align-items: center;
+  justify-content: center;
   position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
   z-index: 99;
-  align-items: center;
-  justify-content: center;
+
   padding: 1rem;
   box-sizing: border-box;
 
   .modal_back {
     position: absolute;
-    left: 0;
     top: 0;
     right: 0;
     bottom: 0;
+    left: 0;
     z-index: 1;
     background-color: rgba(249, 249, 249, 0.85);
   }
   .modal_content {
     position: relative;
     z-index: 10;
-    max-width: 400px;
     width: 100%;
-    background-color: #fff;
+    max-width: 400px;
     padding: 2rem;
     border-radius: 15px;
+    background-color: #fff;
     overflow: hidden;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     ${(props) =>

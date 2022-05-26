@@ -1,12 +1,10 @@
 import type { NextPage } from 'next';
-
+import dynamic from 'next/dynamic';
 import { useEffect } from 'react';
 
 import styled from '@emotion/styled';
 
 // import KakaoMapSection from '../components/map/kakaoMapSection';
-
-import dynamic from 'next/dynamic';
 
 declare global {
   interface Window {
@@ -45,13 +43,6 @@ const Container = styled.section`
 const Wrapper = styled.div`
   width: 100%;
   max-width: 900px;
-
-  @media (max-width: 991px) {
-  }
-  @media (max-width: 767px) {
-  }
-  @media (max-width: 575px) {
-  }
 `;
 
 export default Map;

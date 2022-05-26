@@ -15,8 +15,8 @@ import { makeAddress } from '../../lib/utils';
 import { LatLngNumberType } from '../../types/MapType';
 
 import StoreDetail from './storeDetail';
-import TitleHeader from '../common/titleHeader';
-import LodaingCircular from '../common/loadingCircular';
+import TitleHeader from './titleHeader';
+import LoadingCircular from '../common/loadingCircular';
 
 import { PALETTE } from '../../data/palette';
 
@@ -314,7 +314,7 @@ const MapSection: React.FC = () => {
           </div>
         </MapWrapper>
         {!storeData ? (
-          <LodaingCircular />
+          <LoadingCircular />
         ) : !isStoreDetail ? (
           <StoreList>
             <SetCurrentLocationButton onClick={() => handleCurrentLocation()}>
@@ -356,7 +356,7 @@ const MapSection: React.FC = () => {
               ←
             </ReturnListButton>
             {!storeDetailData ? (
-              <LodaingCircular />
+              <LoadingCircular />
             ) : (
               <StoreDetail
                 name={storeDetailData.name}

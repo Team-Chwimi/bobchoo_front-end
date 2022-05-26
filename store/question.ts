@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { QuestionState } from '../types/reduxState';
-import { QuestionType } from '../types/qestionType';
+import { QuestionType } from '../types/questionType';
 
 //* 초기 상태
 const initialState: QuestionState = {

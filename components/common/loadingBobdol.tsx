@@ -22,16 +22,17 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: ${PALETTE.gray_38};
   font-size: 24px;
   font-weight: 700;
+  color: ${PALETTE.gray_38};
   margin-top: 5vh;
   text-aligh-center;
 `;
 
 const BobdolImage = styled.img`
-  width: 102px;
   position: relative;
+  width: 102px;
+  transform: translate(0%, -150%);
 
   &::after {
     position: absolute;
@@ -41,19 +42,19 @@ const BobdolImage = styled.img`
     height: 225px;
     z-index: -1;
   }
-
-  transform: translate(0%, -150%);
 `;
 
 const ThinkingText = styled.div``;
+
 const CircleDiv = styled.div`
-  background: #faac69;
   width: 300px;
   height: 300px;
   border-radius: 300px;
+  background: #faac69;
 `;
 
 const WaitText = styled.div``;
+
 const DivWrapper = styled.div`
   margin-top: 10vh;
   text-align: center;

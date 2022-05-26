@@ -1,28 +1,22 @@
-import Link from 'next/link';
-
-import { useEffect, useState, useMemo } from 'react';
-import { AxiosResponse } from 'axios';
 import { useRouter } from 'next/router';
-
+import { useEffect, useState, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
-import { useSelector } from '../../store';
 
+import styled from '@emotion/styled';
+
+import { useSelector } from '../../store';
 import { answerActions } from '../../store/answer';
 import { selectedFoodListActions } from '../../store/selectedFoodList';
 import { selectedFoodActions } from '../../store/selectedFood';
+import { requestTypeActions } from '../../store/requestType';
+import { warningTypeActions } from '../../store/warning';
+import { axiosInstance } from '../../lib/api';
+
 import {
   AnswerType,
   SurveyRequestType,
   SurveyResponseType,
 } from '../../types/answerType';
-import axios from 'axios';
-
-import useAnswer from '../../hooks/useAnswer';
-
-import styled from '@emotion/styled';
-import { axiosInstance } from '../../lib/api';
-import { requestTypeActions } from '../../store/requestType';
-import { warningTypeActions } from '../../store/warning';
 
 interface style {
   back: string;
@@ -117,7 +111,7 @@ const SelectOne: React.FC<SelectProps> = ({ qusetionId, answerList, id }) => {
 
   const handleOneData = async () => {
     const data = await postOneApi(obj);
-    console.log(data);
+    // console.log(data);
     dispatch(
       selectedFoodActions.setSelectedFood({
         foodName: data.foodName,
@@ -129,7 +123,7 @@ const SelectOne: React.FC<SelectProps> = ({ qusetionId, answerList, id }) => {
 
   const handleMultipleData = async () => {
     const data = await postMultiApi(obj);
-    console.log(data);
+    // console.log(data);
     if (data.length === 0) {
       dispatch(
         warningTypeActions.setWarningType({
@@ -149,7 +143,7 @@ const SelectOne: React.FC<SelectProps> = ({ qusetionId, answerList, id }) => {
   const handleRandomOneData = async () => {
     const randomRequest = { lat: '', lng: '' };
     const data = await postRandomAPI(JSON.stringify(randomRequest));
-    console.log(data);
+    // console.log(data);
     dispatch(
       selectedFoodActions.setSelectedFood({
         foodName: data.foodName,
@@ -161,7 +155,7 @@ const SelectOne: React.FC<SelectProps> = ({ qusetionId, answerList, id }) => {
   const handleRandomMultipleData = async () => {
     const randomRequest = { lat: '', lng: '' };
     const data = await postRandomListAPI(JSON.stringify(randomRequest));
-    console.log(data);
+    // console.log(data);
     dispatch(
       selectedFoodListActions.setSelectedFoodList({
         foodList: data,
@@ -183,7 +177,7 @@ const SelectOne: React.FC<SelectProps> = ({ qusetionId, answerList, id }) => {
                 onClick={(event) => {
                   if (num === questionTotal + 1) {
                     //하나만 선택할 때
-                    console.log(obj, 'obj');
+                    // console.log(obj, 'obj');
 
                     if (questionTotal === 1) {
                       dispatch(
@@ -282,26 +276,24 @@ const Wrapper = styled.div``;
 
 const FoodDiv = styled.div`
   align-items: center;
-  margin-left: 5%;
-  margin-right: 5%;
-  margin-top: 2vh;
+  margin: 2vh 5% 0;
 `;
 
 const FoodButton = styled.div<style>`
-  background: ${(props) => props.back};
-  border-radius: 15px;
-  width: 100%;
-  padding: 13% 0% 13% 0;
   // float: left;
-  // margin-left: 3vw;
+  width: 100%;
   margin-top: 4vh;
-  text-align: center;
+  // margin-left: 3vw;
+  padding: 13% 0% 13% 0;
+  border-radius: 15px;
+  background: ${(props) => props.back};
+  cursor: pointer;
   font-style: normal;
-  font-weight: 700;
   font-size: ${(props) => props.size};
+  font-weight: 700;
   color: ${(props) => props.color};
   word-break: keep-all;
-  cursor: pointer;
+  text-align: center;
 `;
 
 const NextDiv = styled.div`

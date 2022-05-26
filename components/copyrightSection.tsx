@@ -1,10 +1,9 @@
 import styled from '@emotion/styled';
 
 import useCopyrights from '../hooks/useCopyrights';
-
 import { handleUrlClick } from '../lib/utils';
 
-import LodaingCircular from './common/loadingCircular';
+import LoadingCircular from './common/loadingCircular';
 
 import { PALETTE } from '../data/palette';
 
@@ -19,7 +18,7 @@ const CopyrightSection: React.FC = () => {
     <Container>
       <Wrapper>
         {isLoading || !data ? (
-          <LodaingCircular />
+          <LoadingCircular />
         ) : (
           <>
             <Title>저작권</Title>
@@ -60,8 +59,8 @@ const Container = styled.div`
 const Wrapper = styled.div``;
 
 const Title = styled.h1`
-  width: fit-content;
   position: relative;
+  width: fit-content;
   margin: 16px 20px 20px;
   font-size: 36px;
   font-weight: 800;
@@ -69,12 +68,12 @@ const Title = styled.h1`
   &::after {
     content: '';
     position: absolute;
-    width: 100%;
-    height: 24px;
-    left: 0;
-    bottom: 1px;
     z-index: -1;
     opacity: 0.5;
+    width: 100%;
+    height: 24px;
+    bottom: 1px;
+    left: 0;
     background-color: ${PALETTE.orange};
   }
 
@@ -96,15 +95,15 @@ const FoodInfoItem = styled.li`
 `;
 
 const FoodItemName = styled.div`
-  width: 9%;
   display: inline-block;
+  width: 9%;
   padding-bottom: 2px;
   font-size: 14px;
   font-weight: 700;
 
   @media (max-width: 767px) {
-    width: fit-content;
     display: flex;
+    width: fit-content;
     font-size: 12px;
   }
 `;
@@ -112,13 +111,13 @@ const FoodItemName = styled.div`
 const FoodItemURL = styled.div`
   display: inline-block;
   padding-left: 8px;
-  font-size: 12px;
   cursor: pointer;
+  font-size: 12px;
 
   @media (max-width: 767px) {
-    font-size: 10px;
-    padding-left: 8px;
     display: flex;
+    padding-left: 8px;
+    font-size: 10px;
   }
 `;
 

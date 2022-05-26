@@ -11,7 +11,7 @@ const theme = createTheme({
   },
 });
 
-const LodaingCircular: React.FC = () => {
+const LoadingCircular: React.FC = () => {
   return (
     <Container>
       <ThemeProvider theme={theme}>
@@ -27,4 +27,4 @@ const Container = styled.div`
   align-items: center;
 `;
 
-export default LodaingCircular;
+export default LoadingCircular;

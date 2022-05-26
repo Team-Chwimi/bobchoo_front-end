@@ -5,10 +5,6 @@ const initialState: responseMultiState = {
   foodList: [],
 };
 
-// const initialState: foodType = {
-//   name: '김밥',
-// };
-
 const selectedFoodList = createSlice({
   name: 'foodList',
   initialState,

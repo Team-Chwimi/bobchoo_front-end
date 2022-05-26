@@ -1,24 +1,14 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import styled from '@emotion/styled';
 
-// import { throttle } from 'lodash';
-
-import { Loader } from '@googlemaps/js-api-loader';
-
 import { useSelector } from '../../store';
-import { latlngActions } from '../../store/latlng';
-
-import { handleUrlClick, makeAddress } from '../../lib/utils';
+import { handleUrlClick } from '../../lib/utils';
 
 import { LatLngNumberType } from '../../types/MapType';
 
-import StoreDetail from './storeDetail';
 import Header from '../common/header';
-
-import { LINK_HOME } from '../../data/link';
-import LodaingCircular from '../common/loadingCircular';
 
 import { PALETTE } from '../../data/palette';
 import axios from 'axios';
@@ -36,19 +26,6 @@ interface StoreDataType {
   y: string;
 }
 
-interface StoreDetailType extends StoreDataType {
-  // place_id: string;
-  // name: string;
-  // formatted_address: string;
-  // formatted_phone_number: string;
-  // isOpen: boolean;
-  // // geometry: any;
-  // time: any;
-  // lat: number;
-  // lng: number;
-  // rating: number;
-}
-
 const KakaoMapSection: React.FC = () => {
   const latlng = useSelector((state) => state.latlng);
   const selectedFood = useSelector((state) => state.selectedFood);
@@ -61,7 +38,6 @@ const KakaoMapSection: React.FC = () => {
   const [infoWindowList, setInfoWindowList] = useState<any[]>();
 
   const [isStoreDetail, setIsStoreDetail] = useState<boolean>(false);
-  // const [storeDetailData, setStoreDetailData] = useState<StoreDetailType>();
 
   const [titleText, setTitleText] = useState<string>(
     `${selectedFood.foodName} 가게 목록`,
@@ -213,53 +189,13 @@ const KakaoMapSection: React.FC = () => {
 
     infoWindows.push(infowindow);
 
-    // 마커에 이벤트를 등록하는 함수 만들고 즉시 호출하여 클로저를 만듭니다
-    // 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
     (function (marker, infowindow) {
-      // 마커에 mouseover 이벤트를 등록하고 마우스 오버 시 인포윈도우를 표시합니다
-      // kakao.maps.event.addListener(marker, 'mouseover', function () {
-      //   infowindow.open(kakaoMap, marker);
-      // });
-
-      // 마커에 mouseout 이벤트를 등록하고 마우스 아웃 시 인포윈도우를 닫습니다
-      // kakao.maps.event.addListener(marker, 'mouseout', function () {
-      //   infowindow.close();
-      // });
-
       kakao.maps.event.addListener(marker, 'click', function () {
-        // 마커 위에 인포윈도우를 표시합니다
         infowindow.open(kakaoMap, marker);
       });
     })(marker, infowindow);
 
     return marker;
-  }
-
-  //marker click event
-  function makeClickListener(marker: any) {
-    // 마커에 click 이벤트를 등록합니다
-    kakao.maps.event.addListener(marker, 'click', function () {
-      // 클릭된 마커가 없고, click 마커가 클릭된 마커가 아니면
-      // 마커의 이미지를 클릭 이미지로 변경합니다
-      if (!selectedMarker || selectedMarker !== marker) {
-        // console.log('aaa');
-        // 클릭된 마커 객체가 null이 아니면
-        // 클릭된 마커의 이미지를 기본 이미지로 변경하고
-        if (!!selectedMarker) {
-          // console.log('dddd');
-          selectedMarker.setImage(markerImage);
-          selectedMarker(null);
-        } else {
-          // console.log('cccc');
-        }
-        // 현재 클릭된 마커의 이미지는 클릭 이미지로 변경합니다
-        marker.setImage(clickImage);
-      }
-
-      // 클릭된 마커를 현재 클릭된 마커 객체로 설정합니다
-      // selectedMarker = marker;
-      setSelectedMarker(marker);
-    });
   }
 
   function removeMarker() {
@@ -278,16 +214,10 @@ const KakaoMapSection: React.FC = () => {
     }
   }
 
-  const handleStoreDetailClick = () => {
-    setIsStoreDetail(true);
-    setTitleText(`${selectedFood.foodName} 가게 정보`);
-    //  getStoreDetail(place_id, geometry, null);
-  };
-
   return (
     <Container>
       <Wrapper>
-        <Header linkName={LINK_HOME.linkName} linkPath={LINK_HOME.linkPath} />
+        <Header />
         <div
           id="myMap"
           style={{
@@ -387,23 +317,7 @@ const KakaoMapSection: React.FC = () => {
               ))}
             </StoreList>
           ) : (
-            <>
-              {/* <ReturnListButton
-              onClick={() => {
-                setIsStoreDetail(false);
-                displayPlaces();
-              }}
-            >
-              ←
-            </ReturnListButton>
-            {!storeDetailData ? (
-              <LodaingCircular />
-            ) : (
-              <></>
-              // <StoreDetail
-              // />
-            )} */}
-            </>
+            <></>
           )}
         </ListDiv>
       </Wrapper>
@@ -414,26 +328,29 @@ const KakaoMapSection: React.FC = () => {
 const Container = styled.div``;
 
 const Wrapper = styled.div``;
+
 const ListDiv = styled.div`
   min-width: 100vmin;
   margin-top: 6vh;
 `;
+
 const TitleBorder = styled.div`
-  padding: 3vh 0 3vh 0;
+  position: absolute;
+  z-index: 1000;
   min-width: 100vmin;
+  padding: 3vh 0 3vh 0;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
   transform: translate(0%, -20%);
-  position: absolute;
   background: #ffffff;
-  z-index: 1000;
   // top:40vh;
 `;
+
 const TitleDiv = styled.div`
-  font-style: normal;
-  font-weight: 800;
-  font-size: 20px;
   margin-left: 3vh;
+  font-style: normal;
+  font-size: 20px;
+  font-weight: 800;
 `;
 
 const StoreList = styled.ul`
@@ -455,9 +372,6 @@ const StoreItem = styled.div`
   justify-content: space-between;
   margin: 4px 0;
   color: ${PALETTE.gray_38};
-
-  // cursor: pointer;
-  // &::after {}
 `;
 
 const StoreItemLine = styled.div`
@@ -472,7 +386,6 @@ const StoreItemNameCategory = styled.div`
 `;
 
 const StoreItemName = styled.div`
-  // position: relative;
   margin-right: 4px;
   font-size: 16px;
   font-weight: 800;
@@ -519,27 +432,17 @@ const StoreItemURL = styled.div`
   display: flex;
   align-items: center;
   padding-bottom: 4px;
-  font-size: 15px;
   cursor: pointer;
+  font-size: 15px;
 `;
 
 const StoreItemWay = styled.div`
   display: flex;
+  flex-direction: row-reverse;
   align-items: center;
   padding-bottom: 4px;
+  cursor: pointer;
   font-size: 15px;
-  flex-direction: row-reverse;
-  cursor: pointer;
-`;
-
-const ReturnListButton = styled.button`
-  margin: 4px 0 0 12px;
-  border: none;
-  background: #ffffff;
-  color: ${PALETTE.orange_point};
-  font-size: 20px;
-  font-weight: 24100;
-  cursor: pointer;
 `;
 
 const CryingBobdolWrapper = styled.div`

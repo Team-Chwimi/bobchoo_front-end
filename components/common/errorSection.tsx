@@ -3,7 +3,6 @@ import styled from '@emotion/styled';
 import Header from './header';
 
 import { PALETTE } from '../../data/palette';
-import { LINK_HOME } from '../../data/link';
 
 interface ErrorSectionProps {
   errorMessage: string;
@@ -12,7 +11,7 @@ interface ErrorSectionProps {
 const ErrorSection: React.FC<ErrorSectionProps> = ({ errorMessage }) => {
   return (
     <Container>
-      <Header linkName={LINK_HOME.linkName} linkPath={LINK_HOME.linkPath} />
+      <Header />
       <BobdolImg src="/images/bobdol_fan.gif" alt="밥돌이 부채질 이미지" />
       <ErrorMessage>{errorMessage}</ErrorMessage>
     </Container>
@@ -36,9 +35,9 @@ const BobdolImg = styled.img`
 `;
 
 const ErrorMessage = styled.h1`
+  font: ${PALETTE.gray_38};
   font-size: 28px;
   font-weight: 800;
-  font: ${PALETTE.gray_38};
 
   @media (max-width: 767px) {
     font-size: 24px;

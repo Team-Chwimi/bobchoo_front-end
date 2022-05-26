@@ -1,23 +1,23 @@
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import styled from '@emotion/styled';
 
 import { useSelector } from '../../store';
 import { selectedFoodActions } from '../../store/selectedFood';
+import { selectedFoodListActions } from '../../store/selectedFoodList';
 import { axiosInstance } from '../../lib/api';
+import InfoFoodService from '../../lib/api/infoFood';
 
-import TitleHeader from '../common/titleHeader';
+import { SurveyResponseItem } from '../../types/answerType';
+
 import Header from '../common/header';
 
-import { LINK_HOME } from '../../data/link';
-
 import { PALETTE } from '../../data/palette';
+
 import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { selectedFoodListActions } from '../../store/selectedFoodList';
-import InfoFoodService from '../../lib/api/infoFood';
-import { SurveyResponseItem } from '../../types/answerType';
+
 import { IoMdRefresh } from 'react-icons/io';
 
 interface foodListItemType extends SurveyResponseItem {
@@ -115,7 +115,7 @@ const FoodListSection: React.FC = () => {
   const handleMultipleData = async () => {
     const surveyRequest = answers;
     const data = await postMultiApi(JSON.stringify(surveyRequest));
-    console.log(data);
+    // console.log(data);
     dispatch(
       selectedFoodListActions.setSelectedFoodList({
         foodList: data,
@@ -126,7 +126,7 @@ const FoodListSection: React.FC = () => {
   const handleRandomMultipleData = async () => {
     const randomRequest = { lat: '', lng: '' };
     const data = await postRandomListAPI(JSON.stringify(randomRequest));
-    console.log(data);
+    // console.log(data);
     dispatch(
       selectedFoodListActions.setSelectedFoodList({
         foodList: data,
@@ -159,10 +159,7 @@ const FoodListSection: React.FC = () => {
   return (
     <Container>
       <Wrapper>
-        {/* <TitleHeader title="오늘의 밥추 리스트!" /> */}
-
-        <Header linkName={LINK_HOME.linkName} linkPath={LINK_HOME.linkPath} />
-
+        <Header />
         <MainDiv>
           <TitleWrapper>
             <TitleDiv>오늘의 밥추 리스트!!</TitleDiv>
@@ -174,7 +171,7 @@ const FoodListSection: React.FC = () => {
             {!distanceList ? (
               <></>
             ) : (
-              distanceList.map((data, index) => (
+              distanceList.map((data) => (
                 <FoodItem
                   key={data.foodId}
                   onClick={() => handleSelectedClick(data.foodName)}
@@ -205,25 +202,28 @@ const FoodListSection: React.FC = () => {
 const Container = styled.div``;
 
 const Wrapper = styled.div``;
+
 const MainDiv = styled.div``;
+
 const TitleWrapper = styled.div`
   width: 60%;
 `;
+
 const ImageWrapper = styled.img`
+  float: right;
   // width: 61px;
   height: 10vh;
-  float: right;
   margin-right: 2vh;
 `;
+
 const TitleDiv = styled.div`
-  font-size: 40px;
-  font-style: normal;
-  font-weight: 800;
-  margin-top: 5vh;
-  margin-left: 2vh;
-  word-break: keep-all;
   float: left;
-  margin-top: 3vh;
+  margin-top: 5vh; // 3vh;
+  margin-left: 2vh;
+  font-style: normal;
+  font-size: 40px;
+  font-weight: 800;
+  word-break: keep-all;
 `;
 
 const ListDiv = styled.div`
@@ -234,68 +234,64 @@ const ListDiv = styled.div`
 const FoodList = styled.div`
   padding-top: 0.5vw;
 `;
+
 const KmSpan = styled.span`
   float: right;
-  margin-right: 5vw;
-  font-weight: 700;
-  font-size: 1.5vmax;
   margin-top: 0.5vh;
+  margin-right: 5vw;
+  font-size: 1.5vmax;
+  font-weight: 700;
   color: #ff7b30;
 `;
 
 const FoodItem = styled.ul`
   align-items: center;
-  margin-bottom: 8px;
+  margin: 2vh 2vh 8px 2vh;
   padding: 2.5vmax 0 2.5vmax 0;
-  background: #f2f2f2;
   border-radius: 15px;
+  background: #f2f2f2;
   cursor: pointer;
-  margin-top: 2vh;
-  margin-left: 2vh;
-  margin-right: 2vh;
   color: #383838;
 `;
 
 const FoodItemName = styled.span`
-  font-weight: 700;
-  font-size: 2vmax;
   margin-left: 5vw;
+  font-size: 2vmax;
+  font-weight: 700;
 `;
 
 const ButtonSection = styled.div``;
+
 const IconDiV = styled.span`
-  padding-top: 10%;
-  margin-right: 2vh;
   vertical-align: middle;
+  margin-right: 2vh;
+  padding-top: 10%;
 `;
+
 const StartVoteButton = styled.button`
-  margin-bottom: 4px;
   width: 276px;
   height: 55px;
+  margin-bottom: 4px;
   background: #ff7b30;
   border: 0px;
   border-radius: 15px;
-  font-weight: 700;
-  font-size: 20px;
-  color: #ffffff;
   cursor: pointer;
+  font-size: 20px;
+  font-weight: 700;
+  color: #ffffff;
 `;
 
 const PickAgainButton = styled.div`
   // width: 100%;
-  background: #ff7b30;
-  color: #ffffff;
   align-items: center;
-  margin-bottom: 8px;
+  margin: 4vh 2vh 8px 2vh;
   padding: 2vmax 0 2vmax 0;
   border-radius: 15px;
+  background: #ff7b30;
   cursor: pointer;
-  margin-top: 4vh;
-  margin-left: 2vh;
-  margin-right: 2vh;
-  text-align: center;
-  font-weight: 700;
   font-size: 3vmax;
+  font-weight: 700;
+  color: #ffffff;
   text-align: center;
 `;
 

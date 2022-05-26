@@ -14,11 +14,12 @@
 2. [**기술 스택**](#2)
 3. [**주요 기능**](#3)
 4. [**화면 설계 내용**](#4)
-5. [**프로젝트 구성도**](#5)
-6. [**캐릭터 디자인**](#6)
-7. [**API 명세**](#7)
-8. [**개발 팀 소개**](#8)
-9. [**Git 규칙**](#9)
+5. [**API 명세**](#5)
+6. [**구현 결과**](#6)
+7. [**구현 성과**](#7)
+8. [**캐릭터 디자인**](#8)
+9. [**개발 팀 소개**](#9)
+10. [**Git 규칙**](#10)
 
 <br />
 
@@ -26,20 +27,25 @@
 
 ## 💁 서비스 소개
 
-**밥추** 서비스는 설문을 통해 또는 랜덤으로 식사 메뉴를 선택해주는 서비스입니다. 식사 메뉴는 혼자서 결정하거나 여러 명이서 투표를 통해 선정 가능합니다. 또 현위치 주변에서 해당 메뉴를 파는 식당 목록과 경로를 제공합니다.  
-**밥추** 서비스는 모바일 친화적인 웹사이트와 iOS 앱으로 이용 가능합니다.
+**밥추** 서비스는 설문을 통해 또는 랜덤으로 식사 메뉴를 추천해주는 서비스입니다. 또한 현위치 주변에서 해당 메뉴를 파는 식당 목록을 제공합니다.  
+**밥추** 서비스는 모바일 친화적인 웹사이트와 iOS, 안드로이드 앱으로 이용 가능합니다.
 
 ### 서비스 기획 배경
 
 식사 메뉴를 고르지 못하는 사람들을 대신하여 선택하기 위해 기획했습니다.
 
+### 사이트 링크
+
+[**🔗 밥추 사이트**](https://bobchoo.site/)
+
+> iOS와 안드로이드 앱은 현재 심사중입니다.
+
 ### 저장소 링크
 
-[**🔗 백엔드 저장소**](https://lab.ssafy.com/s06-final/S06P31A303)  
-[**🔗 프론트엔드 저장소**](https://lab.ssafy.com/anottrx/s06p31a303-frontend)  
-[**🔗 iOS 저장소**](https://lab.ssafy.com/anottrx/s06p31a303-ios)  
-[**🔗 CICD 저장소**](https://lab.ssafy.com/anottrx/s06p31a303-recommendation-service)  
-[**🔗 소켓 저장소**](https://lab.ssafy.com/anottrx/s06p31a303-socket)
+[**🔗 백엔드 저장소**](https://github.com/Team-Chwimi/bobchoo_back-end)  
+[**🔗 프론트엔드 저장소**](https://github.com/Team-Chwimi/bobchoo_front-end)  
+[**🔗 iOS 저장소**](https://github.com/Team-Chwimi/bobchoo_ios)  
+[**🔗 안드로이드 저장소**](https://github.com/Team-Chwimi/bobchoo_android)
 
 ### 노션 링크
 
@@ -51,9 +57,13 @@
 
 ## 🛠 기술 스택
 
+### **기술 스택**
+
+<img src="readme_assets/figma_mobile.PNG" alt="Figma" />
+
 ### **서비스 구성도**
 
-<img src="./readme_assets/technical_architecture.png" alt="구성도" height="500px"/>
+<img src="readme_assets/figma_mobile.PNG" alt="Figma" />
 
 <br />
 
@@ -61,13 +71,9 @@
 
 ## 💡 주요 기능
 
-### 식사 메뉴 선정
+### 식사 메뉴 추천
 
-설문 또는 랜덤으로 식사 메뉴를 선택
-
-### 투표
-
-투표로 여러 명이서 함께 식사 메뉴 선택 가능
+설문 또는 랜덤으로 식사 메뉴 추천
 
 ### 식당 지도 제공
 
@@ -88,17 +94,43 @@
 
 <div id="5"></div>
 
-## 📂 프로젝트 구성도
+## 📋 API 명세
 
-[**🔗 기능 정의서**](https://docs.google.com/spreadsheets/d/1aZ-Tk6ARGN4bDCDHEYn8KShKtQjdve7AVTqrD48GzwM)
+[**🔗 API 명세 상세보기**](https://chwimi.notion.site/API-be1207b0c6c5411e8c4e9b11ac4d982a)  
+[**🔗 스웨거 링크**](https://bobchoo.site/api/v1/swagger-ui/)
 
 <br />
 
 <div id="6"></div>
 
+## 🎨 구현 결과
+
+- 메인 페이지
+- 설문 화면 및 결과
+- 랜덤 화면 및 결과
+- 지도
+
+<br />
+
+<div id="7"></div>
+
+## 🌟 구현 성과
+
+### 백엔드
+
+- JMeter 부하테스트
+
+### 프론트엔드
+
+- lighthouse로 성능테스트
+
+<br />
+
+<div id="8"></div>
+
 ## 🐷 캐릭터 디자인
 
-### 밥돌이 (밥추의 마스코트)
+### 밥돌이 (밥추의 마스코트) (디자인 : [이아영](https://github.com/dgh03207))
 
 |                                 나쵸 먹는 밥돌이                                  |                                  당근 먹는 밥돌이                                  |
 | :-------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------: |
@@ -106,15 +138,7 @@
 
 <br />
 
-<div id="7"></div>
-
-## 📋 API 명세
-
-[**🔗 API 명세 상세보기**](https://chwimi.notion.site/API-be1207b0c6c5411e8c4e9b11ac4d982a)
-
-<br />
-
-<div id="8"></div>
+<div id="9"></div>
 
 ## 👪 개발 팀 소개
 
@@ -171,7 +195,7 @@
     </td>
     <td align="center">
       <a href="https://github.com/DeerGum" target="_blank">
-        황정준<br />(Back-end)
+        황정준<br />(Back-end, Android)
       </a>
     </td>
   </tr>
@@ -179,7 +203,7 @@
 
 <br />
 
-<div id="9"></div>
+<div id="10"></div>
 
 ## 📌 Git 규칙
 
@@ -211,11 +235,11 @@ Merge : 변경된 내용 작성
 ### 예시
 
 ```
-Feat : 로그인 API 구현
-Design : 00 통계 차트 마크업 및 스타일링 구현
-Refactor : 회원가입 API 코드 리팩터링
-Merge : develop ← feature/login
-Remove : 땡땡땡 파일 삭제
+Feat : 설문 질문 조회 API 구현
+Design : 설문 페이지 마크업 및 스타일링 구현
+Refactor : 설문 질문 조회 API 코드 리팩터링
+Merge : develop ← feature/map
+Remove : Map 파일 삭제
 ```
 
 ### 브랜치 전략
@@ -237,6 +261,5 @@ release-1.0.0
 
 develop
 
-feature/login
-feature/signup
+feature/map
 ```
