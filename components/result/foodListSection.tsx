@@ -19,6 +19,7 @@ import { PALETTE } from '../../data/palette';
 import axios from 'axios';
 
 import { IoMdRefresh } from 'react-icons/io';
+import Swal from 'sweetalert2';
 
 interface foodListItemType extends SurveyResponseItem {
   count: number;
@@ -55,6 +56,21 @@ const FoodListSection: React.FC = () => {
 
   const router = useRouter();
   const [distanceList, setDistanceList] = useState<foodListItemType[]>([]);
+
+  useEffect(() => {
+    if (answers.answerList.length === 0) {
+      Swal.fire({
+        icon: 'warning',
+        title: '잘못된 접근입니다',
+        text: '곧 메인페이지로 이동합니다',
+        confirmButtonText: '&nbsp&nbsp확인&nbsp&nbsp',
+        timer: 3000,
+        timerProgressBar: true,
+      }).then(() => {
+        router.push('/');
+      });
+    }
+  }, []);
 
   useEffect(() => {
     // const res: boolean[] = [];
