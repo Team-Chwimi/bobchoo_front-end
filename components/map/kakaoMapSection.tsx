@@ -236,7 +236,6 @@ const KakaoMapSection: React.FC = () => {
         <TitleBorder>
           <TitleDiv>{titleText}</TitleDiv>
         </TitleBorder>
-
         <ListDiv>
           {storeData.length === 0 ? (
             <CryingBobdolWrapper>
@@ -337,7 +336,10 @@ const ListDiv = styled.div`
 const TitleBorder = styled.div`
   position: absolute;
   z-index: 1000;
+  width: 100%;
   min-width: 100vmin;
+  max-width: 900px;
+  box-sizing: border-box;
   padding: 3vh 0 3vh 0;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
