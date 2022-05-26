@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import styled from '@emotion/styled';
@@ -15,6 +15,8 @@ import { PALETTE } from '../../data/palette';
 import { FaShareAlt, FaMapMarkedAlt } from 'react-icons/fa';
 import { IoMdRefresh } from 'react-icons/io';
 
+import Swal from 'sweetalert2';
+
 interface style {
   display: string;
 }
@@ -27,8 +29,17 @@ const TitleImg: React.FC = () => {
   const dispatch = useDispatch();
 
   const [isImgLoaded, setIsImgLoaded] = useState<boolean>(false);
+  const [beforeFood, setBeforeFood] = useState<String>('');
 
   const router = useRouter();
+
+  useEffect(() => {
+    setBeforeFood(results.foodName);
+  }, []);
+
+  useEffect(() => {
+    console.log(isImgLoaded);
+  }, [isImgLoaded]);
 
   const postOneApi = async (request: string) => {
     const response = await axiosInstance.post(
@@ -49,37 +60,66 @@ const TitleImg: React.FC = () => {
   const handleOneData = async () => {
     const surveyRequest = answers;
     const data = await postOneApi(JSON.stringify(surveyRequest));
-    dispatch(
-      selectedFoodActions.setSelectedFood({
-        foodName: data.foodName,
-        foodImg: data.foodImg,
-      }),
-    );
+    if (data.foodName === beforeFood) {
+      Swal.fire({
+        // icon: 'success',
+        title: '동일한 음식 메뉴가 나왔습니다',
+        text: '다른 음식을 원하시면 설문을 다시 진행해주세요',
+        confirmButtonText: '&nbsp&nbsp확인&nbsp&nbsp',
+        timer: 3000,
+        timerProgressBar: true,
+      });
+      // let timesRun = 0;
+      // let interval = setInterval(function () {
+      //   timesRun++;
+      //   console.log(timesRun);
+      //   if (timesRun === 3) {
+      //     setIsImgLoaded(true);
+      //     clearInterval(interval);
+      //   }
+      //   setIsImgLoaded(false);
+      // }, 1000);
+    } else {
+      dispatch(
+        selectedFoodActions.setSelectedFood({
+          foodName: data.foodName,
+          foodImg: data.foodImg,
+        }),
+      );
+      setIsImgLoaded(false);
+    }
   };
 
   const handleRandomOneData = async () => {
     const randomRequest = { lat: '', lng: '' };
     const data = await postRandomAPI(JSON.stringify(randomRequest));
-    dispatch(
-      selectedFoodActions.setSelectedFood({
-        foodName: data.foodName,
-        foodImg: data.foodImg,
-      }),
-    );
+    if (data.foodName === beforeFood) {
+      Swal.fire({
+        title: '동일한 음식 메뉴가 나왔습니다',
+        text: '다른 음식을 원하시면 설문을 다시 진행해주세요',
+        confirmButtonText: '&nbsp&nbsp확인&nbsp&nbsp',
+        timer: 3000,
+        timerProgressBar: true,
+      });
+    } else {
+      setIsImgLoaded(false);
+      dispatch(
+        selectedFoodActions.setSelectedFood({
+          foodName: data.foodName,
+          foodImg: data.foodImg,
+        }),
+      );
+    }
   };
 
   const handlePickAgain = () => {
-    // console.log(requestType.type);
     if (requestType.type === 'random') {
-      handleRandomOneData().then(() => {
-        setIsImgLoaded(false);
-      });
+      handleRandomOneData();
     } else {
-      handleOneData().then(() => {
-        setIsImgLoaded(false);
-      });
+      handleOneData();
     }
   };
+
   const display = () => {
     if (!isImgLoaded) {
       return 'none';
@@ -87,6 +127,7 @@ const TitleImg: React.FC = () => {
       return 'block';
     }
   };
+
   return (
     <Container>
       {!isImgLoaded ? (
@@ -115,7 +156,6 @@ const TitleImg: React.FC = () => {
         <>
           <ButtonDiv>
             <MapButton>
-              {' '}
               <IconDiV>
                 <FaMapMarkedAlt size={'6vmin'} />
               </IconDiV>
