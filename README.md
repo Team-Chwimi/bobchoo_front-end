@@ -14,12 +14,13 @@
 2. [**기술 스택**](#2)
 3. [**주요 기능**](#3)
 4. [**화면 설계 내용**](#4)
-5. [**API 명세**](#5)
-6. [**구현 결과**](#6)
-7. [**구현 성과**](#7)
-8. [**캐릭터 디자인**](#8)
-9. [**개발 팀 소개**](#9)
-10. [**Git 규칙**](#10)
+5. [**ERD**](#5)
+6. [**API 명세**](#6)
+7. [**구현 결과**](#7)
+8. [**구현 성과**](#8)
+9. [**캐릭터 디자인**](#9)
+10. [**개발 팀 소개**](#10)
+11. [**Git 규칙**](#11)
 
 <br />
 
@@ -59,11 +60,11 @@
 
 ### **기술 스택**
 
-<img src="https://github.com/Team-Chwimi/bobchoo_docs/blob/master/readme_assets/tech_stack.png" alt="Figma" />
+<img src="https://github.com/Team-Chwimi/bobchoo_docs/blob/master/readme_assets/tech_stack.png" alt="tech_stack" />
 
 ### **서비스 구성도**
 
-<img src="https://github.com/Team-Chwimi/bobchoo_docs/blob/master/readme_assets/technical_architecture.png" alt="Figma" />
+<img src="https://github.com/Team-Chwimi/bobchoo_docs/blob/master/readme_assets/technical_architecture.png" alt="technical_architecture" />
 
 <br />
 
@@ -94,6 +95,14 @@
 
 <div id="5"></div>
 
+## 🗄️ ERD
+
+<img src="https://github.com/Team-Chwimi/bobchoo_docs/blob/master/readme_assets/erd.png" alt="ERD" />
+
+<br />
+
+<div id="6"></div>
+
 ## 📋 API 명세
 
 [**🔗 API 명세 상세보기**](https://chwimi.notion.site/API-be1207b0c6c5411e8c4e9b11ac4d982a)  
@@ -101,18 +110,24 @@
 
 <br />
 
-<div id="6"></div>
+<div id="7"></div>
 
 ## 🎨 구현 결과
+
+### PC
 
 - 메인 페이지
 - 설문 화면 및 결과
 - 랜덤 화면 및 결과
 - 지도
 
+### iOS
+
+### Android
+
 <br />
 
-<div id="7"></div>
+<div id="8"></div>
 
 ## 🌟 구현 성과
 
@@ -120,13 +135,35 @@
 
 - JMeter 부하테스트
 
+  - 조건
+    - 1초 동안 동시접속자
+    - POST API 5회/1명
+  - PC 사양
+    - CPU : Ryzen 2600X
+    - RAM : 16G GPU
+    - GTX1060 6G
+
+  | <img src="https://github.com/Team-Chwimi/bobchoo_docs/blob/master/readme_assets/jmeter_test1.png" alt="jmeter_test1" />
+  | :-------------------------------------------------------------------------------------------------------: |
+  | 동시 접속자 수 : 10000명 |
+  | 걸린 시간 : 1분 25초 |
+
+  | <img src="https://github.com/Team-Chwimi/bobchoo_docs/blob/master/readme_assets/jmeter_test2.png" alt="jmeter_test2" /> |
+  | :---------------------------------------------------------------------------------------------------------------------: |
+  |                                                동시 접속자 수 : 15000명                                                 |
+  |                                                  걸린 시간 : 2분 24초                                                   |
+
 ### 프론트엔드
 
 - lighthouse로 성능테스트
 
+  | <img src="https://github.com/Team-Chwimi/bobchoo_docs/blob/master/readme_assets/lighthouse_seo.png" alt="lighthouse_seo" />
+  | :-------------------------------------------------------------------------------------------------------: |
+  | SEO 100점 |
+
 <br />
 
-<div id="8"></div>
+<div id="9"></div>
 
 ## 🐷 캐릭터 디자인
 
@@ -140,7 +177,7 @@
 
 <br />
 
-<div id="9"></div>
+<div id="10"></div>
 
 ## 👪 개발 팀 소개
 
@@ -177,35 +214,52 @@
   <tr>
     <td align="center">
       <a href="https://github.com/anottrx" target="_blank">
-        구련아<br />(Web Front-end)
+        구련아
       </a>
     </td>
     <td align="center">
       <a href="https://github.com/eunyeong1113" target="_blank">
-        이은영<br />(Web Front-end)
+        이은영
       </a>
     </td>
     <td align="center">
       <a href="https://github.com/choymoon" target="_blank">
-        조용문<br />(iOS)
+        조용문
       </a>
     </td>
     <td align="center">
       <a href="https://github.com/dgh03207" target="_blank">
-        이아영<br />(Back-end)
+        이아영
       </a>
     </td>
     <td align="center">
       <a href="https://github.com/DeerGum" target="_blank">
-        황정준<br />(Back-end, Android)
+        황정준
       </a>
+    </td>
+  </tr>
+   <tr>
+    <td align="center">
+        Front-end
+    </td>
+    <td align="center">
+        Front-end
+    </td>
+    <td align="center">
+        iOS
+    </td>
+    <td align="center">
+        Back-end
+    </td>
+    <td align="center">
+        Back-end<br />Android
     </td>
   </tr>
 </table>
 
 <br />
 
-<div id="10"></div>
+<div id="11"></div>
 
 ## 📌 Git 규칙
 
@@ -258,10 +312,7 @@ hotfix : 출시 버전에서 발생한 버그를 수정 하는 브랜치
 
 ```
 master
-
 release-1.0.0
-
 develop
-
 feature/map
 ```
