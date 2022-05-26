@@ -60,11 +60,11 @@
 
 ### **기술 스택**
 
-<img src="https://github.com/Team-Chwimi/bobchoo_docs/blob/master/readme_assets/tech_stack.png" alt="tech_stack" />
+<img src="https://github.com/Team-Chwimi/bobchoo_docs/blob/master/readme_assets/tech_stack.png" alt="tech_stack" width="900px"/>
 
 ### **서비스 구성도**
 
-<img src="https://github.com/Team-Chwimi/bobchoo_docs/blob/master/readme_assets/technical_architecture.png" alt="technical_architecture" />
+<img src="https://github.com/Team-Chwimi/bobchoo_docs/blob/master/readme_assets/technical_architecture.png" alt="technical_architecture" width="500px" />
 
 <br />
 
@@ -86,10 +86,10 @@
 
 ## 💻 화면 설계 내용
 
-|   [Figma](https://www.figma.com/file/xwVM8exgzfoKCq5dmpims5/%EC%B7%A8%EB%AF%B8%ED%8C%80?node-id=0%3A1)    |
-| :-------------------------------------------------------------------------------------------------------: |
-|                                                  모바일                                                   |
-| <img src="https://github.com/Team-Chwimi/bobchoo_docs/blob/master/readme_assets/figma.png" alt="Figma" /> |
+|          [Figma](https://www.figma.com/file/xwVM8exgzfoKCq5dmpims5/%EC%B7%A8%EB%AF%B8%ED%8C%80?node-id=0%3A1)          |
+| :--------------------------------------------------------------------------------------------------------------------: |
+|                                                         모바일                                                         |
+| <img src="https://github.com/Team-Chwimi/bobchoo_docs/blob/master/readme_assets/figma.png" alt="Figma" width="900px"/> |
 
 <br />
 
@@ -97,7 +97,7 @@
 
 ## 🗄️ ERD
 
-<img src="https://github.com/Team-Chwimi/bobchoo_docs/blob/master/readme_assets/erd.png" alt="ERD" />
+<img src="https://github.com/Team-Chwimi/bobchoo_docs/blob/master/readme_assets/erd.png" alt="ERD" width="900px"/>
 
 <br />
 
@@ -143,23 +143,22 @@
     - RAM : 16G GPU
     - GTX1060 6G
 
-  | <img src="https://github.com/Team-Chwimi/bobchoo_docs/blob/master/readme_assets/jmeter_test1.png" alt="jmeter_test1" />
+  | <img src="https://github.com/Team-Chwimi/bobchoo_docs/blob/master/readme_assets/jmeter_test1.png" alt="jmeter_test1" width="700px"/>
   | :-------------------------------------------------------------------------------------------------------: |
   | 동시 접속자 수 : 10000명 |
   | 걸린 시간 : 1분 25초 |
 
-  | <img src="https://github.com/Team-Chwimi/bobchoo_docs/blob/master/readme_assets/jmeter_test2.png" alt="jmeter_test2" /> |
-  | :---------------------------------------------------------------------------------------------------------------------: |
-  |                                                동시 접속자 수 : 15000명                                                 |
-  |                                                  걸린 시간 : 2분 24초                                                   |
+  | <img src="https://github.com/Team-Chwimi/bobchoo_docs/blob/master/readme_assets/jmeter_test2.png" alt="jmeter_test2" width="700px"/> |
+  | :----------------------------------------------------------------------------------------------------------------------------------: |
+  |                                                       동시 접속자 수 : 15000명                                                       |
+  |                                                         걸린 시간 : 2분 24초                                                         |
 
 ### 프론트엔드
 
 - lighthouse로 성능테스트
-
-  | <img src="https://github.com/Team-Chwimi/bobchoo_docs/blob/master/readme_assets/lighthouse_seo.png" alt="lighthouse_seo" />
-  | :-------------------------------------------------------------------------------------------------------: |
   | SEO 100점 |
+  | :-------------------------------------------------------------------------------------------------------: |
+  | <img src="https://github.com/Team-Chwimi/bobchoo_docs/blob/master/readme_assets/lighthouse_seo.png" alt="lighthouse_seo" width="600px"/>
 
 <br />
 
