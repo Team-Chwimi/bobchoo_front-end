@@ -1,31 +1,31 @@
 import type { NextPage } from 'next';
+// import dynamic from 'next/dynamic';
 import { useEffect } from 'react';
 
 import styled from '@emotion/styled';
 
 import Header from '../components/common/header';
-// import TitleImg from '../components/result/titleImg';
-import dynamic from 'next/dynamic';
+import TitleImg from '../components/result/titleImg';
 
-declare global {
-  interface Window {
-    Kakao: any;
-  }
-}
+// declare global {
+//   interface Window {
+//     Kakao: any;
+//   }
+// }
 
-const TitleImg = dynamic(() => import('../components/result/titleImg'), {
-  // Do not import in server side
-  ssr: false,
-});
+// const TitleImg = dynamic(() => import('../components/result/titleImg'), {
+//   // Do not import in server side
+//   ssr: false,
+// });
 
 const Result: NextPage = () => {
   useEffect(() => {
     document.title = '밥추 | 결과';
   }, []);
 
-  useEffect(() => {
-    window.Kakao.init(process.env.NEXT_PUBLIC_KAKAOMAP_APPKEY);
-  }, []);
+  // useEffect(() => {
+  //   window.Kakao.init(process.env.NEXT_PUBLIC_KAKAOMAP_APPKEY);
+  // }, []);
 
   return (
     <Container>

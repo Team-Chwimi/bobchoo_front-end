@@ -139,21 +139,21 @@ const TitleImg: React.FC = () => {
     }
   };
 
-  const handleKakaoShare = () => {
-    window.Kakao.Link.sendDefault({
-      objectType: 'feed',
-      content: {
-        title: '밥추',
-        description: results.foodName,
-        imageUrl: results.foodImg,
-        link: {
-          webUrl: `https://bobchoo.site/result/${results.foodName}`,
-          mobileWebUrl: `https://bobchoo.site/result/${results.foodName}`,
-          androidExecutionParams: 'test',
-        },
-      },
-    });
-  };
+  // const handleKakaoShare = () => {
+  //   window.Kakao.Link.sendDefault({
+  //     objectType: 'feed',
+  //     content: {
+  //       title: '밥추',
+  //       description: results.foodName,
+  //       imageUrl: results.foodImg,
+  //       link: {
+  //         webUrl: `https://bobchoo.site/result/${results.foodName}`,
+  //         mobileWebUrl: `https://bobchoo.site/result/${results.foodName}`,
+  //         androidExecutionParams: 'test',
+  //       },
+  //     },
+  //   });
+  // };
 
   return (
     <Container>
