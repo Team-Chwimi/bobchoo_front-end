@@ -37,9 +37,10 @@
 
 ### 사이트 링크
 
-[**🔗 밥추 사이트**](https://bobchoo.site/)
+[**🔗 밥추 사이트**](https://bobchoo.site/)  
+[**🔗 안드로이드 앱 다운받기**](https://play.google.com/store/apps/details?id=com.chwimi.bobchoo)
 
-> iOS와 안드로이드 앱은 현재 심사중입니다.
+> iOS 앱은 현재 개발 진행중입니다.
 
 ### 저장소 링크
 
