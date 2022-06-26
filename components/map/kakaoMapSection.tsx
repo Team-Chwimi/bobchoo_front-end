@@ -1,6 +1,5 @@
 import router from 'next/router';
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 
 import styled from '@emotion/styled';
 
@@ -194,8 +193,8 @@ const KakaoMapSection: React.FC = () => {
         <div style="color: #383838; font-size:13px; padding-bottom:4px;">${storeData[idx].address_name}</div>
         <div style="color: #383838; font-size:13px;">${storeData[idx].phone}</div>
       </div>
-    `; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-    let iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+    `; // 인포윈도우
+    let iwRemoveable = true; // 인포윈도우를 닫을 수 있는 x버튼
 
     // 마커에 표시할 인포윈도우를 생성합니다
     let infowindow = new kakao.maps.InfoWindow({
@@ -395,7 +394,6 @@ const StoreList = styled.ul`
   width: 100%;
   height: 45vh;
   padding: 12px 16px 12px;
-  // overflow: hidden;
   overflow-y: scroll;
   overflow-x: hidden;
   table-layout: fixed;

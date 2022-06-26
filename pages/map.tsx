@@ -4,8 +4,6 @@ import { useEffect } from 'react';
 
 import styled from '@emotion/styled';
 
-// import KakaoMapSection from '../components/map/kakaoMapSection';
-
 declare global {
   interface Window {
     kakao: any;
@@ -15,7 +13,6 @@ declare global {
 const KakaoMapSection = dynamic(
   () => import('../components/map/kakaoMapSection'),
   {
-    // Do not import in server side
     ssr: false,
   },
 );
