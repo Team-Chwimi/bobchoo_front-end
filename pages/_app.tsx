@@ -14,6 +14,8 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 // import { useRouter } from 'next/router';
 // import * as gtag from '../lib/gtag';
 
+import * as Sentry from '@sentry/nextjs';
+
 const app = ({ Component, pageProps }: AppProps) => {
   const queryClient = new QueryClient();
   // const router = useRouter();
@@ -27,6 +29,14 @@ const app = ({ Component, pageProps }: AppProps) => {
   //     router.events.off('routeChangeComplete', handleRouteChange);
   //   };
   // }, [router.events]);
+
+  const SENTRY_DSN: string = process.env.NEXT_PUBLIC_SENTRY_DSN as string;
+
+  Sentry.init({
+    dsn: SENTRY_DSN,
+    // integrations: [new Integrations.BrowserTracing()],
+    tracesSampleRate: 1.0, //lower the value in production
+  });
 
   return (
     <>
