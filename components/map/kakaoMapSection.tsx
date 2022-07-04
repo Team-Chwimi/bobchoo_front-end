@@ -259,7 +259,7 @@ const KakaoMapSection: React.FC = () => {
           <TitleDiv>
             {titleText}
             <IconWrapper>
-              <IoMdRefresh size={'20px'} onClick={() => handleCenterButton()} />
+              <IoMdRefresh size={'20px'} onClick={handleCenterButton} />
             </IconWrapper>
           </TitleDiv>
         </TitleBorder>
@@ -311,22 +311,26 @@ const KakaoMapSection: React.FC = () => {
                           </StoreItemDistance>
                         </StoreItemAddressDistance>
                         <StoreItemURL onClick={handleUrlClick(data.place_url)}>
-                          <IconImg
-                            src="/images/info_logo.png"
-                            alt="정보 아이콘"
-                          />
-                          상세보기
+                          <StoreWayWrapper>
+                            <IconImg
+                              src="/images/info_logo.png"
+                              alt="정보 아이콘"
+                            />
+                            상세보기
+                          </StoreWayWrapper>
                         </StoreItemURL>
                         <StoreItemWay
                           onClick={handleUrlClick(
                             `https://map.kakao.com/link/to/${data.id}`,
                           )}
                         >
-                          <IconImg
-                            src="/images/map_marker.png"
-                            alt="지도 아이콘"
-                          />
-                          길찾기
+                          <StoreWayWrapper>
+                            <IconImg
+                              src="/images/map_marker.png"
+                              alt="지도 아이콘"
+                            />
+                            길찾기
+                          </StoreWayWrapper>
                         </StoreItemWay>
                         {/* {data.rating === 0 ? (
                       <>평점이 없습니다</>
@@ -387,6 +391,7 @@ const IconWrapper = styled.span`
   float: right;
   margin-right: 16px;
   color: ${PALETTE.orange_point};
+  cursor: pointer;
 `;
 
 const StoreList = styled.ul`
@@ -467,7 +472,6 @@ const StoreItemURL = styled.div`
   display: flex;
   align-items: center;
   padding-bottom: 4px;
-  cursor: pointer;
   font-size: 15px;
 `;
 
@@ -476,8 +480,11 @@ const StoreItemWay = styled.div`
   flex-direction: row-reverse;
   align-items: center;
   padding-bottom: 4px;
-  cursor: pointer;
   font-size: 15px;
+`;
+
+const StoreWayWrapper = styled.span`
+  cursor: pointer;
 `;
 
 const CryingBobdolWrapper = styled.div`
