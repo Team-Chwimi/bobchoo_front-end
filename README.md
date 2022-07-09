@@ -29,7 +29,7 @@
 ## 💁 서비스 소개
 
 **밥추** 서비스는 설문을 통해 또는 랜덤으로 식사 메뉴를 추천해주는 서비스입니다. 또한 현위치 주변에서 해당 메뉴를 파는 식당 목록을 제공합니다.  
-**밥추** 서비스는 모바일 친화적인 웹사이트와 iOS, 안드로이드 앱으로 이용 가능합니다.
+**밥추** 서비스는 모바일 친화적인 웹사이트와 안드로이드 앱으로 이용 가능하며 iOS 버전도 준비 중입니다.
 
 ### 서비스 기획 배경
 
@@ -37,16 +37,21 @@
 
 ### 사이트 링크
 
-[**🔗 밥추 사이트**](https://bobchoo.site/)  
-[**🔗 안드로이드 앱 다운받기**](https://play.google.com/store/apps/details?id=com.chwimi.bobchoo)
+[**🔗 밥추 사이트**](https://bobchoo.site/)
+
+### 플레이스토어 링크
+
+[**🔗 구글 플레이스토어 링크**](https://play.google.com/store/apps/details?id=com.chwimi.bobchoo)
 
 > iOS 앱은 현재 개발 진행중입니다.
 
 ### 저장소 링크
 
 [**🔗 백엔드 저장소**](https://github.com/Team-Chwimi/bobchoo_back-end)  
-[**🔗 프론트엔드 저장소**](https://github.com/Team-Chwimi/bobchoo_front-end)  
-[**🔗 iOS 저장소**](https://github.com/Team-Chwimi/bobchoo_ios)  
+[**🔗 프론트엔드 저장소**](https://github.com/Team-Chwimi/bobchoo_front-end)
+
+<!-- [**🔗 iOS 저장소**](https://github.com/Team-Chwimi/bobchoo_ios)   -->
+
 [**🔗 안드로이드 저장소**](https://github.com/Team-Chwimi/bobchoo_android)
 
 ### 노션 링크
@@ -61,11 +66,11 @@
 
 ### **기술 스택**
 
-<img src="https://github.com/Team-Chwimi/bobchoo_docs/blob/master/readme_assets/tech_stack.png" alt="tech_stack" width="900px"/>
+<img src="https://github.com/Team-Chwimi/bobchoo_docs/blob/master/readme_assets/tech_stack.jpg" alt="tech_stack" width="900px"/>
 
 ### **서비스 구성도**
 
-<img src="https://github.com/Team-Chwimi/bobchoo_docs/blob/master/readme_assets/technical_architecture.png" alt="technical_architecture" width="500px" />
+<img src="https://github.com/Team-Chwimi/bobchoo_docs/blob/master/readme_assets/technical_architecture.jpg" alt="technical_architecture" width="500px" />
 
 <br />
 
@@ -132,7 +137,7 @@
 
 ## 🌟 구현 성과
 
-### 백엔드
+<!-- ### 백엔드
 
 - JMeter 부하테스트
 
@@ -152,7 +157,7 @@
   | <img src="https://github.com/Team-Chwimi/bobchoo_docs/blob/master/readme_assets/jmeter_test2.png" alt="jmeter_test2" width="700px"/> |
   | :----------------------------------------------------------------------------------------------------------------------------------: |
   |                                                       동시 접속자 수 : 15000명                                                       |
-  |                                                         걸린 시간 : 2분 24초                                                         |
+  |                                                         걸린 시간 : 2분 24초                                                         | -->
 
 ### 프론트엔드
 
