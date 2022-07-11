@@ -1,8 +1,9 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 
-const meta = {
+const META_DATA = {
   title: '밥추',
   description: '당신을 위한 식사 메뉴 추천 서비스',
+  author: 'Team-Chwimi',
   image: '../images/logo.png',
 };
 
@@ -12,13 +13,14 @@ class MyDocument extends Document {
       <Html lang="ko">
         <Head>
           <meta name="robots" content="follow, index" />
-          <meta name="description" content={meta.description} />
-          <meta property="og:site_name" content={meta.title} />
-          <meta property="og:description" content={meta.description} />
-          <meta property="og:title" content={meta.title} />
-          <meta property="og:image" content={meta.image} />
+          <meta name="description" content={META_DATA.description} />
+          <meta name="keyword" content={META_DATA.title} />
+          <meta name="author" content={META_DATA.author} />
+          <meta property="og:site_name" content={META_DATA.title} />
+          <meta property="og:description" content={META_DATA.description} />
+          <meta property="og:title" content={META_DATA.title} />
+          <meta property="og:image" content={META_DATA.image} />
           <script
-            // src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_PLACE_KEY}&libraries=places`}
             src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_KEY}&region=ko&libraries=places&autoload=false`}
             async
             defer

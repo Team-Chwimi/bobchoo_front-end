@@ -1,6 +1,5 @@
 import router from 'next/router';
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 
 import styled from '@emotion/styled';
 
@@ -194,8 +193,8 @@ const KakaoMapSection: React.FC = () => {
         <div style="color: #383838; font-size:13px; padding-bottom:4px;">${storeData[idx].address_name}</div>
         <div style="color: #383838; font-size:13px;">${storeData[idx].phone}</div>
       </div>
-    `; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-    let iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+    `; // 인포윈도우
+    let iwRemoveable = true; // 인포윈도우를 닫을 수 있는 x버튼
 
     // 마커에 표시할 인포윈도우를 생성합니다
     let infowindow = new kakao.maps.InfoWindow({
@@ -260,7 +259,7 @@ const KakaoMapSection: React.FC = () => {
           <TitleDiv>
             {titleText}
             <IconWrapper>
-              <IoMdRefresh size={'20px'} onClick={() => handleCenterButton()} />
+              <IoMdRefresh size={'20px'} onClick={handleCenterButton} />
             </IconWrapper>
           </TitleDiv>
         </TitleBorder>
@@ -312,22 +311,26 @@ const KakaoMapSection: React.FC = () => {
                           </StoreItemDistance>
                         </StoreItemAddressDistance>
                         <StoreItemURL onClick={handleUrlClick(data.place_url)}>
-                          <IconImg
-                            src="/images/info_logo.png"
-                            alt="정보 아이콘"
-                          />
-                          상세보기
+                          <StoreWayWrapper>
+                            <IconImg
+                              src="/images/info_logo.png"
+                              alt="정보 아이콘"
+                            />
+                            상세보기
+                          </StoreWayWrapper>
                         </StoreItemURL>
                         <StoreItemWay
                           onClick={handleUrlClick(
                             `https://map.kakao.com/link/to/${data.id}`,
                           )}
                         >
-                          <IconImg
-                            src="/images/map_marker.png"
-                            alt="지도 아이콘"
-                          />
-                          길찾기
+                          <StoreWayWrapper>
+                            <IconImg
+                              src="/images/map_marker.png"
+                              alt="지도 아이콘"
+                            />
+                            길찾기
+                          </StoreWayWrapper>
                         </StoreItemWay>
                         {/* {data.rating === 0 ? (
                       <>평점이 없습니다</>
@@ -388,6 +391,7 @@ const IconWrapper = styled.span`
   float: right;
   margin-right: 16px;
   color: ${PALETTE.orange_point};
+  cursor: pointer;
 `;
 
 const StoreList = styled.ul`
@@ -395,7 +399,6 @@ const StoreList = styled.ul`
   width: 100%;
   height: 45vh;
   padding: 12px 16px 12px;
-  // overflow: hidden;
   overflow-y: scroll;
   overflow-x: hidden;
   table-layout: fixed;
@@ -469,7 +472,6 @@ const StoreItemURL = styled.div`
   display: flex;
   align-items: center;
   padding-bottom: 4px;
-  cursor: pointer;
   font-size: 15px;
 `;
 
@@ -478,8 +480,11 @@ const StoreItemWay = styled.div`
   flex-direction: row-reverse;
   align-items: center;
   padding-bottom: 4px;
-  cursor: pointer;
   font-size: 15px;
+`;
+
+const StoreWayWrapper = styled.span`
+  cursor: pointer;
 `;
 
 const CryingBobdolWrapper = styled.div`
