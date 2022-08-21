@@ -157,30 +157,28 @@ const TitleImg: React.FC = () => {
 
   return (
     <Container>
-      {!isImgLoaded ? (
-        <LoadingBobdol />
-      ) : (
-        <>
+      <Wrapper>
+        {!isImgLoaded ? (
+          <LoadingBobdol />
+        ) : (
           <MainDiv>
             <TitleDiv>오늘의 밥추!!</TitleDiv>
             <ImageWrapper src="/images/bobdol_nacho.gif" alt="밥돌이 이미지" />
           </MainDiv>
-        </>
-      )}
-      <ImgDiv display={display()}>
-        <MenuImage
-          src={results.foodImg}
-          alt={`${results.foodName} 이미지`}
-          onLoad={() => {
-            setIsImgLoaded(true);
-          }}
-        />
-        {!isImgLoaded ? <></> : <FoodNameDiv>{results.foodName}</FoodNameDiv>}
-      </ImgDiv>
-      {!isImgLoaded ? (
-        <></>
-      ) : (
-        <>
+        )}
+        <ImgDiv display={display()}>
+          <MenuImage
+            src={results.foodImg}
+            alt={`${results.foodName} 이미지`}
+            onLoad={() => {
+              setIsImgLoaded(true);
+            }}
+          />
+          {!isImgLoaded ? <></> : <FoodNameDiv>{results.foodName}</FoodNameDiv>}
+        </ImgDiv>
+        {!isImgLoaded ? (
+          <></>
+        ) : (
           <ButtonDiv>
             <MapButton onClick={() => router.push('/map')}>
               <IconDiV>
@@ -201,13 +199,15 @@ const TitleImg: React.FC = () => {
               <ButtonName>다시 고르기</ButtonName>
             </RechooseButton>
           </ButtonDiv>
-        </>
-      )}
+        )}
+      </Wrapper>
     </Container>
   );
 };
 
 const Container = styled.section``;
+
+const Wrapper = styled.div``;
 
 const MainDiv = styled.div``;
 
