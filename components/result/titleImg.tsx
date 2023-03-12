@@ -186,7 +186,7 @@ const TitleImg: React.FC = () => {
               <IconDiV>
                 <FaMapMarkedAlt size={'6vmin'} />
               </IconDiV>
-              <ButtonName>주변식당찾기</ButtonName>
+              <ButtonName>주변 가게 찾기</ButtonName>
             </MapButton>
             {/* <ShareButton onClick={handleKakaoShare}>
               <IconDiV>
